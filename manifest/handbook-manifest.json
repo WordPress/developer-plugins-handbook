@@ -1,0 +1,564 @@
+{
+  "index": {
+    "title": "Developer Plugins Handbook",
+    "slug": null,
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/index.md",
+    "parent": null,
+    "order": -1
+  },
+  "intro": {
+    "title": "Introduction to Plugin Development",
+    "slug": "intro",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/intro\/index.md",
+    "parent": null,
+    "order": 1
+  },
+  "intro\/what-is-a-plugin": {
+    "title": "Introduction to Plugin Development",
+    "slug": "what-is-a-plugin",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/intro\/what-is-a-plugin\/index.md",
+    "parent": "intro",
+    "order": 1
+  },
+  "plugin-basics": {
+    "title": "Plugin Basics",
+    "slug": "plugin-basics",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/plugin-basics\/index.md",
+    "parent": null,
+    "order": 2
+  },
+  "plugin-basics\/header-requirements": {
+    "title": "Header Requirements",
+    "slug": "header-requirements",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/plugin-basics\/header-requirements\/index.md",
+    "parent": "plugin-basics",
+    "order": 1
+  },
+  "plugin-basics\/including-a-software-license": {
+    "title": "Including a Software License",
+    "slug": "including-a-software-license",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/plugin-basics\/including-a-software-license\/index.md",
+    "parent": "plugin-basics",
+    "order": 2
+  },
+  "plugin-basics\/activation-deactivation-hooks": {
+    "title": "Activation / Deactivation Hooks",
+    "slug": "activation-deactivation-hooks",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/plugin-basics\/activation-deactivation-hooks\/index.md",
+    "parent": "plugin-basics",
+    "order": 3
+  },
+  "plugin-basics\/uninstall-methods": {
+    "title": "Uninstall Methods",
+    "slug": "uninstall-methods",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/plugin-basics\/uninstall-methods\/index.md",
+    "parent": "plugin-basics",
+    "order": 4
+  },
+  "plugin-basics\/best-practices": {
+    "title": "Best Practices",
+    "slug": "best-practices",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/plugin-basics\/best-practices\/index.md",
+    "parent": "plugin-basics",
+    "order": 5
+  },
+  "plugin-basics\/determining-plugin-and-content-directories": {
+    "title": "Determining Plugin and Content Directories",
+    "slug": "determining-plugin-and-content-directories",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/plugin-basics\/determining-plugin-and-content-directories\/index.md",
+    "parent": "plugin-basics",
+    "order": 6
+  },
+  "security": {
+    "title": "Plugin Security",
+    "slug": "security",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/security\/index.md",
+    "parent": null,
+    "order": 3
+  },
+  "security\/checking-user-capabilities": {
+    "title": "Checking User Capabilities",
+    "slug": "checking-user-capabilities",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/security\/checking-user-capabilities\/index.md",
+    "parent": "security",
+    "order": 1
+  },
+  "security\/data-validation": {
+    "title": "Data Validation",
+    "slug": "data-validation",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/security\/data-validation\/index.md",
+    "parent": "security",
+    "order": 2
+  },
+  "security\/securing-input": {
+    "title": "Securing (sanitizing) Input",
+    "slug": "securing-input",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/security\/securing-input\/index.md",
+    "parent": "security",
+    "order": 3
+  },
+  "security\/securing-output": {
+    "title": "Securing (escaping) Output",
+    "slug": "securing-output",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/security\/securing-output\/index.md",
+    "parent": "security",
+    "order": 4
+  },
+  "security\/nonces": {
+    "title": "Nonces",
+    "slug": "nonces",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/security\/nonces\/index.md",
+    "parent": "security",
+    "order": 5
+  },
+  "hooks": {
+    "title": "Hooks",
+    "slug": "hooks",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/hooks\/index.md",
+    "parent": null,
+    "order": 4
+  },
+  "hooks\/actions": {
+    "title": "Actions",
+    "slug": "actions",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/hooks\/actions\/index.md",
+    "parent": "hooks",
+    "order": 1
+  },
+  "hooks\/filters": {
+    "title": "Filters",
+    "slug": "filters",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/hooks\/filters\/index.md",
+    "parent": "hooks",
+    "order": 2
+  },
+  "hooks\/custom-hooks": {
+    "title": "Custom Hooks",
+    "slug": "custom-hooks",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/hooks\/custom-hooks\/index.md",
+    "parent": "hooks",
+    "order": 3
+  },
+  "hooks\/advanced-topics": {
+    "title": "Advanced Topics",
+    "slug": "advanced-topics",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/hooks\/advanced-topics\/index.md",
+    "parent": "hooks",
+    "order": 4
+  },
+  "privacy": {
+    "title": "Privacy",
+    "slug": "privacy",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/privacy\/index.md",
+    "parent": null,
+    "order": 5
+  },
+  "privacy\/suggesting-text-for-the-site-privacy-policy": {
+    "title": "Suggesting text for the site privacy policy",
+    "slug": "suggesting-text-for-the-site-privacy-policy",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/privacy\/suggesting-text-for-the-site-privacy-policy\/index.md",
+    "parent": "privacy",
+    "order": 1
+  },
+  "privacy\/adding-the-personal-data-exporter-to-your-plugin": {
+    "title": "Adding the Personal Data Exporter to Your Plugin",
+    "slug": "adding-the-personal-data-exporter-to-your-plugin",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/privacy\/adding-the-personal-data-exporter-to-your-plugin\/index.md",
+    "parent": "privacy",
+    "order": 1
+  },
+  "privacy\/adding-the-personal-data-eraser-to-your-plugin": {
+    "title": "Adding the Personal Data Eraser to Your Plugin",
+    "slug": "adding-the-personal-data-eraser-to-your-plugin",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/privacy\/adding-the-personal-data-eraser-to-your-plugin\/index.md",
+    "parent": "privacy",
+    "order": 1
+  },
+  "privacy\/privacy-related-options-hooks-and-capabilities": {
+    "title": "Privacy Related Options, Hooks and Capabilities",
+    "slug": "privacy-related-options-hooks-and-capabilities",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/privacy\/privacy-related-options-hooks-and-capabilities\/index.md",
+    "parent": "privacy",
+    "order": 1
+  },
+  "administration-menus": {
+    "title": "Administration Menus",
+    "slug": "administration-menus",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/administration-menus\/index.md",
+    "parent": null,
+    "order": 6
+  },
+  "administration-menus\/top-level-menus": {
+    "title": "Top-Level Menus",
+    "slug": "top-level-menus",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/administration-menus\/top-level-menus\/index.md",
+    "parent": "administration-menus",
+    "order": 1
+  },
+  "administration-menus\/sub-menus": {
+    "title": "Sub-Menus",
+    "slug": "sub-menus",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/administration-menus\/sub-menus\/index.md",
+    "parent": "administration-menus",
+    "order": 2
+  },
+  "shortcodes": {
+    "title": "Shortcodes",
+    "slug": "shortcodes",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/shortcodes\/index.md",
+    "parent": null,
+    "order": 7
+  },
+  "shortcodes\/basic-shortcodes": {
+    "title": "Basic Shortcodes",
+    "slug": "basic-shortcodes",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/shortcodes\/basic-shortcodes\/index.md",
+    "parent": "shortcodes",
+    "order": 1
+  },
+  "shortcodes\/enclosing-shortcodes": {
+    "title": "Enclosing Shortcodes",
+    "slug": "enclosing-shortcodes",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/shortcodes\/enclosing-shortcodes\/index.md",
+    "parent": "shortcodes",
+    "order": 2
+  },
+  "shortcodes\/shortcodes-with-parameters": {
+    "title": "Shortcodes with Parameters",
+    "slug": "shortcodes-with-parameters",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/shortcodes\/shortcodes-with-parameters\/index.md",
+    "parent": "shortcodes",
+    "order": 3
+  },
+  "shortcodes\/tinymce-enhanced-shortcodes": {
+    "title": "TinyMCE Enhanced Shortcodes",
+    "slug": "tinymce-enhanced-shortcodes",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/shortcodes\/tinymce-enhanced-shortcodes\/index.md",
+    "parent": "shortcodes",
+    "order": 4
+  },
+  "settings": {
+    "title": "Settings",
+    "slug": "settings",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/settings\/index.md",
+    "parent": null,
+    "order": 8
+  },
+  "settings\/settings-api": {
+    "title": "Settings API",
+    "slug": "settings-api",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/settings\/settings-api\/index.md",
+    "parent": "settings",
+    "order": 1
+  },
+  "settings\/using-settings-api": {
+    "title": "Using Settings API",
+    "slug": "using-settings-api",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/settings\/using-settings-api\/index.md",
+    "parent": "settings",
+    "order": 2
+  },
+  "settings\/options-api": {
+    "title": "Options API",
+    "slug": "options-api",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/settings\/options-api\/index.md",
+    "parent": "settings",
+    "order": 3
+  },
+  "settings\/custom-settings-page": {
+    "title": "Custom Settings Page",
+    "slug": "custom-settings-page",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/settings\/custom-settings-page\/index.md",
+    "parent": "settings",
+    "order": 4
+  },
+  "metadata": {
+    "title": "Metadata",
+    "slug": "metadata",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/metadata\/index.md",
+    "parent": null,
+    "order": 9
+  },
+  "metadata\/managing-post-metadata": {
+    "title": "Managing Post Metadata",
+    "slug": "managing-post-metadata",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/metadata\/managing-post-metadata\/index.md",
+    "parent": "metadata",
+    "order": 1
+  },
+  "metadata\/custom-meta-boxes": {
+    "title": "Custom Meta Boxes",
+    "slug": "custom-meta-boxes",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/metadata\/custom-meta-boxes\/index.md",
+    "parent": "metadata",
+    "order": 2
+  },
+  "metadata\/rendering-post-metadata": {
+    "title": "Rendering Post Metadata",
+    "slug": "rendering-post-metadata",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/metadata\/rendering-post-metadata\/index.md",
+    "parent": "metadata",
+    "order": 3
+  },
+  "post-types": {
+    "title": "Custom Post Types",
+    "slug": "post-types",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/post-types\/index.md",
+    "parent": null,
+    "order": 10
+  },
+  "post-types\/registering-custom-post-types": {
+    "title": "Registering Custom Post Types",
+    "slug": "registering-custom-post-types",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/post-types\/registering-custom-post-types\/index.md",
+    "parent": "post-types",
+    "order": 1
+  },
+  "post-types\/working-with-custom-post-types": {
+    "title": "Working with Custom Post Types",
+    "slug": "working-with-custom-post-types",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/post-types\/working-with-custom-post-types\/index.md",
+    "parent": "post-types",
+    "order": 2
+  },
+  "taxonomies": {
+    "title": "Taxonomies",
+    "slug": "taxonomies",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/taxonomies\/index.md",
+    "parent": null,
+    "order": 11
+  },
+  "taxonomies\/working-with-custom-taxonomies": {
+    "title": "Working with Custom Taxonomies",
+    "slug": "working-with-custom-taxonomies",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/taxonomies\/working-with-custom-taxonomies\/index.md",
+    "parent": "taxonomies",
+    "order": 1
+  },
+  "taxonomies\/split-terms-wp-4-2": {
+    "title": "Term Splitting (WordPress 4.2)",
+    "slug": "split-terms-wp-4-2",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/taxonomies\/split-terms-wp-4-2\/index.md",
+    "parent": "taxonomies",
+    "order": 2
+  },
+  "users": {
+    "title": "Users",
+    "slug": "users",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/users\/index.md",
+    "parent": null,
+    "order": 12
+  },
+  "users\/working-with-users": {
+    "title": "Working with Users",
+    "slug": "working-with-users",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/users\/working-with-users\/index.md",
+    "parent": "users",
+    "order": 1
+  },
+  "users\/working-with-user-metadata": {
+    "title": "Working with User Metadata",
+    "slug": "working-with-user-metadata",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/users\/working-with-user-metadata\/index.md",
+    "parent": "users",
+    "order": 2
+  },
+  "users\/roles-and-capabilities": {
+    "title": "Roles and Capabilities",
+    "slug": "roles-and-capabilities",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/users\/roles-and-capabilities\/index.md",
+    "parent": "users",
+    "order": 3
+  },
+  "http-api": {
+    "title": "HTTP API",
+    "slug": "http-api",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/http-api\/index.md",
+    "parent": null,
+    "order": 13
+  },
+
+  "javascript": {
+    "title": "JavaScript",
+    "slug": "javascript",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/javascript\/index.md",
+    "parent": null,
+    "order": 14
+  },
+  "javascript\/jquery": {
+    "title": "jQuery",
+    "slug": "jquery",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/javascript\/jquery\/index.md",
+    "parent": "javascript",
+    "order": 1
+  },
+  "javascript\/ajax": {
+    "title": "AJAX",
+    "slug": "ajax",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/javascript\/ajax\/index.md",
+    "parent": "javascript",
+    "order": 2
+  },
+  "javascript\/enqueuing": {
+    "title": "Server Side PHP and Enqueuing",
+    "slug": "enqueuing",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/javascript\/enqueuing\/index.md",
+    "parent": "javascript",
+    "order": 3
+  },
+  "javascript\/heartbeat-api": {
+    "title": "Heartbeat API",
+    "slug": "heartbeat-api",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/javascript\/heartbeat-api\/index.md",
+    "parent": "javascript",
+    "order": 4
+  },
+  "javascript\/summary": {
+    "title": "Summary",
+    "slug": "summary",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/javascript\/summary\/index.md",
+    "parent": "javascript",
+    "order": 5
+  },
+  "cron": {
+    "title": "Cron",
+    "slug": "cron",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/cron\/index.md",
+    "parent": null,
+    "order": 15
+  },
+  "cron\/understanding-wp-cron-scheduling": {
+    "title": "Understanding WP-Cron Scheduling",
+    "slug": "understanding-wp-cron-scheduling",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/cron\/understanding-wp-cron-scheduling\/index.md",
+    "parent": "cron",
+    "order": 1
+  },
+  "cron\/scheduling-wp-cron-events": {
+    "title": "Scheduling WP Cron Events",
+    "slug": "scheduling-wp-cron-events",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/cron\/scheduling-wp-cron-events\/index.md",
+    "parent": "cron",
+    "order": 2
+  },
+  "cron\/hooking-wp-cron-into-the-system-task-scheduler": {
+    "title": "Hooking WP-Cron Into the System Task Scheduler",
+    "slug": "hooking-wp-cron-into-the-system-task-scheduler",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/cron\/hooking-wp-cron-into-the-system-task-scheduler\/index.md",
+    "parent": "cron",
+    "order": 3
+  },
+  "cron\/simple-testing": {
+    "title": "Testing of WP-Cron",
+    "slug": "simple-testing",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/cron\/simple-testing\/index.md",
+    "parent": "cron",
+    "order": 4
+  },
+
+  "internationalization": {
+    "title": "Internationalization",
+    "slug": "internationalization",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/internationalization\/index.md",
+    "parent": null,
+    "order": 16
+  },
+  "internationalization\/localization": {
+    "title": "Localization",
+    "slug": "localization",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/internationalization\/localization\/index.md",
+    "parent": "internationalization",
+    "order": 1
+  },
+  "internationalization\/how-to-internationalize-your-plugin": {
+    "title": "How to Internationalize Your Plugin",
+    "slug": "how-to-internationalize-your-plugin",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/internationalization\/how-to-internationalize-your-plugin\/index.md",
+    "parent": "internationalization",
+    "order": 2
+  },
+  "internationalization\/security": {
+    "title": "Internationalization Security",
+    "slug": "security",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/internationalization\/security\/index.md",
+    "parent": "internationalization",
+    "order": 3
+  },
+  "wordpress-org": {
+    "title": "The WordPress.org Plugin Directory",
+    "slug": "wordpress-org",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/xxxxx\/index.md",
+    "parent": null,
+    "order": 17
+  },
+  "wordpress-org\/detailed-plugin-guidelines": {
+    "title": "Detailed Plugin Guidelines",
+    "slug": "detailed-plugin-guidelines",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/wordpress-org\/detailed-plugin-guidelines\/index.md",
+    "parent": "wordpress-org",
+    "order": 1
+  },
+  "wordpress-org\/planning-submitting-and-maintaining-plugins": {
+    "title": "Planning, Submitting, and Maintaining Plugins",
+    "slug": "planning-submitting-and-maintaining-plugins",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/wordpress-org\/planning-submitting-and-maintaining-plugins\/index.md",
+    "parent": "wordpress-org",
+    "order": 2
+  },
+  "wordpress-org\/how-to-use-subversion": {
+    "title": "Using Subversion",
+    "slug": "how-to-use-subversion",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/wordpress-org\/how-to-use-subversion\/index.md",
+    "parent": "wordpress-org",
+    "order": 3
+  },
+  "wordpress-org\/alerts-and-warnings": {
+    "title": "Alerts and Warnings",
+    "slug": "alerts-and-warnings",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/wordpress-org\/alerts-and-warnings\/index.md",
+    "parent": "wordpress-org",
+    "order": 4
+  },
+  "wordpress-org\/plugin-security": {
+    "title": "Managing Your Plugin's Security",
+    "slug": "plugin-security",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/wordpress-org\/plugin-security\/index.md",
+    "parent": "wordpress-org",
+    "order": 5
+  },
+  "wordpress-org\/plugin-developer-faq": {
+    "title": "Plugin Developer FAQ",
+    "slug": "plugin-developer-faq",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/wordpress-org\/plugin-developer-faq\/index.md",
+    "parent": "wordpress-org",
+    "order": 6
+  },
+  "developer-tools": {
+    "title": "Developer Tools",
+    "slug": "developer-tools",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/developer-tools\/index.md",
+    "parent": null,
+    "order": 18
+  },
+  "developer-tools\/debug-bar-and-add-ons": {
+    "title": "Debug Bar and Add-Ons",
+    "slug": "debug-bar-and-add-ons",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/developer-tools\/debug-bar-and-add-ons\/index.md",
+    "parent": "developer-tools",
+    "order": 1
+  },
+  "developer-tools\/helper-plugins": {
+    "title": "Helper Plugins",
+    "slug": "helper-plugins",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/developer-tools\/helper-plugins\/index.md",
+    "parent": "developer-tools",
+    "order": 2
+  },
+  "credits": {
+    "title": "Credits",
+    "slug": "credits",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/credits\/index.md",
+    "parent": null,
+    "order": 19
+  }
+}
