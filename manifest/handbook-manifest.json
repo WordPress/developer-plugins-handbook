@@ -487,7 +487,7 @@
   "wordpress-org": {
     "title": "The WordPress.org Plugin Directory",
     "slug": "wordpress-org",
-    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/xxxxx\/index.md",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/wordpress-org\/index.md",
     "parent": null,
     "order": 17
   },
