@@ -1,5 +1,4 @@
-Hooks
------
+# Hooks
 
 Hooks are a way for one piece of code to interact/modify another piece of code at specific, pre-defined spots. They make up the foundation for how plugins and themes interact with WordPress Core, but they’re also used extensively by Core itself.
 
@@ -11,17 +10,21 @@ There are two types of hooks: [Actions](https://developer.wordpress.org/plugins/
 
 WordPress provides many hooks that you can use, but you can also [create your own](https://developer.wordpress.org/plugins/hooks/custom-hooks/) so that other developers can extend and modify your plugin or theme.
 
+## Actions vs. Filters
+
 The main difference between an action and a filter can be summed up like this:
 
-*   an action takes the info it receives, does something with it, and returns nothing. In other words: it _acts_ on something and then exits, returning nothing back to the calling hook.
-*   a filter takes the info it receives, modifies it somehow, and returns it. In other words: it _filters_ something and passes it back to the hook for further use.
+- An action takes the info it receives, does something with it, and returns nothing. In other words: it _acts_ on something and then exits, returning nothing back to the calling hook.
+- A filter takes the info it receives, modifies it somehow, and returns it. In other words: it _filters_ something and passes it back to the hook for further use.
 
 Said another way:
 
-*   an action interrupts the code flow to do something, and then returns back to the normal flow without modifying anything;
-*   a filter is used to modify something in a specific way so that the modification is then used by code later on.
+- An action interrupts the code flow to do something, and then returns back to the normal flow without modifying anything;
+- A filter is used to modify something in a specific way so that the modification is then used by code later on.
 
 The _something_ referred to is the parameter list sent via the hook definition. More on this in later sections.
 
-*   [Filter Reference](https://codex.wordpress.org/Plugin_API/Filter_Reference)
-*   [Action Reference](https://codex.wordpress.org/Plugin_API/Action_Reference)
+## More Resources
+
+- [Filter Reference](https://codex.wordpress.org/Plugin_API/Filter_Reference)
+- [Action Reference](https://codex.wordpress.org/Plugin_API/Action_Reference)
