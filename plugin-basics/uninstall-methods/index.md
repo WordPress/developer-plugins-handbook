@@ -17,6 +17,8 @@ This table illustrates the differences between deactivation and uninstall.
 | Remove Options from {[$wpdb](https://developer.wordpress.org/reference/classes/wpdb/)→prefix}_options | No | Yes |
 | Remove Tables from [$wpdb](https://developer.wordpress.org/reference/classes/wpdb/) | No | Yes |
 
+## Method 1: register_uninstall_hook
+
 To set up an uninstall hook, use the [register\_uninstall\_hook()](https://developer.wordpress.org/reference/functions/register_uninstall_hook/) function:
 
 ```
@@ -25,6 +27,8 @@ register_uninstall_hook(
   'pluginprefix_function_to_run'
 );
 ```
+
+## Method 2: uninstall.php
 
 To use this method you need to create an `uninstall.php` file inside the root folder of your plugin. This magic file is run automatically when the users deletes the plugin.
 

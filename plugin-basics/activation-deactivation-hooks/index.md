@@ -18,6 +18,8 @@ register_activation_hook(
 );
 ```
 
+## Deactivation
+
 To set up a deactivation hook, use the [register\_deactivation\_hook()](https://developer.wordpress.org/reference/functions/register_deactivation_hook/) function:
 
 ```
@@ -28,6 +30,8 @@ register_deactivation_hook(
 ```
 
 The first parameter in each of these functions refers to your main plugin file, which is the file in which you have placed the [plugin header comment](https://developer.wordpress.org/plugins/plugin-basics/header-requirements/). Usually these two functions will be triggered from within the main plugin file; however, if the functions are placed in any other file, you must update the first parameter to correctly point to the main plugin file.
+
+## Example
 
 One of the most common uses for an activation hook is to refresh WordPress permalinks when a plugin registers a custom post type. This gets rid of the nasty 404 errors.
 

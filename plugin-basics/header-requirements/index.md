@@ -2,6 +2,8 @@
 
 As described in [Getting Started](https://developer.wordpress.org/plugins/plugin-basics/#getting-started), the main PHP file should include header comment what tells WordPress that a file is a plugin and provides information about the plugin.
 
+## Minimum Fields
+
 At a minimum, a header comment must contain the Plugin Name:
 
 ```
@@ -9,6 +11,8 @@ At a minimum, a header comment must contain the Plugin Name:
  * Plugin Name: YOUR PLUGIN NAME
  */
 ```
+
+## Header Fields
 
 Available header fields:
 
@@ -73,5 +77,7 @@ Here's another example which allows file-level PHPDoc DocBlock as well as WordPr
  * Update URI:        https://example.com/my-plugin/
  */
 ```
+
+## Notes
 
 [alert]When assigning a version number to your project, keep in mind that WordPress uses the PHP `version_compare()` function to compare plugin version numbers. Therefore, before you release a new version of your plugin, you should make sure that this PHP function considers the new version to be "greater" than the old one. For example, 1.02 is actually greater than 1.1.[/alert]
