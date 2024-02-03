@@ -29,7 +29,7 @@ Available header fields:
 - **Text Domain:** The [gettext](https://www.gnu.org/software/gettext/) text domain of the plugin. More information can be found in the [Text Domain](https://developer.wordpress.org/plugins/internationalization/how-to-internationalize-your-plugin/#text-domains) section of the [How to Internationalize your Plugin](https://developer.wordpress.org/plugins/internationalization/how-to-internationalize-your-plugin/) page.
 - **Domain Path:** The domain path lets WordPress know where to find the translations. More information can be found in the [Domain Path](https://developer.wordpress.org/plugins/internationalization/how-to-internationalize-your-plugin/#domain-path) section of the [How to Internationalize your Plugin](https://developer.wordpress.org/plugins/internationalization/how-to-internationalize-your-plugin/) page.
 - **Network:** Whether the plugin can only be activated network-wide. Can only be set to _true_, and should be left out when not needed.
-- **Update URI:** Allows third-party plugins to avoid accidentally being overwritten with an update of a plugin of a similar name from the WordPress.org Plugin Directory. For more info read related [dev note](https://make.wordpress.org/core/2021/06/29/introducing-update-uri-plugin-header-in-wordpress-5-8/).
+- **Update URI:** **(_Important: never use for a plugin hosted in the WordPress.org Plugin Directory_)** Allows non WordPress.org plugins to avoid accidentally being overwritten with an update of a plugin of a similar name from the WordPress.org Plugin Directory. For more info read related [dev note](https://make.wordpress.org/core/2021/06/29/introducing-update-uri-plugin-header-in-wordpress-5-8/).
 
 A valid PHP file with a header comment might look like this:
 
@@ -45,7 +45,6 @@ A valid PHP file with a header comment might look like this:
  * Author URI:        https://author.example.com/
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Update URI:        https://example.com/my-plugin/
  * Text Domain:       my-basics-plugin
  * Domain Path:       /languages
  */
@@ -73,8 +72,7 @@ Here's another example which allows file-level PHPDoc DocBlock as well as WordPr
  * Author URI:        https://example.com
  * Text Domain:       plugin-slug
  * License:           GPL v2 or later
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Update URI:        https://example.com/my-plugin/
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.txt
  */
 ```
 
