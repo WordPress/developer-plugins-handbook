@@ -67,6 +67,6 @@ function myprefix_change_post_type_params( $post_type_params ) {
 add_filter( 'wporg_post_type_params', 'myprefix_change_post_type_params' );
 ```
 
-Note that filters filters take data, modify it, and return it. So the code called ( `myprefix_change_post_type_params` ) doesn't output anything using echo or html, or anything else directly to the screen. Also note that the retuned value is used directly by `register_post_type` without being assigned to a variable first. This is simple to skip that extra (an unnecessary) step.
+Note that filters take data, modify it, and return it. So the code called ( `myprefix_change_post_type_params` ) doesn't output anything using echo or html, or anything else directly to the screen. Also note that the returned value is used directly by `register_post_type` without being assigned to a variable first. This is simple to skip that extra (an unnecessary) step.
 
 Also note that since no priority is given, it will run at default priority 10. And since there is no value for the number of parameters expected, the default of one is assumed.

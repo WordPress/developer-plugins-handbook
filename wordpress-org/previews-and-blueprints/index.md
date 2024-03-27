@@ -137,4 +137,4 @@ The __Test__ link will use an auto-generated Blueprint file to load your plugin 
 
 You must commit your blueprint.json file to your plugin's assets folder, named like this:
 
-`/assets/blueprint.json`
+`/assets/blueprints/blueprint.json`
