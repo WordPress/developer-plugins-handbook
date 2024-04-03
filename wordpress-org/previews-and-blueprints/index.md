@@ -115,7 +115,10 @@ Here’s an example of a more advanced blueprint.json that demonstrates some m
         },
         {
             "step": "runPHP",
-            "code": " 5,\n'post_title' => 'Example Post',\n'post_content' => '
+            "code": "<?php require_once 'wordpress/wp-load.php'; wp_insert_post(array('post_title' => 'wp-load.php required for WP functionality', 'post_status' => 'publish')); ?>"
+        }
+    ]
+}
 ```
 
 # Using a generated Blueprint file
