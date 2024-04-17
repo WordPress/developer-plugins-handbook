@@ -19,6 +19,8 @@ There are two things required for a plugin preview button to appear to all users
 
 If a valid `blueprint.json` file is present, then the Preview button will be present for plugin committers only. In which case it will look like this:
 
+<img alt="Preview Live on WordPress.org/plugins - what the button is like" src="./live-preview.png" width="277" />
+
 It’s called Test Preview because that’s why it’s there: to allow plugin committers to test their plugin in the Playground environment and decide whether or not to make it easily available to the public.
 
 ## Blueprints
