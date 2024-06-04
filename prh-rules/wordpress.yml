@@ -1,0 +1,2847 @@
+# Rules for WordPress
+meta:
+  reviewer:
+    - keichan34
+  related: https://github.com/jawordpressorg/
+  rules:
+
+version: 1
+
+# WEB+DB_PRESS のルールを参考に
+# https://github.com/prh/rules/blob/master/media/WEB+DB_PRESS.yml
+#
+# WordPress Glossary と翻訳ガイドラインのルールを追加しました。
+#
+# https://translate.wordpress.org/locale/ja/default/glossary
+# https://ja.wordpress.org/team/handbook/translation/translation-style-guide/
+
+rules:
+  # 全角スペース、半角スペースの連続を禁止
+  - pattern: "　"
+    expected: " "
+  - pattern: "  "
+    expected: " "
+  # 数字は半角文字を使う
+  - pattern: ０
+    expected: "0"
+  - pattern: １
+    expected: "1"
+  - pattern: ２
+    expected: "2"
+  - pattern: ３
+    expected: "3"
+  - pattern: ４
+    expected: "4"
+  - pattern: ５
+    expected: "5"
+  - pattern: ６
+    expected: "6"
+  - pattern: ７
+    expected: "7"
+  - pattern: ８
+    expected: "8"
+  - pattern: ９
+    expected: "9"
+  # 符号、疑問符、感嘆符、丸括弧、コロンには半角文字を使う
+  - pattern: ＋
+    expected: "+"
+  - pattern: －
+    expected: "-"
+  - pattern: ＝
+    expected: "="
+  - pattern: ＜
+    expected: "<"
+  - pattern: ＞
+    expected: ">"
+  - pattern: ？
+    expected: "?"
+  - pattern: ！
+    expected: "!"
+  - pattern: （
+    expected: (
+  - pattern: ）
+    expected: )
+  - pattern: ：
+    expected: ":"
+  # 半角英字と数字の間には半角スペースを入れない（例外としてPHP、WordPress、Gutenberg、WP、IE、Windows、英語月は除く）
+  - pattern: /(\b(?!PHP|WordPress|Gutenberg|WP|IE|Windows|January|February|March|April|May|June|July|August|September|October|November|December)[A-Za-z]+\b) ([0-9])/
+    expected: $1$2
+    specs:
+      - from: WordPress 5
+        to:   WordPress 5
+      - from: PHP 8
+        to:   PHP 8
+      - from: Gutenberg 5
+        to:   Gutenberg 5
+      - from: IE 11
+        to:   IE 11
+      - from: version 5
+        to:   version5
+      - from: January 5
+        to:   January 5
+  # 数字と半角英字の間には半角スペースを入れない
+  - pattern: /([0-9]) ([a-zA-Z])/
+    expected: $1$2
+    specs:
+      - from: 5 version
+        to:   5version
+  # 、。「」『』を除く文字と数字の間には半角スペースを入れない
+  - pattern: /([^\x01-\x7E、。「」『』]) ([0-9])/
+    expected: $1$2
+    specs:
+      - from: バージョン 12
+        to:   バージョン12
+      - from: バージョン 12
+        to:   バージョン12
+      - from: です。12
+        to:   です。12
+      - from: 「バージョン」12
+        to:   「バージョン」12
+  # 数字と、–。「」『』を除く文字の間には半角スペースを入れない
+  - pattern: /([0-9]) ([^\x01-\x7E–、。「」『』])/
+    expected: $1$2
+    specs:
+      - from: RC1 は
+        to:   RC1は
+      - from: 12 件
+        to:   12件
+      - from: 12。
+        to:   12。
+      - from: 12「バージョン」
+        to:   12「バージョン」
+      - from: 12 - バージョン
+        to:   12 - バージョン
+      - from: 12 – バージョン
+        to:   12 – バージョン
+  # 半角英字と、。「」『』…を除く文字の間には、半角スペースを入れる
+  - pattern: /([a-zA-Z])([^\x01-\x7E、。「」『』…])/
+    expected: $1 $2
+    specs:
+      - from: WordPressは
+        to:   WordPress は
+      - from: WordPress、または
+        to:   WordPress、または
+      - from: WordPress「バージョン」
+        to:   WordPress「バージョン」
+      - from: WordPress…
+        to:   WordPress…
+  # 、。「」『』を除く全角文字と半角英字の間には、半角スペースを入れる
+  - pattern: /([^\x01-\x7E、。「」『』])([a-zA-Z])/
+    expected: $1 $2
+    specs:
+      - from: このWordPress
+        to:   この WordPress
+      - from: また、WordPress
+        to:   また、WordPress
+      - from: です。WordPress
+        to:   です。WordPress
+      - from: 「WordPress
+        to:   「WordPress
+      - from: 『WordPress
+        to:   『WordPress
+  # 、。「」『』の前には半角スペースを入れない
+  - pattern: /([ ])([、。「」『』])/
+    expected: $2
+    specs:
+      - from: 準備をしましょう 。
+        to:   準備をしましょう。
+      - from: または 「
+        to:   または「
+  # 、。「」『』の後には半角スペースを入れない
+  - pattern: /([、。「」『』])([ ])/
+    expected: $1
+    specs:
+      - from: 準備をしましょう。 または
+        to:   準備をしましょう。または
+      - from: WordPress」 または
+        to:   WordPress」または
+  # 疑問符、感嘆符の前に半角スペースを入れる
+  - pattern: /([^ ])([!?])/
+    expected: $1 $2
+    specs:
+      - from: 準備をしましょう!
+        to:   準備をしましょう !
+      - from: 準備はできましたか?
+        to:   準備はできましたか ?
+  # 疑問符、感嘆符の後に半角スペースを入れる (例外としてコロン記号と)。「」『』を除く)
+  - pattern: /([!?])([^ :、。「」『』)])/
+    expected: $1 $2
+    specs:
+      - from: "!WordPress"
+        to:   "! WordPress"
+      - from: "?または"
+        to:   "? または"
+      - from: "WordPress !:"
+        to:   "WordPress !:"
+      - from: "!「WordPress"
+        to:   "!「WordPress"
+      - from: "?『WordPress"
+        to:   "?『WordPress"
+      - from: (WordPress !)
+        to:   (WordPress !)
+      - from: 「WordPress !」
+        to:   「WordPress !」
+  # 丸括弧の内側に半角スペースを入れない
+  - pattern: /\( (.)/
+    expected: ($1
+    specs:
+      - from: ( WordPress
+        to:   (WordPress
+  - pattern: /(.) \)/
+    expected: $1)
+    specs:
+      - from: WordPress )
+        to:   WordPress)
+  # 丸括弧の前に半角スペースを入れる (例外として。、」』は除く)
+  - pattern: /([^ 。、」』])\(/
+    expected: $1 (
+    specs:
+      - from: WordPress(
+        to:   WordPress (
+      - from: です。(
+        to:   です。(
+      - from: また、(
+        to:   また、(
+      - from: 「WordPress」(
+        to:   「WordPress」(
+  # 丸括弧の前に半角スペースを入れない (。、)
+  - pattern: /([。、]) \(/
+    expected: $1(
+  # 丸括弧の後に半角スペースを入れる (例外としてコロン記号と。、「」『』は除く)
+  - pattern: /\)([^ :。、「」『』\n\r\n\r])/
+    expected: ) $1
+    specs:
+      - from: WordPress)または
+        to:   WordPress) または
+      - from: "WordPress):"
+        to:   "WordPress):"
+      - from: WordPress)。
+        to:   WordPress)。
+      - from: WordPress)」
+        to:   WordPress)」
+      - from: WordPress)『
+        to:   WordPress)『
+  # 丸括弧の後に半角スペースを入れない (。、「」『』)
+  - pattern: /\) ([。、「」『』])/
+    expected: )$1
+    specs:
+      - from: WordPress) 。
+        to:   WordPress)。
+      - from: WordPress) 」
+        to:   WordPress)」
+      - from: WordPress) 『
+        to:   WordPress)『
+  # コロンの前に半角スペースを入れない
+  - pattern: /(.) :/
+    expected: "$1:"
+  # コロンの後に半角スペースを入れる
+  - pattern: /:([^ ])/
+    expected: ": $1"
+  # 丸括弧内には句点は付けない
+  - pattern: 。)
+    expected: )
+
+  - pattern: /つく([らりるれろっ])/
+    expected: 作$1
+  - pattern:
+      - 結びつ
+      - むすびつ
+    expected: 結び付
+  - pattern:
+      - 受けつ
+      - うけつ
+    expected: 受け付
+  - pattern:
+      - 受けと
+      - うけと
+    expected: 受け取
+  - pattern: 日付け
+    expected: 日付
+  - pattern: つきあ
+    expected: 付き合
+  - pattern:
+      - つけ加
+      - つけくわ
+    expected: 付け加
+  - pattern: /つけた([さしすせそ])/
+    expected: 付け足$1
+    specs:
+      - from: つけたす
+        to:   付け足す
+      - from: 見つけた
+        to:   見つけた
+  - pattern: 関連づけ
+    expected: 関連付け
+  - pattern: 受付
+    expected: 受け付け
+  - pattern: 位置づけ
+    expected: 位置付け
+  - pattern: 意味づけ
+    expected: 意味付け
+  - pattern: 気をつ
+    expected: 気を付
+  - pattern: 気づ
+    expected: 気付
+  - pattern: 近づ
+    expected: 近付
+  - pattern:
+      - 検討がつ
+      - 検討がつ
+    expected: 見当が付
+  - pattern: 思いつく
+    expected: 思い付く
+  - pattern:
+      - 1つ1つ
+      - 一つひとつ
+      - ひとつひとつ
+    expected: 一つ一つ
+  - pattern:
+      - 一人ひとり
+      - ひとりひとり
+      - 1人1人
+    expected: 一人一人
+  - pattern:
+      - 一つめ
+      - ひとつめ
+      - 一つ目
+      - ひとつ目
+    expected: 1つ目
+  - pattern:
+      - 二つめ
+      - ふたつめ
+      - 二つ目
+      - ふたつ目
+    expected: 2つ目
+  - pattern:
+      - 三つめ
+      - みっつめ
+      - 三つ目
+      - みっつ目
+    expected: 3つ目
+  - pattern:
+      - 四つめ
+      - よっつめ
+      - 四つ目
+      - よっつ目
+    expected: 4つ目
+  - pattern:
+      - 五つめ
+      - いつつめ
+      - 五つ目
+      - いつつ目
+    expected: 5つ目
+  - pattern:
+      - 六つめ
+      - むっつめ
+      - 六つ目
+      - むっつ目
+    expected: 6つ目
+  - pattern:
+      - 七つめ
+      - ななつめ
+      - 七つ目
+      - ななつ目
+    expected: 7つ目
+  - pattern:
+      - 八つめ
+      - やっつめ
+      - 八つ目
+      - やっつ目
+    expected: 8つ目
+  - pattern:
+      - 九つめ
+      - ここのつめ
+      - 九つ目
+      - ここのつ目
+    expected: 9つ目
+  - pattern:
+      - 一番目
+      - 一番め
+    expected: 1番目
+  - pattern:
+      - 二番目
+      - 二番め
+    expected: 2番目
+  - pattern:
+      - 三番目
+      - 三番め
+    expected: 3番目
+  - pattern:
+      - 四番目
+      - 四番め
+    expected: 4番目
+  - pattern:
+      - 五番目
+      - 五番め
+    expected: 5番目
+  - pattern:
+      - 六番目
+      - 六番め
+    expected: 6番目
+  - pattern:
+      - 七番目
+      - 七番め
+    expected: 7番目
+  - pattern:
+      - 八番目
+      - 八番め
+    expected: 8番目
+  - pattern:
+      - 九番目
+      - 九番め
+    expected: 9番目
+  - pattern:
+      - 十番目
+      - 十番め
+    expected: 10番目
+  - pattern:
+      - ふたつ
+      - 二つ
+    expected: 2つ
+  - pattern:
+      - みっつ
+      - 三つ
+    expected: 3つ
+  - pattern:
+      - よっつ
+      - 四つ
+    expected: 4つ
+  - pattern:
+      - いつつ
+      - 五つ
+    expected: 5つ
+  - pattern:
+      - むっつ
+      - 六つ
+    expected: 6つ
+  - pattern:
+      - ななつ
+      - 七つ
+    expected: 7つ
+  - pattern:
+      - やっつ
+      - 八つ
+    expected: 8つ
+  - pattern:
+      - ここのつ
+      - 九つ
+    expected: 9つ
+  - pattern: /([\d]+)つめ
+    expected: $1つ目
+  - pattern: /([\d]+)番め/
+    expected: $1番目
+  - pattern: /いちばん([^め目])|1番([^め目])/
+    expected: 一番$1
+  - pattern:
+      - ただ1つ
+      - 唯1つ
+      - 唯一つ
+    expected: ただ一つ
+  - pattern: もう1度
+    expected: もう一度
+  - pattern: もう1つ
+    expected: もう一つ
+  - pattern: 1つは
+    expected: 一つは
+  - pattern: 一目了然
+    expected: 一目瞭然
+  - pattern: いちがいに
+    expected: 一概に
+  - pattern: 一種類
+    expected: 1種類
+  - pattern: 1種
+    expected: 一種
+  - pattern: いっしょ
+    expected: 一緒
+  - pattern:
+      - ひととおり
+      - ひと通り
+      - 一とおり
+    expected: 一通り
+  - pattern: 1度
+    expected: 一度
+  - pattern: 1部
+    expected: 一部
+  - pattern: 1文
+    expected: 一文
+  - pattern: 1例
+    expected: 一例
+  - pattern: 2重
+    expected: 二重
+  - pattern: 3重
+    expected: 三重
+  - pattern: /([何数\\d一二三四五六七八九十０-９])箇所/
+    expected: $1ヵ所
+  - pattern: /([何数\\d一二三四五六七八九十０-９])個所/
+    expected: $1ヵ所
+  - pattern: ヶ
+    expected: ヵ
+  - pattern:
+      - 箇月
+      - か月
+      - 個月
+      - ケ月
+      - カ月
+    expected: ヵ月
+  - pattern:
+      - 箇国
+      - か国
+      - 個国
+      - ケ国
+      - カ国
+    expected: ヵ国
+  - pattern:
+      - か所
+      - ケ所
+      - カ所
+    expected: ヵ所
+  - pattern: 個所
+    expected: 箇所
+  - pattern:
+      - いちから
+      - 1から
+      - 一から
+      - イチから
+      - 0から
+    expected: ゼロから
+  - pattern: 曖昧
+    expected: あいまい
+  - pattern: 敢えて
+    expected: あえて
+  - pattern: /煽([らりるれろっ])/
+    expected: あお$1
+  - pattern: 飽くまで
+    expected: あくまで
+  - pattern: 憧れ
+    expected: あこがれ
+  - pattern: 辺り
+    expected: あたり
+  - pattern: 後々
+    expected: あとあと
+  - pattern:
+      - 貴方
+      - 貴女
+    expected: あなた
+  - pattern: 予め
+    expected: あらかじめ
+  - pattern: 改めて
+    expected: あらためて
+  - pattern:
+      - 有り難
+      - 有難
+    expected: ありがた
+  - pattern: 有りま
+    expected: ありま
+  - pattern: 或いは
+    expected: あるいは
+  - pattern:
+      - 有る
+      - 在る
+    expected: ある
+  - pattern: /一体([^に化感])/
+    expected: いったい$1
+  - pattern: 一向に
+    expected: いっこうに
+  - pattern: 一旦
+    expected: いったん
+  - pattern: 如何
+    expected: いかが
+  - pattern: 如何に
+    expected: いかに
+  - pattern:
+      - ゆきま
+      - 行きま
+    expected: いきま
+  - pattern: 幾つ
+    expected: いくつ
+  - pattern: 幾ら
+    expected: いくら
+  - pattern: 幾分
+    expected: いくぶん
+  - pattern: 些か
+    expected: いささか
+  - pattern:
+      - 何れ
+      - いづれ
+    expected: いずれ
+  - pattern: /頂([いかきくけこ])|戴([いかきくけこ])/
+    expected: いただ$1
+  - pattern: 至って
+    expected: いたって
+  - pattern: 一々
+    expected: いちいち
+  - pattern: /何時([^間])/
+    expected: いつ$1
+  - pattern: 一杯
+    expected: いっぱい
+  - pattern: /厭([わいうえおっ])/
+    expected: いと$1
+  - pattern: おります
+    expected: います
+  - pattern: 今や
+    expected: いまや
+  - pattern: 色々
+    expected: いろいろ
+  - pattern: 色んな
+    expected: いろんな
+  - pattern: 所謂
+    expected: いわゆる
+  - pattern: ゆう
+    expected: いう
+  - pattern: /云([いうわっ])/
+    expected: い$1
+  - pattern: /要([らりるれろっ])/
+    expected: い$1
+  - pattern: /居([るた])/
+    expected: い$1
+  - pattern: /穿([たちつてとっ])/
+    expected: うが$1
+  - pattern:
+      - 憂っとおし
+      - 憂っとうし
+      - うっとおし
+      - 鬱陶し
+    expected: うっとうし
+  - pattern:
+      - うなづ
+      - 頷
+    expected: うなず
+  - pattern: /上手([いく])|美味([いく])|ウマ([いく])/
+    expected: うま$1
+  - pattern: 嬉し
+    expected: うれし
+  - pattern: 美味し
+    expected: おいし
+  - pattern: 於いて
+    expected: おいて
+  - pattern: 大掛かり
+    expected: おおがかり
+  - pattern: 概ね
+    expected: おおむね
+  - pattern:
+      - お陰
+      - 御陰
+    expected: おかげ
+  - pattern:
+      - 押し並べて
+      - 押しなべて
+    expected: おしなべて
+  - pattern: 自ずと
+    expected: おのずと
+  - pattern: 恐らく
+    expected: おそらく
+  - pattern: お疲れ様
+    expected: お疲れさま
+  - pattern: 面白
+    expected: おもしろ
+  - pattern: 却って
+    expected: かえって
+  - pattern: 片仮名
+    expected: カタカナ
+  - pattern: 且つ
+    expected: かつ
+  - pattern: /叶([わいうえおっ])/
+    expected: かな$1
+  - pattern: 仮名
+    expected: かな
+  - pattern: /構([いうわっ])/
+    expected: かま$1
+  - pattern: /痒([いかくさみ])/
+    expected: かゆ$1
+  - pattern:
+      - 綺麗
+      - 奇麗
+    expected: きれい
+  - pattern: /括([らりるれろっ])/
+    expected: くく$1
+  - pattern: 下さい
+    expected: ください
+# 一旦解除
+#  - pattern: /([^解])決して|([^解])けして/
+#    expected: $1けっして
+  - pattern: /拘([らりるれろっ])/
+    expected: こだわ$1
+  - pattern: 諺
+    expected: ことわざ
+  - pattern: 零れ
+    expected: こぼれ
+  - pattern: この章
+    expected: 本章
+  - pattern: /この様([なに])/
+    expected: このよう$1
+  - pattern: 年頃
+    expected: 年ごろ
+  - pattern: 歳頃
+    expected: 歳ごろ
+  - pattern: 日頃
+    expected: 日ごろ
+  - pattern: 頃
+    expected: ころ
+  - pattern: /遡([らりるれろっ])/
+    expected: さかのぼ$1
+  - pattern: さしづめ
+    expected: さしずめ
+  - pattern: 流石
+    expected: さすが
+  - pattern: 早速
+    expected: さっそく
+  - pattern: /捌([いかきくけこ])/
+    expected: さば$1
+  - pattern: 様々
+    expected: さまざま
+  - pattern: /晒([さしすせそ])/
+    expected: さら$1
+  - pattern: 仕掛け
+    expected: しかけ
+  - pattern: 仕方
+    expected: しかた
+  - pattern: /([^正率垂安素愚])直に/
+    expected: $1じかに
+  - pattern: /仕組([^み])/
+    expected: しくみ$1
+  - pattern: 仕組み
+    expected: しくみ
+  - pattern: しし
+    expected: し
+  - pattern: しだい
+    expected: 次第
+  - pattern:
+      - 暫く
+      - 暫らく
+    expected: しばらく
+  - pattern: いたします
+    expected: します
+  - pattern: 所詮
+    expected: しょせん
+  - pattern:
+      - しようがない
+      - 仕様がない
+    expected: しょうがない
+  - pattern: 知れない
+    expected: しれない
+  - pattern: 知れません
+    expected: しれません
+  - pattern: 随分
+    expected: ずいぶん
+  - pattern: 直ぐ
+    expected: すぐ
+  - pattern: づくめ
+    expected: ずくめ
+  - pattern: /凄([いかくけ])/
+    expected: すご$1
+  - pattern: づつ
+    expected: ずつ
+  - pattern: 既に
+    expected: すでに
+  - pattern:
+      - すなはち
+      - 即ち
+    expected: すなわち
+  - pattern:
+      - 素晴らし
+      - 素晴し
+    expected: すばらし
+  - pattern: 素早
+    expected: すばや
+  - pattern: 須らく
+    expected: すべからく
+  - pattern: 折角
+    expected: せっかく
+  - pattern: 是非
+    expected: ぜひ
+  - pattern: そうゆう
+    expected: そういう
+  - pattern: 其々
+    expected: それぞれ
+  - pattern: 其れ
+    expected: それ
+  - pattern: /揃([わいうえおっ])/
+    expected: そろ$1
+# このあたりはどちらもありかな？一旦解除
+#    - pattern: 大体
+#    expected: だいたい
+#  - pattern: 大抵
+#    expected: たいてい
+#  - pattern: 大変
+#    expected: たいへん
+#  - pattern: 沢山
+#    expected: たくさん
+  - pattern:
+      - 高々
+      - 高高
+      - 高だか
+    expected: たかだか
+  - pattern: /叩([かきくけこ])/
+    expected: たた$1
+  - pattern: 但し
+    expected: ただし
+  - pattern: 直ち
+    expected: ただち
+  - pattern: 著者|私
+    expected: 筆者
+  - pattern: /辿([らりるれろっ])/
+    expected: たど$1
+  # 一貫性は必要なものの、両方よく出てくるので漢字またはひらがな NG は厳しすぎる気がするのでひとまず解除
+  # - pattern: たとえば
+  #  expected: たとえば
+  - pattern:
+      - 譬え
+      - 喩え
+      - 例え
+    expected: たとえ
+  - pattern: たのし
+    expected: 楽し
+  - pattern: 度々
+    expected: たびたび
+  - pattern: /溜ま([らりるれろっ])/
+    expected: たま$1
+  - pattern: 因みに
+    expected: ちなみに
+  - pattern: 丁度
+    expected: ちょうど
+  - pattern: 遂に
+    expected: ついに
+  - pattern: /掴([まみむめもん])/
+    expected: つか$1
+  - pattern: /繋([らりるれろっ])/
+    expected: つなが$1
+  - pattern: /繋([いがぎぐげご])/
+    expected: つな$1
+  - pattern: つねに
+    expected: 常に
+  - pattern: /つまづ([いかきくけこ])|躓([いかきくけこ])/
+    expected: つまず$1
+  - pattern: /辛([いかくけ])/
+    expected: つら$1
+  - pattern: /ずら([いかくけ])/
+    expected: づら$1
+  - pattern: んで([たなるろよ])
+    expected: んでい$1
+  - pattern: /ってな(?!く)/
+    expected: っていな
+    specs:
+      - from: わかってない
+        to:   わかっていない
+      - from: 言ってない
+        to:   言っていない
+      - from: 走ってない
+        to:   走っていない
+      - from: 持てない
+        to:   持てない
+      - from: 消えてなくなる
+        to:   消えてなくなる
+  - pattern: /([^捨当立])てる/
+    expected: $1ている
+  - pattern: /出来([かがのをは過す損ずなまるたれてそ])/
+    expected: でき$1
+  - pattern:
+      - 出来上
+      - 出来あ
+      - でき上
+    expected: できあ
+  - pattern:
+      - することが可能です
+      - することが可能になります
+    expected: できます
+  - pattern:
+      - することができ
+      - することが可能で
+    expected: でき
+  - pattern: するようになります
+    expected: します
+  - pattern: るようになります
+    expected: ます
+  - pattern: て欲し
+    expected: てほし
+  - pattern: で欲し
+    expected: でほし
+  - pattern: とうり
+    expected: とおり
+  - pattern: ときより
+    expected: 時折
+  - pattern: ときどき
+    expected: 時々
+  - pattern: とくに
+    expected: 特に
+  - pattern:
+      - 何処
+      - 何所
+    expected: どこ
+  - pattern: 途端
+    expected: とたん
+  - pattern: /(ピン)?留([まめ])/
+    regexpMustEmpty: $1
+    expected: とど$2
+    specs:
+      - from: ピン留め
+        to:   ピン留め
+      - from: 踏み留まる
+        to:   踏みとどまる
+  - pattern: /とは言え([^なまる])/
+    expected: とはいえ$1
+  - pattern: 共に
+    expected: ともに
+  - pattern: /捉え([ずなにぬまよらたてるろっ方中])/
+    expected: とらえ$1
+  - pattern: 囚わ
+    expected: とらわ
+  - pattern:
+      - 取りあえず
+      - 取り合えず
+      - 取り敢えず
+    expected: とりあえず
+  - pattern: /([^有])無([かくいけし])/
+    expected: $1な$2
+  - pattern: /尚([^早徳])/
+    expected: なお$1
+  - pattern:
+      - 名残
+      - 名残り
+    expected: なごり
+  - pattern: 何故
+    expected: なぜ
+  - pattern:
+      - 何某か
+      - 某か
+    expected: なにがしか
+  - pattern: /成り?済ま?([さしすせそ])|成り?すま([さしすせそ])/
+    expected: なりすま$1
+  - pattern: なので、
+    expected: ですので、
+  - pattern: 何となく
+    expected: なんとなく
+  - pattern: /に当た([っらりるれろ])/
+    expected: にあた$1
+  - pattern: /難([いく])/
+    expected: にく$1
+  - pattern: /の様([なにだで])/
+    expected: のよう$1
+  - pattern: /育([まみむめもん])/
+    expected: はぐく$1
+  - pattern: /([^手])筈/
+    expected: $1はず
+  - pattern: 甚だ
+    expected: はなはだ
+  - pattern: /孕([まみむめもんっ])/
+    expected: はら$1
+  - pattern:
+      - 遥か
+      - 遙か
+    expected: はるか
+  - pattern: 贔屓
+    expected: ひいき
+  - pattern: しいては
+    expected: ひいては
+  - pattern:
+      - 独り善がり
+      - 独りよがり
+    expected: ひとりよがり
+  - pattern: 一塊
+    expected: ひとかたまり
+  - pattern:
+      - 雛型
+      - 雛形
+      - ひな形
+      - ひながた
+    expected: ひな型
+  - pattern: /閃([かきくけこい])/
+    expected: ひらめ$1
+  - pattern: ふだん
+    expected: 普段
+  - pattern: 相応し
+    expected: ふさわし
+  - pattern:
+      - 付箋
+      - 付せん
+    expected: ふせん
+  - pattern: 殆ど
+    expected: ほとんど
+  - pattern: /(?<!修)正に/
+    expected: まさに
+    specs:
+      - from: それは正に
+        to:   それはまさに
+      - from: その修正には
+        to:   その修正には
+  - pattern:
+      - 益々
+      - 増々
+    expected: ますます
+  - pattern: 先ず
+    expected: まず
+  - pattern: /瞬([いかきくけこ])/
+    expected: またた$1
+  - pattern: 又は
+    expected: または
+  - pattern:
+      - 真っ新
+      - 真っさら
+    expected: まっさら
+  - pattern: 迄
+    expected: まで
+  - pattern: 纏ま
+    expected: まとま
+  - pattern: 纏め
+    expected: まとめ
+  - pattern: 稀
+    expected: まれ
+  - pattern: /剥([いかきくけこ])/
+    expected: む$1
+  - pattern: 寧ろ
+    expected: むしろ
+  - pattern: 滅多
+    expected: めった
+  - pattern:
+      - めんどくさ
+      - めんどうくさ
+      - 面倒臭
+      - めんど臭
+      - めんどう臭
+    expected: 面倒くさ
+  - pattern: めんどう
+    expected: 面倒
+  - pattern: 目論見
+    expected: もくろみ
+  - pattern: 勿論
+    expected: もちろん
+  - pattern: 勿体な
+    expected: もったいな
+#  - pattern: もっとも
+#    expected: 最も
+  - pattern: 尤も
+    expected: もっとも
+  - pattern: /貰([わいうえおっ])/
+    expected: もら$1
+  - pattern: 易し
+    expected: やさし
+  - pattern: 易々
+    expected: やすやす
+  - pattern: 厄介
+    expected: やっかい
+  - pattern: やっぱり
+    expected: やはり
+  - pattern: 闇雲
+    expected: やみくも
+  - pattern: 止め
+    expected: やめ
+  - pattern: やり取り
+    expected: やりとり
+  - pattern: 他所
+    expected: よそ
+  - pattern: /因([らりるれろっ])|依([らりるれろっ])/
+    expected: よ$1
+  - pattern: 僅か
+    expected: わずか
+# 「いいえ」にマッチしてしまった。厳しい気がするので一旦解除
+#  - pattern: いい
+#    expected: よい
+  - pattern: 心地よ
+    expected: 心地良
+  - pattern: /判([らりるれろっ])/
+    expected: わか$1
+  - pattern: /解([らりるれろっ])/
+    expected: わか$1
+  - pattern: /の分([^散割類解野離析岐])/
+    expected: のぶん$1
+  - pattern:
+      - 気をつか
+      - 気を使
+    expected: 気を遣
+  - pattern: 小さ目
+    expected: 小さめ
+  - pattern: 大き目
+    expected: 大きめ
+  - pattern: 少な目
+    expected: 少なめ
+  - pattern: /多目([^的])/
+    expected: 多め$1
+  - pattern: 低目
+    expected: 低め
+  - pattern: 高目
+    expected: 高め
+  - pattern: /([のる])かわり/
+    expected: $1代わり
+  - pattern: /代([らりるれろっ])/
+    expected: 代わ$1
+  - pattern: 全て
+    expected: すべて
+  - pattern: 全く
+    expected: まったく
+  - pattern: /([にも])関わらず|([にも])関らず|([にも])拘わらず|([にも])拘らず/
+    expected: $1かかわらず
+  - pattern: /埋めこ([まむめもん])|うめこ([まむめもん])/
+    expected: 埋め込$1
+  - pattern: /置き変([わえ])|置き代([わえ])|置き替([わえ])|置きか([わえ])/
+    expected: 置き換$1
+  - pattern: /書きこ([まみむめもん])|かきこ([まみむめもん])/
+    expected: 書き込$1
+  - pattern: /書き替([えわ])|書きか([えわ])|かきか([えわ])|書換([えわ])|書き変([えわ])/
+    expected: 書き換$1
+  - pattern: /読みこ([まみむめもん])|よみこ([まみむめもん])|読込([まみむめもん])/
+    expected: 読み込$1
+  - pattern: /読みか([えわ])|よみか([えわ])|読替([えわ])|読換([えわ])|読み換([えわ])/
+    expected: 読み替$1
+  - pattern: /きりか([えわ])|切り換([えわ])|切換([えわ])|切替([えわ])/
+    expected: 切り替$1
+  - pattern: /くみこ([まむめもん])|組込([まむめもん])|組みこ([まむめもん])/
+    expected: 組み込$1
+  - pattern: /くみこみ([^ま])|組み込み([^ま])|組みこみ([^ま])/
+    expected: 組込み$1
+  - pattern: /組合([わいうえおっ])|くみあ([わいうえおっ])/
+    expected: 組み合$1
+  - pattern: /組合([さしすせそっ])|くみあわ([さしすせそっ])/
+    expected: 組み合わ$1
+  - pattern: /くみか([わいうえおっ])|組替([わいうえおっ])/
+    expected: 組み替$1
+  - pattern: /ことな([りるれっ])/
+    expected: 異な$1
+  - pattern: /立ち合([わいうえおっ])|立ち遭([わいうえおっ])|立ち逢([わいうえおっ])/
+    expected: 立ち会$1
+  - pattern: /取りく([まみむめもん])|とりく([まみむめもん])|とり組([まみむめもん])/
+    expected: 取り組$1
+  - pattern: /取り変([わえ])|取り代([わえ])|取り換([わえ])|取りか([わえ])/
+    expected: 取り替$1
+  - pattern: /話し会([わいうえおっ])|話し遭([わいうえおっ])|話し逢([わいうえおっ])|話しあ([わいうえおっ])/
+    expected: 話し合$1
+  - pattern: /ひきつ([がぎぐげご])|引きつ([がぎぐげご])/
+    expected: 引き継$1
+  - pattern: /引き替([えわ])|引きか([えわ])|ひきか([えわ])|引換([えわ])|引き変([えわ])/
+    expected: 引き換$1
+  - pattern: /目が会([わいうえおっ])|目が遭([わいうえおっ])|目が逢([わいうえおっ])|目があ([わいうえおっ])/
+    expected: 目が合$1
+  - pattern:
+      - よびだ
+      - 呼びだ
+      - 呼出
+    expected: 呼び出
+  - pattern: 作りだ
+    expected: 作り出
+  - pattern: 読みだ
+    expected: 読み出
+  - pattern: 貼りだ
+    expected: 貼り出
+  - pattern: 取りだ
+    expected: 取り出
+  - pattern:
+      - とりあげ
+      - 取りあげ
+    expected: 取り上げ
+  - pattern: /とりこ([まみむめもん])|取りこ([まみむめもん])|とり込([まみむめもん])/
+    expected: 取り込$1
+  - pattern: 作りあ
+    expected: 作り上
+  - pattern:
+      - からみあ
+      - からみ合
+      - 絡みあ
+    expected: 絡み合
+  - pattern: からっぽ
+    expected: 空っぽ
+  - pattern: 売上げ
+    expected: 売り上げ
+  - pattern:
+      - 巡り会
+      - 巡り遭
+      - 巡り逢
+    expected: 巡り合
+  - pattern: 割込み
+    expected: 割り込み
+  - pattern: 割当
+    expected: 割り当て
+  - pattern: 割切り
+    expected: 割り切り
+  - pattern:
+      - しめくく
+      - 締め括
+    expected: 締めくく
+  - pattern: 使いなれ
+    expected: 使い慣れ
+  - pattern:
+      - 使いわけ
+      - つかいわけ
+    expected: 使い分け
+  - pattern: 落としこ
+    expected: 落とし込
+  - pattern: 切りわけ
+    expected: 切り分け
+  - pattern:
+      - 間に会
+      - 間に遭
+      - 間に逢
+    expected: 間に合
+  - pattern:
+      - 災難に合
+      - 災難に会
+      - 災難に逢
+    expected: 災難に遭
+  - pattern:
+      - 事故に合
+      - 事故に会
+      - 事故に逢
+    expected: 事故に遭
+  - pattern:
+      - 気が会
+      - 気が遭
+      - 気が逢
+    expected: 気が合$1
+  - pattern:
+      - 落ち会
+      - 落ち遭
+      - 落ち逢
+    expected: 落ち合
+  - pattern: /ふるま([わいうえおっ])|振舞([わいうえおっ])|振るま([わいうえおっ])/
+    expected: 振る舞$1
+  - pattern: /みはから([いうえっ])/
+    expected: 見計ら$1
+  - pattern: みえ
+    expected: 見え
+  - pattern: みあた
+    expected: 見当た
+  - pattern:
+      - いいわけ
+      - 言訳
+      - 言いわけ
+    expected: 言い訳
+  - pattern: いえない
+    expected: 言えない
+  - pattern: いえなく
+    expected: 言えなく
+  - pattern: いえる
+    expected: 言える
+  - pattern: いわれる
+    expected: 言われる
+  - pattern:
+      - 未だ
+      - 今だ
+    expected: いまだ
+  - pattern:
+      - 今ひとつ
+      - 今一つ
+      - いま一つ
+    expected: いまひとつ
+  - pattern:
+      - 今更
+      - 今さら
+    expected: いまさら
+  - pattern: 今頃
+    expected: 今ごろ
+  - pattern: /([^な])いままで/
+    expected: $1今まで
+  - pattern: 今時
+    expected: 今どき
+  - pattern: 今更
+    expected: 今さら
+  - pattern: 尚更
+    expected: なおさら
+  - pattern: 更なる
+    expected: さらなる
+  - pattern: /([^変])更に/
+    expected: $1さらに
+  - pattern: やむをえ|止むを得
+    expected: やむを得
+  - pattern: すこし
+    expected: 少し
+  - pattern: /すくな(?!り|る)/
+    expected: 少な
+    specs:
+      - from: すくなく
+        to:   少なく
+      - from: わかりやすくなり
+        to:   わかりやすくなり
+  - pattern: 少い
+    expected: 少ない
+  - pattern: おこし
+    expected: 起こし
+  - pattern: おこす
+    expected: 起こす
+  - pattern: 何げな
+    expected: 何気な
+  - pattern: なにか
+    expected: 何か
+  - pattern: なにしろ
+    expected: 何しろ
+  - pattern:
+      - なにとそ
+      - なにとぞ
+      - 何卒
+    expected: 何とぞ
+  - pattern: なんど
+    expected: 何度
+  - pattern: なんら
+    expected: 何ら
+  - pattern: なんの
+    expected: 何の
+  - pattern: 生れ
+    expected: 生まれ
+  - pattern: それ故
+    expected: それゆえ
+  - pattern: /([^事])故に/
+    expected: $1ゆえに
+  - pattern: 程々
+    expected: ほどほど
+  - pattern: これ程
+    expected: これほど
+  - pattern: それ程
+    expected: それほど
+  - pattern: あれ程
+    expected: あれほど
+  - pattern: どれ程
+    expected: どれほど
+  - pattern: なる程
+    expected: なるほど
+  - pattern: さきほど|先程
+    expected: 先ほど
+#  - pattern: /基([いかきくけこ])|基ず([いかきくけこ])|もとず([いかきくけこ])|もとづ([いかきくけこ])/
+#    expected: 基づ$1
+#  - pattern:
+#      - 元々
+#      - 本々
+#    expected: もともと
+  - pattern: /基([^数準盤板底礎本])/
+    expected: もと$1
+  - pattern: /([^追])及び/
+    expected: $1および
+  - pattern: したうえ
+    expected: した上
+  - pattern: そのうえ
+    expected: その上
+  - pattern: かたまり
+    expected: 塊
+  - pattern: やりかた
+    expected: やり方
+  - pattern: ありかた
+    expected: あり方
+  - pattern: かたち
+    expected: 形
+  - pattern: かた
+    expected: 方
+  - pattern: 済まな
+    expected: すまな
+  - pattern: 済みません
+    expected: すみません
+  - pattern: あたりまえ
+    expected: 当たり前
+  - pattern: /汚な([かくいけ])/
+    expected: 汚$1
+  - pattern: /果([さしすせそ])/
+    expected: 果た$1
+#  - pattern: /([^排人])他([^ァ-ヶ社者人方])/
+#    expected: $1ほか$2
+  - pattern: 後ほど
+    expected: のちほど
+  - pattern: うしろ
+    expected: 後ろ
+  - pattern:
+      - 頭が堅
+      - 頭が硬
+    expected: 頭が固
+  - pattern: あつめ
+    expected: 集め
+  - pattern: /あては([まめ])/
+    expected: 当ては$1
+  - pattern: 意志決定
+    expected: 意思決定
+  - pattern: 威大
+    expected: 偉大
+  - pattern: いっそう
+    expected: 一層
+  - pattern: おおまか
+    expected: 大まか
+  - pattern: あふれ
+    expected: 溢れ
+  - pattern: 窺え
+    expected: うかがえ
+  - pattern:
+      - 窺い知
+      - 伺い知
+    expected: うかがい知
+  - pattern: /失な([わいうえおっ])/
+    expected: 失$1
+  - pattern: /おお([かいくけこ])/
+    expected: 多$1
+  - pattern: そって
+    expected: 沿って
+  - pattern: /押え([なたまれる])/
+    expected: 押さえ$1
+  - pattern: 押し進め
+    expected: 推し進め
+  - pattern: /折返([さしすせそ])/
+    expected: 折り返$1
+  - pattern: /加([らりるれろっ])/
+    expected: 加わ$1
+  - pattern: 静的型付け言語
+    expected: 静的型付き言語
+  - pattern: 動的型付け言語
+    expected: 動的型付き言語
+  - pattern: 変わり映え
+    expected: 代わり映え
+  - pattern: 狗肉の策
+    expected: 苦肉の策
+  - pattern: /こわれ([たちつてとらりるれろっ])/
+    expected: 壊れ$1
+  - pattern: 混み入っ
+    expected: 込み入っ
+  - pattern: /怪([いまみむめも])/
+    expected: 怪し$1
+  - pattern: おのおの
+    expected: 各々
+  - pattern: 最新の注意
+    expected: 細心の注意
+  - pattern: 列志向
+    expected: 列指向
+  - pattern: 行志向
+    expected: 行指向
+  - pattern: オブジェクト志向
+    expected: オブジェクト指向
+  - pattern: ドキュメント志向
+    expected: ドキュメント指向
+  - pattern: アスペクト志向
+    expected: アスペクト指向
+  - pattern: 粗結合
+    expected: 疎結合
+  - pattern: 確かに
+    expected: たしかに
+  - pattern: /たしか([^に])/
+    expected: 確か
+  - pattern: /確め([たなまれる])/
+    expected: 確かめ$1
+  - pattern: /かっこ([^良悪いイ])|カッコ([^良悪いイ])/
+    expected: 括弧$1
+  - pattern: かんたん
+    expected: 簡単
+  - pattern: 業社
+    expected: 業者
+  - pattern: /陥([たなま])/
+    expected: 陥れ$1
+  - pattern: 危い
+    expected: 危ない
+  - pattern: /喜し([かくいけ])/
+    expected: 喜ばし$1
+  - pattern: /起([さしすせそらりるれろっ])/
+    expected: 起こ$1
+  - pattern: /輝し([かくいけ])/
+    expected: 輝かし$1
+  - pattern: /恐し([かくいけ])/
+    expected: 恐ろし$1
+  - pattern: 近頃
+    expected: 近ごろ
+  - pattern: /隣合([わいうえおっ])/
+    expected: 隣り合$1
+  - pattern:
+      - 決っ
+      - きまっ
+    expected: 決まっ
+  - pattern:
+      - 現われ
+      - あらわれ
+    expected: 現れ
+  - pattern: /かぎ([らりるれろっ])/
+    expected: 限$1
+  - pattern: /語([わいうえお])/
+    expected: 語ら$1
+  - pattern: /交([らりるれろっ])/
+    expected: 交わ$1
+  - pattern: /行な([わいうえおっ])|おこな([わいうえおっ])/
+    expected: 行$1
+  - pattern: あわて
+    expected: 慌
+  - pattern: あわ
+    expected: 合わ
+  - pattern: /混([らりるれろっ])/
+    expected: 混ざ$1
+  - pattern: おも([いうわ])
+    expected: 思$1
+  - pattern: 差違
+    expected: 差異
+  - pattern:
+      - プレフィックス
+      - プレフィクス
+      - プリフィックス
+    expected: 接頭辞
+  - pattern:
+      - サフィックス
+      - サフィックス
+      - サフィクス
+    expected: 接尾辞
+  - pattern: 事前準備
+    expected: 下準備
+  - pattern: 前準備
+    expected: 下準備
+  - pattern: 誌幅
+    expected: 紙幅
+  - pattern: 紙面
+    expected: 誌面
+  - pattern: /賜わ([らりるれろっ])/
+    expected: 賜$1
+  - pattern: しだいに
+    expected: 次第に
+  - pattern: /すて([たちつてとらりるれろっ])/
+    expected: 捨て$1
+  - pattern: 成功を納め
+    expected: 成功を収め
+  - pattern: /おわ([らりるれろっ][^か])/
+    expected: 終わ$1
+  - pattern: /終([らりるれろっ])/
+    expected: 終わ$1
+  - pattern: /集([らりるれろっ])/
+    expected: 集ま$1
+  - pattern: 充分
+    expected: 十分
+  - pattern: したがう
+    expected: 従う
+  - pattern: とりま
+    expected: 取り巻
+  - pattern: とうてい
+    expected: 到底
+  - pattern: /柔か([だない])/
+    expected: 柔らか$1
+  - pattern: /重([ずじ])/
+    expected: 重ん$1
+  - pattern: /畳込([まみむめも])/
+    expected: 畳み込$1
+  - pattern: 定形的
+    expected: 定型的
+  - pattern:
+      - 出合
+      - 出遭
+      - 出逢
+    expected: 出会
+  - pattern:
+      - できごと
+      - でき事
+      - 出来ごと
+    expected: 出来事
+  - pattern: 適正
+    expected: 適性
+  - pattern: /助([たなまれる])/
+    expected: 助け$1
+  - pattern:
+      - 問合せ
+      - 問い合せ
+      - 問合わせ
+      - 問いあわせ
+      - といあわせ
+    expected: 問い合わせ
+  - pattern: /承わ([らりるれろっ])/
+    expected: 承$1
+  - pattern: ご紹介
+    expected: 紹介
+  - pattern: 晴やか
+    expected: 晴れやか
+  - pattern: /清か([だな])/
+    expected: 清らか$1
+  - pattern: おいたち
+    expected: 生い立ち
+  - pattern: /積([らりるれろっ])/
+    expected: 積も$1
+  - pattern: ご説明
+    expected: 説明
+  - pattern: 憎しい
+    expected: 憎らしい
+  - pattern: /つづ([^つ])/
+    expected: 続$1
+  - pattern:
+      - 取って変
+      - 取って換
+      - 取って替
+    expected: 取って代
+  - pattern:
+      - 存知
+      - ぞんじ
+    expected: 存じ
+  - pattern: だれ
+    expected: 誰
+  - pattern: /断わ([らりるれろっ])/
+    expected: 断$1
+  - pattern: 内臓
+    expected: 内蔵
+  - pattern: /なか([かでに])/
+    expected: 中$1
+  - pattern: /なら(ば(?![、\s])|[びぶべぼん])/
+    expected: 並$1
+    specs:
+      - from: ならびに
+        to:   並びに
+      - from: ならば、
+        to:   ならば、
+      - from: ならば WordPress
+        to:   ならば WordPress
+      - from: なら WordPress
+        to:   なら WordPress
+  - pattern: /著わ([さしすせそ])/
+    expected: 著$1
+  - pattern: 著い
+    expected: 著しい
+  - pattern:
+      - 手に追えな
+      - てに追えな
+      - てに負えな
+      - てにおえな
+      - 手におえな
+    expected: 手に負えな
+  - pattern: /定([らりるれろっ])/
+    expected: 定ま$1
+  - pattern: /当([らりるれろっ])/
+    expected: 当た$1
+  - pattern:
+      - 踏え
+      - ふまえ
+    expected: 踏まえ
+  - pattern: /おなじ([^み])/
+    expected: 同じ$1
+  - pattern: なじみ
+    expected: 馴染み
+  - pattern:
+      - 引きづ
+      - ひきづ
+    expected: 引きず
+  - pattern: むずかしい
+    expected: 難しい
+  - pattern: /まか([さしすせそ])/
+    expected: 任$1
+  - pattern: /([^っ])伴な|([^っ])ともな/
+    expected: $1伴
+  - pattern: /悲([まみむめも])/
+    expected: 悲し$1
+  - pattern:
+      - 較べ
+      - くらべ
+    expected: 比べ
+  - pattern:
+      - かならず
+      - 必らず
+    expected: 必ず
+  - pattern: /表わ([さしすせそ])|あらわ([さしすせそ])/
+    expected: 表$1
+  - pattern: /浮([ばびぶべぼん])/
+    expected: 浮か$1
+  - pattern: /わかれ([^ば])/
+    expected: 分かれ$1
+  - pattern: /わけ([らるれろてよ、])/
+    expected: 分け$1
+  - pattern: /聞え([なたまれる])/
+    expected: 聞こえ$1
+  - pattern: /変([らりるれろっ])/
+    expected: 変わ$1
+  - pattern: /捕え([なたまれる])/
+    expected: 捕らえ$1
+  - pattern: /暮([さしすせそ])/
+    expected: 暮ら$1
+  - pattern: /([^鮮])明か/
+    expected: $1明らか
+  - pattern: もどって
+    expected: 戻って
+  - pattern:
+      - 返り値
+      - 返値
+    expected: 戻り値
+  - pattern: /勇し([かくい])/
+    expected: 勇まし$1
+  - pattern: /揺([がぎぐげご])/
+    expected: 揺ら$1
+  - pattern: /頼し([かくい])/
+    expected: 頼もし$1
+  - pattern: /冷([さしすせそ])/
+    expected: 冷や$1
+  - pattern: /連([らりるれろっ])|つらな([らりるれろっ])/
+    expected: 連な$1
+  - pattern: /はさ([まみむめもん])(?!ざま)/
+    expected: 挟$1
+    specs:
+      - from: はさまざま
+        to:   はさまざま
+      - from: はさまる
+        to:   挟まる
+  - pattern: おそれ
+    expected: 恐れ
+  - pattern: /([^っ])さきに/
+    expected: $1先に
+  - pattern: 自分自信
+    expected: 自分自身
+  - pattern: /満([さしすせそっ])|みた([さしすせそっ])/
+    expected: 満た$1
+  - pattern: /([をがに])生か/
+    expected: $1活か
+  - pattern: /いとな([まみむめも])/
+    expected: 営$1
+  - pattern: /かかげ([たてらる])/
+    expected: 掲げ$1
+  - pattern: /がた([ちつっ])/
+    expected: が経$1
+  - pattern: /うめ([たつて])/
+    expected: 埋め$1
+  - pattern:
+      - お勧め
+      - お薦め
+      - お奨め
+      - オススメ
+    expected: おすすめ
+  - pattern:
+      - てがけ
+      - 手掛け
+    expected: 手がけ
+  - pattern: みずから
+    expected: 自ら
+  - pattern: /いた([るれろ])/
+    expected: 至$1
+  - pattern: そなえ
+    expected: 備え
+  - pattern: /まね([いかきくけこ])/
+    expected: 招$1
+  - pattern: 子供
+    expected: 子ども
+  - pattern: 塔載
+    expected: 搭載
+  - pattern: 一番最初
+    expected: 一番初め
+  - pattern: 貼付け
+    expected: 貼り付け
+  - pattern: 必用
+    expected: 必要
+  - pattern: /あたえ([たつてらりるれろっ])/
+    expected: 与え$1
+  - pattern: /(?<!お)すす([まみむめもん])/
+    expected: 進$1
+    specs:
+      - from: おすすめ
+        to:   おすすめ
+      - from: すすめ
+        to:   進め
+  - pattern: 焦点をあて
+    expected: 焦点を当て
+  - pattern: /おも([いうえおわっ])/
+    expected: 思$1
+  - pattern: /おも([なにとだで])/
+    expected: 主$1
+  - pattern: 高値の花
+    expected: 高嶺の花
+  - pattern: たいする
+    expected: 対する
+  - pattern: たいし
+    expected: 対し
+  - pattern:
+      - たずさわ
+      - たづさわ
+    expected: 携わ
+  - pattern: 訪ず
+    expected: 訪
+  - pattern: 短か
+    expected: 短
+  - pattern: わたし
+    expected: 私
+  - pattern: /くわし([いく])/
+    expected: 詳し$1
+  - pattern: 陽の目
+    expected: 日の目
+  - pattern: 保障
+    expected: 保証
+  - pattern: 移譲
+    expected: 委譲
+  - pattern: 稼動
+    expected: 稼働
+  - pattern: 芋蔓
+    expected: 芋づる
+  - pattern: あいだ
+    expected: 間
+  - pattern: /しめ([さしすせそ])/
+    expected: 示$1
+  - pattern: /のべ([^たてなるまよ、])/
+    expected: 延べ$1
+  - pattern: /あつま([らりるれろ])/
+    expected: 集ま$1
+  - pattern: /あきらめ([たてなるまよ、])/
+    expected: 諦め$1
+  - pattern: 成立ち
+    expected: 成り立ち
+  - pattern:
+      - たどりつ
+      - 辿り着
+      - 辿りつ
+    expected: たどり着
+  - pattern: 安定板
+    expected: 安定版
+  - pattern: /かえ([さしすせそっ])/
+    expected: 返$1
+  - pattern: /さが([さしすせそっ])/
+    expected: 探$1
+  - pattern: 見様見真似
+    expected: 見よう見まね
+  - pattern: 買物
+    expected: 買い物
+  - pattern: /ほどこ([さしすせそ])/
+    expected: 施$1
+  - pattern: /使いき([らりるれろっ])/
+    expected: 使い切$1
+  - pattern: /逃が([さしすせそれ])/
+    expected: 逃$1
+  - pattern: /濡れ手[でに][泡粟]/
+    expected: 濡れ手で粟
+  - pattern: /もど([^ち])/
+    expected: 戻$1
+  - pattern: 携帯キャリア
+    expected: 携帯電話キャリア
+  - pattern:
+      - 代金引き換え
+      - 代引
+      - 代引き
+    expected: 代金引換
+  - pattern: /割引(?:き)?/
+    expected: 割り引き
+  - pattern:
+      - ひとめ
+      - ひと目
+    expected: 一目
+  - pattern: 復号化
+    expected: 復号
+  - pattern: 手間取
+    expected: 手間ど
+  - pattern: 中味
+    expected: 中身
+  - pattern: /則([らりるれろっ])/
+    expected: のっと$1
+  - pattern: 洗錬
+    expected: 洗練
+  - pattern: 基板
+    expected: 基盤
+  - pattern: ふれ
+    expected: 触れ
+  - pattern: /あお([がぎぐげごっ])/
+    expected: 仰$1
+  - pattern:
+      - 独り事
+      - ひとり事
+      - ひとりごと
+    expected: 独り言
+  - pattern: 本校
+    expected: 本稿
+  - pattern: /つぎ([にの])/
+    expected: 次$1
+  - pattern: 見きれ
+    expected: 見切れ
+  - pattern: /見做([さしすせそ])/
+    expected: みな$1
+  - pattern: 無駄使い
+    expected: 無駄遣い
+  - pattern: 肩をなでおろ
+    expected: 胸をなでおろ
+  - pattern: /陥い([らりるれろっ])|おちい([らりるれろっ])/
+    expected: 陥$1
+  - pattern: /かさ([なね])/
+    expected: 重$1
+  - pattern: 情報原
+    expected: 情報源
+  - pattern: 過度期
+    expected: 過渡期
+  - pattern: 流れを組
+    expected: 流れをく
+  - expected: 無駄遣い
+    pattern:
+      - 無駄使い
+      - ムダ遣い
+      - ムダ使い
+      - 無駄づかい
+      - 無駄ずかいい
+      - ムダづかい
+      - ムダずかい
+  - expected: Cookie
+    pattern:  クッキー
+  - expected: Cookie
+  - expected: WebSocket
+    pattern:  /\bWeb Socket\b/
+  - expected: $1Web$2
+    pattern:  /(?:([^/])ウェブ)|(?:ウェブ([^/\+]))/
+  - expected: $1Web$2
+    pattern:  /(?:([^/])ウェッブ)|(?:ウェッブ([^/\+]))/
+  - expected: O/Rマッ
+    pattern:  /ORマッ|O-Rマッ/
+  - expected: O/Rマッパ
+    pattern:  /O\/Rマッパー|\bORM\b/
+  - expected: アイデア
+    pattern:  /アィディア|アイディア|アィディア|アィデア/
+  - expected: アスタリスク
+    pattern:  /アステリスク/
+  - expected: アーキテクチャー
+    pattern:
+      - /アーキテクチャ(?!ー)/
+      - /アーキティクチャ/
+    specs:
+      - from: アーキティクチャ
+        to:   アーキテクチャー
+      - from: アーキテクチャは
+        to:   アーキテクチャーは
+      - from: アーキテクチャーは
+        to:   アーキテクチャーは
+  - expected: アクティビティ
+    pattern:  /\bActivity\b|アクティビティー/
+  - expected: アダプタ
+    pattern:  /アダプター/
+  - expected: アップローダー
+    pattern:  /アップローダ(?!ー)/
+  - expected: アドバイス
+    pattern:  /アドヴァイス/
+  - expected: アノテーション
+    pattern:  /アノーテーション/
+  - expected: アプレット
+    pattern:  /\bApplet\b/
+  - expected: アンダースコア
+    pattern:  /アンダーバー/
+  - expected: イシュア
+    pattern:  /イシュアー/
+  - expected: イディオム
+    pattern:  /イデオム/
+  - expected: インジケータ
+    pattern:  /インジケーター|インジゲーター|インジゲータ/
+  - expected: インスタンス
+    pattern:  /インスンタンス/
+  - expected: インストーラ
+    pattern:  /インストーラー/
+  - expected: インスパイア
+    pattern:  /インスパイヤ/
+  - expected: インスペクタ
+    pattern:  /インスペクター/
+  - expected: インターフェース
+    pattern:  /インタフェイス|インターフェィス/
+  - expected: インタプリタ
+    pattern:  /インタープリタ|インタプリター|インタープリター/
+  - expected: インデックス
+    pattern:  /インデクス/
+  - expected: インテント
+    pattern:  /\bIntent\b/
+  - expected: ウィジェット
+    pattern:  /\bWidget\b|\bwidget\b/
+  - expected: ウィルス
+    pattern:  /ウイルス/
+  - expected: ウィンドウ
+    pattern:  /ウインドウ/
+  - expected: ウェア
+    pattern:  ウエア
+    spec:
+      - from: ハードウエア
+        to:   ハードウェア
+  - expected: エディター
+    pattern:  /エディタ(?!ー)/
+  - expected: エミッタ
+    pattern:  /エミッター/
+  - expected: エンコーダ
+    pattern:  /エンコーダー/
+  - expected: デコーダ
+    pattern:  /デコーダー/
+  - expected: エミュレータ
+    pattern:  /エミュレーター/
+  - expected: エンティティ
+    pattern:
+      - エンティティー
+  - expected: エントリ
+    pattern:  /エントリー/
+  - expected: エントリー
+    pattern:  /エントリ(?!ー)/
+    specs:
+      - from: エントリ
+        to:   エントリー
+  - expected: オブザーバ
+    pattern:  /オブザーバー|オブサーバー|オブサーバ/
+  - expected: オプション
+    pattern:  /オブション/
+  - expected: オン／オフ
+    pattern:  /ON\/OFF|ON／OFF|オン・オフ|オン\/オフ/
+  - expected: カウンタ
+    pattern:  /カウンター/
+  - expected: カバレッジ
+    pattern:  /カバリッジ|カバレージ/
+  - expected: ガベージ
+    pattern:  /ガベージ・|ガーベジ|ガーベジ・|ガーベージ|ガーベージ・|ガーベッジ|ガーベッジ・|ガベッジ/
+  - expected: カテゴリー
+    pattern:  /カテゴリ(?!ー)/
+  - expected: カラムナ
+    pattern:  /カラムナー/
+  - expected: カンマ
+    pattern:  /コンマ/
+  - expected: キャラクタ
+    pattern:  /キャラクター/
+  - expected: キャッシュ
+    pattern:
+      - /cache(?![^a-zA-Z\-])/
+      - /Cache(?![^a-zA-Z\-])/
+  - expected: 近隣地域
+    pattern:
+      - /ローカルエリア/
+      - /ローカル地域/
+  - expected: クエリー文字列
+    pattern:
+      - QueryString
+      - Query String
+      - クエリストリング
+      - クエリ文字列
+      - クエリーストリング
+  - expected: クエリー
+    pattern:  /クエリ(?!ー)/
+    specs:
+      - from: クエリ
+        to:   クエリー
+  - expected: クオート
+    pattern:  /クォート|クオーテーション|クォーテーション/
+  - expected: クオリティ
+    pattern:  /クオリティー|クォリティ|クォリティー/
+  - expected: クラスタ
+    pattern:  /クラスター/
+  - expected: グラウンド
+    pattern:  /グランド/
+  - expected: グリッド
+    pattern:  /\bGrid\b/
+  - expected: クロージャ
+    pattern:  /クロージャー/
+  - expected: クローラ
+    pattern:  /クローラー/
+  - expected: ゲッタ
+    pattern:  /ゲッター/
+  - expected: コピー & ペースト
+    pattern:
+      - コピー＆ペースト
+      - コピペ
+      - コピーアンドペースト
+      - コピーペースト
+  - expected: コミュニ
+    pattern:  /コミニュ/
+  - expected: アンコメント
+    pattern:  /コメントイン/
+  - expected: コンストラクタ
+    pattern:  /コンストラクター/
+  - expected: コンテキスト
+    pattern:  /コンテクスト/
+  - expected: コンテンツ
+    pattern:  /コンテント/
+  - expected: コンテンツプロバイダ
+    pattern:  /\bContent provider\b/
+  - expected: コンテナ
+    pattern:  /コンテナー/
+  - expected: コンピューター
+    pattern:  /コンピュータ(?!ー)/
+    specs:
+      - from: コンピュータを
+        to:   コンピューターを
+      - from: コンピューターを
+        to:   コンピューターを
+  - expected: コンポーネント
+    pattern:  /コンポネント/
+  - expected: コントローラ
+    pattern:  /コントローラー/
+  - expected: サーバー
+    pattern:  /サーバ(?!ー)/
+  - expected: シェア
+    pattern:  /シェア率/
+  - expected: ジェスチャ
+    pattern:  /ジェスチャー/
+  - expected: ジェネレータ
+    pattern:  /ジェネレーター/
+  - expected: ジェネレーティブ
+    pattern:  /ジェネレイティブ/
+  - expected: ジオタグ
+    pattern:  /\bGeotag\b|\bgeotag\b/
+  - expected: シグネチャ
+    pattern:  /シグネチャー/
+  - expected: シミュレー
+    pattern:  /シュミレー/
+  - expected: シンクロナイザ
+    pattern:  /シンクロナイザー/
+  - expected: スカラ
+    pattern:  /スカラー/
+  - expected: スクラム
+    pattern:  /\bScrum\b/
+  - expected: スタンドアローン
+    pattern:  /スタンドアロン/
+  - expected: ストアド
+    pattern:  /ストアード/
+  - expected: ストレージ
+    pattern:  /ストレッジ|ストレジ/
+  - expected: スマートフォン
+    pattern:  /スマフォ|スマホ/
+  - expected: スムーズ
+    pattern:  /スムース/
+  - expected: セキュリティ
+    pattern:  /セキュリティー/
+  - expected: セッション
+    pattern:  /\bsession\b|\bSession\b/
+  - expected: セレクタ
+    pattern:  /セレクター/
+  - expected: ソフトウェア
+    pattern: /ソフトウエア/
+  - expected: ダイアグラム
+    pattern:  /ダイヤグラム/
+  - expected: タイムスタンプ
+    pattern:
+      - timestamp
+      - Timestamp
+  - expected: ツイート
+    pattern:
+      - tweet
+      - Tweet
+      - ツィート
+# 日本語で書くこともあるので要らないかも？
+#  - expected: テーブル
+#    pattern:
+#      - table
+#      - Table
+  - expected: 地域コミュニティ
+    pattern:  /\blocal community\b/i|/ローカルコミュニティ/
+  - expected: チャプタープログラム
+    pattern:  /\bchapter program\b/i|/ローカルコミュニティ/
+  - expected: データサービス
+    pattern:  /\bData Services\b/
+  - expected: データ
+    pattern:  /データー/
+  - expected: センター
+    pattern:  /センタ([^ー])/
+  - expected: データ同期
+    pattern:  /\bData Sync\b/
+  - expected: ディザスタリカバリ
+    pattern:  /ディザスタ・リカバリ/
+  - expected: ディスク
+    pattern:  /\bDisk\b/
+  - expected: ディスパッチャ
+    pattern:  /ディスパッチャー/
+  - expected: ディスプレイ
+    pattern:  /ディスプレー/
+  - expected: ディレクトリ
+    pattern:  /ディレクトリー/
+  - expected: テクノロジ
+    pattern:  /テクノロジー/
+  - expected: デジタルカメラ
+    pattern:  /デジカメ/
+  - expected: デバッグ
+    pattern:  /デバック/
+  - expected: デバッガ
+    pattern:  /デバッガー/
+  - expected: デフォルト
+    pattern:  /既定|ディフォルト|デフォールト/
+  - expected: デプロイ
+    pattern:  /デプロイメント/
+  - expected: デリバリ
+    pattern:  /デリバリー/
+  - expected: ドライバ
+    pattern:  /ドライバー/
+  - expected: ドラッグ & ドロップ
+    pattern:  /ドラッグ・アンド・ドロップ|ドラッグアンドドロップ|ドラッグ＆ドロップ|ドラッグ & ドロップ/
+  - expected: トリガー
+    pattern:  /トリガ(?!ー)/
+  - expected: バイナリ
+    pattern:  /バイナリー/
+  - expected: ハイパーリンク
+    pattern:  /ハイパー・リンク/
+  - expected: パーサー
+    pattern:  /パーサ(?!ー)|パーザー|パーザ/
+  - expected: パーマリンク
+    pattern:  /\bPermalink\b|\bpermalink\b|\bpermanent link\b|パーマネントリンク/
+  - expected: バッファ
+    pattern:  /バッファー/
+  - expected: パス
+    pattern:  /\bpath\b|\bPath\b/
+  - expected: パターン
+    pattern:  /パタン/
+  - expected: ハッシュ
+    pattern:  /\bhash\b|\bHash\b/
+  - expected: バラ
+    pattern:  /薔薇/
+  - expected: バラエティ
+    pattern:  /バラエティー/
+  - expected: パラメータ
+    pattern:  /パラメタ|パラメーター/
+  - expected: ハンドラ
+    pattern:  /ハンドラー/
+  - expected: ビューア
+    pattern:  /ビューアー|ビューワー|ビューワ/
+  - expected: ビルダ
+    pattern:  /ビルダー/
+  - expected: ビルトイン
+    pattern:  /ビルドイン/
+  - expected: ヒット率
+    pattern:  /hit率/
+  - expected: ファイラ
+    pattern:  /ファイラー/
+  - expected: ファクトリ
+    pattern:  /ファクトリー/
+  - expected: フィーチャーフォン
+    pattern:  /フィーチャフォン/
+  - expected: フォルダー
+    pattern:  /フォルダ(?!ー)/
+  - expected: ブラウザー
+    pattern:
+      - /Webブラウザー?/
+      - /WEBブラウザー?/
+      - /ブラウザー(?!ー)/
+  - expected: プライマリ
+    pattern:  /プライマリー/
+  - expected: プラットフォーム
+    pattern:  /プラットホーム/
+  - expected: ブレーク
+    pattern:  /ブレイク/
+  - expected: プレーン
+    pattern:  プレイン(?!グ)
+    specs:
+      - from: プレイング
+        to:   プレイング
+  - expected: ブローカ$1
+    pattern:  /ブローカー([^ー])/
+  - expected: プロパティ
+    pattern:  /プロパティー/
+  - expected: ヘビー
+    pattern:  /ヘヴィ/
+  - expected: ファイアウォール
+    pattern:  /ファイアーウォール|ファイヤーウォール|ファイヤウォール|ファイヤーウオール/
+  - expected: ファイバチャネル
+    pattern:  /ファイバチャンネル|ファイバチャネル|ファイバーチャンネル/
+  - expected: フィルター$1
+    pattern:  /フィルタ([^ーリ])/
+    specs:
+      - from: フィルタする
+        to:   フィルターする
+      - from: フィルタリングする
+        to:   フィルタリングする
+  - expected: フィクスチャ
+    pattern:  /フィクスチャー/
+  - expected: フェイルオーバー
+    pattern:  /フェイルオーバ(?!ー)|フェールオーバー|フェールオーバ(?!ー)/
+  - expected: フェーズ
+    pattern:  /フェイズ/
+  - expected: フッター
+    pattern:  /フッタ(?!ー)|フッダ/
+  - expected: プロキシ
+    pattern:  /プロクシ|プロクシー|プロキシー|\bProxy\b|\bproxy\b/
+  - expected: ブログ
+    pattern: /(?![^/])(?:blog|Blog)(?![^/])/
+    specs:
+      - from: http://blog.example.com/
+        to:   http://blog.example.com/
+      - from: http://example.com/foo-blog/
+        to:   http://example.com/foo-blog/
+  - expected: プロシージャ
+    pattern:  /プロシージャー/
+  - expected: プロバイダ
+    pattern:  /プロバイダー/
+  - expected: ベンダー
+    pattern:  /ベンダ(?!ー)/
+  - expected: ヘッダー
+    pattern:  /ヘッダ(?!ー)|ヘッタ|ヘッター/
+  - expected: ベクター
+    pattern:  /ベクタ(?!ー)/
+  - expected: ページャ
+    pattern:  /ページャー/
+  - expected: ポインタ
+    pattern:  /ポインター/
+  - expected: ポッドキャスト
+    pattern:  /\bPodCast\b|\bpodcast\b|\bPodcast\b/
+  - expected: $1マイクロ秒
+    pattern:  /([0-9])μs/
+  - expected: $1ミリ秒
+    pattern:  /([0-9])\bms\b/
+  - expected: マトリックス
+    pattern:  /マトリクス/
+  - expected: マネジメント
+    pattern:  /マネージメント/
+  - expected: メーカー
+    pattern:  /メーカ(?!ー)/
+  - expected: メーリングリスト
+    pattern:  /\bML\b(?!系)/
+    specs:
+      - from: SML#
+        to:   SML#
+      - from: ML系言語
+        to:   ML系言語
+      - from: MLなど
+        to:   メーリングリストなど
+  - expected: メタファ
+    pattern:  /メタファー/
+  - expected: メモリ
+    pattern:  /メモリー/
+  - expected: メンテナンス
+    pattern:  /メインテナンス/
+  - expected: メンテナンス$1
+    pattern:  /メンテ([^ナー])/
+    specs:
+      - from: メンテする
+        to:   メンテナンスする
+      - from: ドキュメンテーション
+        to:   ドキュメンテーション
+  - expected: モジュール
+    pattern:  /\bmodule\b|\bModule\b/
+  - expected: レジューム
+    pattern:  /リジューム/
+  - expected: ユーティリティ
+    pattern:  /ユーティリティー/
+  - expected: ユニットテスト
+    pattern:
+      - Unitテスト
+      # 単体テストはケースバイケース
+      - 単体テスト
+  - expected: ライブラリ
+    pattern:  /ライブラリー/
+  - expected: リガチャ
+    pattern:  /リガチャー/
+  - expected: リグレッション
+    pattern:
+      - デグレード
+      # デグレは英語圏では使わない by Jenkins川口さん
+      - デグレ
+  - expected: リスナ
+    pattern:  /リスナー/
+  - expected: リバースプロキシ
+    pattern:  /\bReverse Proxy\b/
+  - expected: リファラー
+    pattern:  /リファラ/
+  - expected: リポジトリ
+    pattern:  /リポジトリー|レポジトリ|レポジトリー/
+  - expected: ルータ
+    pattern:  /ルーター/
+  - expected: レイヤ
+    pattern:  /(プ)?レイヤー/
+    regexpMustEmpty: $1
+    specs:
+      - from: レイヤー
+        to:   レイヤ
+      - from: プレイヤー
+        to:   プレイヤー
+  - expected: レジスタ
+    pattern:  /レジスター/
+  - expected: レジストリ
+    pattern:  /レジストリー/
+  - expected: レイテンシ
+    pattern:  /レイテンシー/
+  - expected: レコメンド
+    pattern:  /リコメンド/
+  - expected: ロータ$1
+    pattern:  /ローター([^ー])/
+  - expected: ローダ
+    pattern:  /ローダー/
+  - expected: ロングテール
+    pattern:  /ロングテイル/
+  - expected: バックアップ$1
+    pattern:  /\bBackup\b([^.])/
+  - expected: スレーブ$1
+    pattern:  /スレイブ([^.])|\bSlave\b([^.])/
+  - expected: 記述子
+    pattern:  /ディスクリプタ/
+  - expected: 属性
+    pattern:  /アトリビュート/
+  - expected: 要素
+    pattern:  /エレメント/
+  - expected: アニメーター
+    pattern:  /アニメータ(?!ー)/
+  - expected: キャラクタ$1
+    pattern:  /キャラクター([^ー])/
+  - expected: コミッター$1
+    pattern:  /コミッタ([^ー])/
+  - expected: ユーザー
+    pattern:  /ユーザ(?!ー|ビリティ)/
+    specs:
+      - from: ユーザと
+        to:   ユーザーと
+      - from: ユーザビリティは
+        to:   ユーザビリティは
+  - expected: ユーザビリティ
+    pattern:  /ユーザービリティ/
+  - expected: ディレクター
+    pattern:  /ディレクタ(?!ー)/
+    specs:
+      - from: ディレクター
+        to:   ディレクター
+  - expected: デザイナー
+    pattern:  /デザイナ(?!ー)/
+  - expected: 開発者
+    pattern:  /デベロッパ|デベロッパー|ディベロッパ|ディベロッパー/
+  - expected: ファシリテーター
+    pattern:  /ファシリテータ(?!ー)/
+  - expected: プレイヤー
+    pattern:  /プレーヤ/
+  - expected: プレーヤ
+    pattern:  /プレーヤー/
+  - expected: プログラマー
+    pattern:  /プログラマ(?!ー)/
+  - expected: プログラマブル
+    pattern:  /プログラマーブル/
+  - expected: プロデューサー$1
+    pattern:  /プロデューサ([^ー])/
+  - expected: プランナー$1
+    pattern:  /プランナ([^ー])/
+  - expected: $1マスタ$2
+    pattern:  /(?:([^ム])マスター)|(?:マスター([^.]))/
+  - expected: $1マスタ$2
+    pattern:  /(?:([^ム])\bMaster)|(?:Master\b([^.]))/
+  - expected: $1マスタ$2
+    pattern:  /(?:([^ム])\bmaster)|(?:master\b([^.]))/
+  - expected: マネージャー$1
+    pattern:  /マネージャ([^ー])/
+  - expected: メンテナー$1
+    pattern:  /メンテナ([^ーンス])/
+  - expected: メンバー
+    pattern:  /メンバ(?!ー)/
+  - expected: メール
+    pattern:  /email|eメール|E-メール/Eメール/電子メール/
+  - expected: リーダー
+    pattern:  /リーダ(?!ー)/
+  - expected: レビュアー$1
+    pattern:  /レビュア([^ー])|レビュワー([^ー])|レビュワ([^ー])|レビューアー([^ー])|レビューア([^ー])|レビューワー([^ー])|レビューワ([^ー])/
+  - expected: Akamai
+    pattern:  /\bAkamai\b/i
+  - expected: Alias
+    pattern:  /\bAilias\b/
+  - expected: Amazon Web Services$1
+    pattern:  /\bAmazon Web Service\b([^s])/
+  - expected: Android
+    pattern:  /アンドロイド|\bandroid\b/
+  - expected: Apache
+    pattern:  /\bapache\b|\bApatch\b|\bapatch\b/
+  - expected: Apache $1$2
+    pattern:  /Apache([0-9])|Apatch([0-9])/
+  - expected: App Store
+    pattern:  /\bAppStore\bs
+  - expected: Apple
+    pattern:  /アップル/
+  - expected: Apple
+    pattern:  /\bApple\b/i
+  - expected: Backbone.js
+    pattern:  /\bBackbone.js\b/i
+  - expected: Babel
+    pattern:  /\bBabel\b/i
+  - expected: bash
+    pattern:  /\bBash\b/
+  - expected: Bitbucket
+    pattern:  /\bBitbucket\b/i
+  - expected: Bitcoin
+    pattern:  /\bBitcoin\b/i
+  - expected: BlackBerry
+    pattern:  /\bBlackBerry\b/i
+  - expected: Blu-ray
+    pattern:  /\bBlu-ray\b/i
+  - expected: CentOS
+    pattern:  /\bCent OS\b/
+  - expected: Chef
+    pattern:  /\bChef\b/i
+  - expected: Chrome Web Store
+    pattern:  /Chromeウェブストア|Chrome Webストア/
+  - expected: Chromium
+    pattern:  /\bChronium\b/
+  - expected: CloudFlare
+    pattern:  /\bCloudFlare\b/i
+  - expected: Cygwin
+    pattern:  /\bCygwin\b/i
+  - expected: Composer
+    pattern:  /\bComposer\b/i
+  - expected: CSS スプライト
+    pattern:  /CSSスプライト|CSS-Sprite|\bCSS Sprite\b/
+  - expected: Debian GNU/Linux
+    pattern:  /\bDebian\b|Debian\/GNU Linux/
+  - expected: Docker Hub
+    pattern:  /\bDockerHub\b/
+  - expected: Dreamweaver
+    pattern:  /\bDreamWeaver\b/
+  - expected: easy_install
+    pattern:  /\beasy_install\b/i
+  - expected: Eclipse
+    pattern:  /\bEclipse\b/i
+  - expected: ECMAScript
+    pattern:  /\bECMA Script\b/
+  - expected: EJB-JARファイル
+    pattern:  /\bEJB-JARファイル\b/i
+  - expected: Elisp
+    pattern:  /\bElisp\b/i
+  - expected: Lisp
+    pattern:  /\bLisp\b/i
+  - expected: Elixir
+    pattern:  /\bElixr\b|\belixr\b/
+  - expected: Emacs
+    pattern:  /\bEmacs\b/i
+  - expected: Emacs $1
+    pattern:  /Emacs([0-9])/
+  - expected: Emacs Lisp
+    pattern:  /\bEmacs Lisp\b/i
+  - expected: ERB
+    pattern:  /\bERB\b/i
+  - expected: Ethernet
+    pattern:  /イーサネット/
+  - expected: EventMachine
+    pattern:  /\bEventMachine\b/i
+  - expected: Excel
+    pattern:  /エクセル/
+  - expected: Express
+    pattern:  /\bexpress\b/
+  - expected: Fabric
+    pattern:  /\bFablic\b/
+  - expected: $1Facebook$2
+    pattern:  /(?:([^/.])\bfacebook)|(?:facebook\b([^/.]))/
+  - expected: Firebug
+    pattern:  /\bFirebug\b/i
+  - expected: Firefox
+    pattern:  /\bFireFox\b|\bFire Fox\b|ファイアーフォックス|ファイヤーフォックス/
+  - expected: Fitbit
+    pattern:  /\bFitbit\b/i
+  - expected: Flash
+    pattern:  /フラッシュ/
+  - expected: Flash Player
+    pattern:  /Flashプレイヤー|Flash プレイヤー|Flashプレーヤ|Flash プレーヤ|Flashプレーヤー|Flash プレーヤー|\bFlashPlayer\b/
+  - expected: Fluentd
+    pattern:  /\bFluentd\b/i
+  - expected: GitHub Pages
+    pattern:  /\bGitHub Pages\b/i
+  - expected: GitHub Enterprise
+    pattern:  /GH:E|\bGHE\b|GitHub:E/
+  - expected: $1GitHub$2
+    pattern:  /(?:([^/.])\bgithub)|(?:github\b([^/.]))/
+  - expected: $1GitHub$2
+    pattern:  /(?:([^/.])\bGithub)|(?:Github\b([^/.]))/
+  - expected: Git
+    pattern:  /\bGit\b/i
+  - expected: Gmail
+    pattern:  /\bGmail\b/i
+  - expected: Google Gadget
+    pattern:  /Googleガジェット/
+  - expected: Google Maps
+    pattern:  /\bGoogle Map\b|\bGoogleMaps\b|\bGoogleMap\b|Googleマップ/
+  - expected: Greasemonkey
+    pattern:  /\bGreaseMonkey\b|\bGrease monkey\b|\bGrease Monkey\b/
+  - expected: Grunt
+    pattern:  /\bGrunt\b/i
+  - expected: gulp
+    pattern:  /\bgulp\b/i
+  - expected: gzip
+    pattern:  /\bgzip\b/i
+  - expected: Heartbeat
+    pattern:  /\bHeartbeat\b/i
+  - expected: Heroku
+    pattern:  /\bHeroku\b/i
+  - expected: Homebrew
+    pattern:  /\bHomebrew\b/i
+  - expected: HTML5
+    pattern:  /HTML 5/
+  - expected: HTML $1
+    pattern:  /HTML([0-4])/
+  - expected: HTTP/$1
+    pattern:  /HTTP([0-9])/
+  - expected: HTTP/$1
+    pattern:  /HTTP ([0-9])/
+  - expected: Hubot
+    pattern:  /\bHubot\b/i
+  - expected: I/O
+    pattern:  /\bIO\b/
+  - expected: ImageMagick
+    pattern:  /\bImageMagick\b/i
+  - expected: Internet Explorer $1$2
+    pattern:  /Internet Explorer([0-9])|IE([0-9])/
+  - expected: iOS $1
+    pattern:  /iOS([0-9])/
+  - expected: iPhone
+    pattern:  /アイフォン|\biphone\b|\bIPHONE\b/
+  - expected: iPhone 5s
+    pattern:  /\biPhone 5s\b/i
+  - expected: iPhone 4S
+    pattern:  /\biPhone 4S\b/i
+  - expected: ISO
+    pattern:  /ISO-/
+  - expected: ISO $1
+    pattern:  /ISO([0-9])/
+  - expected: iTunes Card
+    pattern:  /\biTunes Card\b/i
+  - expected: iPad
+    pattern:  /\biPad\b/i
+  - expected: iPhone
+    pattern:  /\biPhone\b/i
+  - expected: Java $1
+    pattern:  /Java([0-9])/
+  - expected: Jenkins
+    pattern:  /\bJenkins\b/i
+  - expected: Jetpack
+    pattern:  /\bJetpack\b/i
+  - expected: JPEG
+    pattern:  /\bJPEG\b/i
+  - expected: Kickstarter
+    pattern:  /\bKickstarter\b/i
+  - expected: LESS
+    pattern:  /\bLESS\b/i
+  - expected: LinkedIn
+    pattern:  /\bLinked In\b/
+  - expected: macOS
+    pattern:  /\bMacOS\b|\bMac OS\b|\bmac OS\b|\bOS X\b|\bOSX\b|\bMac OS X\b|\bMacOSX\b/
+  - expected: MacBook
+    pattern:  /\bMac Book\b/
+  - expected: MacPorts
+    pattern:  /\bMacPorts\b/i
+  - expected: Maglica
+    pattern:  /\bMaglica\b/i
+  - expected: MariaDB
+    pattern:  /\bMariaDB\b/i
+  - expected: Markdown
+    pattern:  /\bMarkdown\b/i
+  - expected: MasterCard
+    pattern:  /マスターカード/
+  - expected: Maven
+    pattern:  /\bMaven\b/i
+  - expected: MeCab
+    pattern:  /\bMeCab\b/i
+  - expected: Mechanize
+    pattern:  /\bMechanize\b/i
+  - expected: Meetup
+    pattern:
+    - ミートアップ
+    - meetup
+  - expected: memcached
+    pattern:  /\bmemcached\b/i
+  - expected: $1Microsoft$2
+    pattern:  /(?:([^/.])マイクロソフト)|(?:マイクロソフト([^/.]))/
+  - expected: $1Microsoft$2
+    pattern:  /(?:([^/.])\bmicrosoft)|(?:microsoft\b([^/.]))/
+  - expected: Migemo
+    pattern:  /\bMigemo\b/i
+  - expected: MiniMagick
+    pattern:  /\bMiniMagick\b/i
+  - expected: MongoDB
+    pattern:  /\bMongo DB\b/
+  - expected: msysGit
+    pattern:  /\bmsysGit\b/i
+  - expected: Munin
+    pattern:  /\bMunin\b/i
+  - expected: MySQL
+    pattern:  /\bMySQL\b/i
+  - expected: MySQL $1
+    pattern:  /\bMySQL([0-9])/
+  - expected: Nagios $1
+    pattern:  /Nagios([0-9])/
+  - expected: Nagios
+    pattern:  /\bNagios\b/i
+  - expected: Nokia
+    pattern:  /\bNokia\b/i
+  - expected: nginx
+    pattern:  /\bnginx\b/i
+  - expected: NGINX Plus
+    pattern:  /\bNGINX Plus\b/i
+  - expected: Node.js
+    pattern:  /\bNode.js\b/i
+  - expected: nonce
+    pattern:  /ノンス/
+  - expected: OAuth
+    pattern:  /\bOAuth\b/i
+  - expected: OmniAuth
+    pattern:  /\bOmniAuth\b/i
+  - expected: OpenGL
+    pattern:  /\bOpen GL\b/
+  - expected: Opscode
+    pattern:  /\bOpscode\b/i
+  - expected: Packagist
+    pattern:  /\bPackagist\b/i
+  - expected: Paperclip
+    pattern:  /\bPaperclip\b/i
+  - expected: PayPal
+    pattern:  /\bPayPal\b/i
+  - expected: parallel
+    pattern:  /\bpararllel\b/
+  - expected: PECL
+    pattern:  /\bPECL\b/i
+  - expected: Perl $1
+    pattern:  /Perl([0-9])/
+  - expected: Perl
+    pattern:  /\bPerl\b/i
+  - expected: PhantomJS
+    pattern:  /\bPhantomJS\b/i
+  - expected: Photoshop
+    pattern:  /\bPhotoShop\b|\bphotoshop\b|フォトショップ/
+  - expected: PHP $1
+    pattern:  /PHP([0-9])/
+  - expected: PHPBrew
+    pattern:  /\bPHPBrew\b/i
+  - expected: PHPDoc
+    pattern:  /\bPHPDoc\b/i
+  - expected: PhpMetrics
+    pattern:  /\bPhpMetrics\b/i
+  - expected: PhpStorm
+    pattern:  /\bPhpStorm\b/i
+  - expected: PHPUnit
+    pattern:  /\bPHPUnit\b/
+  - expected: POPFile
+    pattern:  /\bPOPFile\b/i
+  - expected: PostScript
+    pattern:  /\bPostScript\b/i
+  - expected: PostgreSQL $1
+    pattern:  /PostgreSQL([0-9])/
+  - expected: PowerPoint
+    pattern:  /\bPower Point\b/
+#  - expected: Pull Request
+#    pattern:  /プルリクエスト|\bpull request\b|\bPull request\b/
+  - expected: Python
+    pattern:  /\bPython\b/iΩ
+  - expected: RADIUS
+    pattern:  /\bRADIUS\b/i
+  - expected: Rails $1
+    pattern:  /Rails([0-9])/
+  - expected: Rake
+    pattern:  /\bRake\b/i
+  - expected: Raspberry Pi
+    pattern:  /\bRasbpberry Pi\b|\bRaspiberry Pi\b|\bRaspberryPi\b/
+  - expected: Redmine
+    pattern:  /\bRedmine\b/i
+  - expected: Red Hat
+    pattern:  /\bRedHat\b|\bRedhat\b|\bredhat\b|\bRedHad\b|\bRedhad\b|\bredhad\b|レッドハット/
+  - expected: Red Hat Enterprise Linux
+    pattern:  /\bRHEL\b/
+  - expected: Red Hat Linux
+    pattern:  /\bRedHatLinux\b|\bRedHat Linux\b/
+  - expected: Red Hat Linux $1
+    pattern:  /Red Hat Linux([0-9])|RedHatLinux([0-9])|RedHat Linux([0-9])/
+  - expected: Redis
+    pattern:  /\bRedis\b/i
+  - expected: Redshift
+    pattern:  /\bRedshift\b/i
+  - expected: Refile
+    pattern:  /\bRefile\b/i
+  - expected: RELAX NG
+    pattern:  /\bRELAX NG\b/i
+  - expected: RFC $1
+    pattern:  /RFC([0-9])/
+  - expected: 権限グループ
+    pattern:  /(?<!コント)ロール/
+    specs:
+      - from: ロールごと
+        to:   権限グループごと
+      - from: コントロール
+        to:   コントロール
+  - expected: RRDtool
+    pattern:  /\bRRDtool\b/i
+  - expected: RSpec
+    pattern:  /\bRSpec\b/i
+  - expected: SAML $1
+    pattern:  /SAML([0-9])/
+  - expected: Scheme
+    pattern:  /\bScheme\b/i
+  - expected: Selenium WebDriver
+    pattern:  /\bSelenium WebDriver\b/i
+  - expected: Selenium
+    pattern:  /\bSelenium\b/i
+  - expected: Sequel
+    pattern:  /\bSequel\b/i
+  - expected: Serverspec
+    pattern:  /\bServerspec\b/i
+  - expected: Serverspec
+    pattern:  /\bserver spec\b/
+  - expected: Servlet $1
+    pattern:  /Servlet([0-9])/
+  - expected: Shift_JIS
+    pattern:  /Shift-JIS|SHIFT-JIS|SHIFT_JIS|\bShift JIS\b|Shift_JIS|シフトJIS/
+  - expected: Shrine
+    pattern:  /\bShrine\b/i
+  - expected: Shrpx
+    pattern:  /\bShrpx\b/i
+  - expected: Silverlight
+    pattern:  /\bSilverLight\b|\bSilver Light\b/
+  - expected: SimpleTest
+    pattern:  /\bSimpleTest\b/i
+  - expected: SkeedCast
+    pattern:  /\bSkeedCast\b/i
+  - expected: $1Smalltalk$2
+    pattern:  /(?:([^/.])スモールトーク)|(?:スモールトーク([^/.]))/
+  - expected: Smalltalk
+    pattern:  /\bSmalltalk\b/i
+  - expected: Socket.IO
+    pattern:  /\bSocket.IO\b/i
+  - expected: $1SourceForge
+    pattern:  /([^/.])\bsourceforge\b/
+  - expected: StudioPress
+    pattern:  /\bStudioPress\b/i
+  - expected: SPDY/$1
+    pattern:  /SPDY([0-9])/
+  - expected: SPDY/$1
+    pattern:  /SPDY ([0-9])/
+  - expected: SpiderMonkey
+    pattern:  /\bSpiderMonkey\b/i
+  - expected: SQL $1
+    pattern:  /SQL([0-9])/
+  - expected: SQLite
+    pattern:  /\bSQLite\b/i
+  - expected: $1Subversion$2
+    pattern:  /(?:([^/.])\bSubVersion)|(?:SubVersion\b([^/.]))/
+  - expected: $1Subversion$2
+    pattern:  /(?:([^/.])\bsubversion)|(?:subversion\b([^/.]))/
+  - expected: Tips
+    pattern:  /\bTips\b/i
+  - expected: Tomcat $1
+    pattern:  /Tomcat([0-9])/
+  - expected: Transient
+    pattern:  /トランジェント/
+  - expected: Twitter
+    pattern:  /\bTwitter\b/i
+  - expected: Twitter
+    pattern:  /ツイッター/
+  - expected: ToDo
+    pattern:  /\bToDo\b/i
+  - expected: TypeScript
+    pattern:  /\bTypeScript\b/i
+  - expected: Ubuntu
+    pattern:  /\bubuntu\b|\bUbuntsu\b|\bubuntsu\b|\bUbuntu Linux\b/
+  - expected: Unicode
+    pattern:  /\bunicode\b|ユニコード/
+  - expected: UnixBench
+    pattern:  /\bUnixBench\b/i
+  - expected: UNIX
+    pattern:  /\bUnix\b/
+  - expected: UTF-8
+    pattern:  /UTF8|UTF 8|utf8/
+  - expected: VirtualBox
+    pattern:  /\bVirtual Box\b/
+  - expected: Web
+    pattern:
+      - ウェブ
+      - ウェッブ
+  - expected: Web API
+    pattern:  /\bWebAPI\b|\bWEBAPI\b|\bWEB API\b/
+  - expected: Web UI
+    pattern:  /\bWebUI\b/
+  - expected: Webhook
+    pattern:  /Webフック|Web フック|\bWebHook\b/
+  - expected: WebLogic
+    pattern:  /\bWeb Logic\b/
+  - expected: webpack
+    pattern:  /\bwebpack\b/i
+    specs:
+      - from: Webpack
+        to:   webpack
+  - expected: Wi-Fi
+    pattern:  /\bWiFi\b|Wi-fi|wi-fi/
+  - expected: WordCamp
+    pattern:  /\bWordCamp\b/i
+  - expected: WordPress
+    pattern:  /\bWordPress\b/i
+  - expected: WordPress $1
+    pattern:  /WordPress([0-9])/i
+  - expected: $1Word
+    pattern:  /([^ースォ])ワード/
+  - expected: Xcode
+    pattern:  /\bXcode\b/i
+  - expected: Xdebug
+    pattern:  /\bXdebug\b/i
+  - expected: XML Schema
+    pattern:  /\bXML Schema\b/i
+  - expected: Yahoo!$1
+    pattern:  /YAHOO!([^!.])|\bYahoo\b([^!.])|\bYAHOO\b([^!.])|ヤフー([^!.])/
+  - expected: YouTube
+    pattern:  /\bYoutube\b|\byoutube\b/
+  - expected: YSlow
+    pattern:  /\bYSlow\b/i
+  - expected: ZIPファイル
+    pattern:  /\bZIPファイル\b/i
+  - expected: を
+    pattern:  /をを/
+  - expected: に
+    pattern:  /にに/
+  - expected: が
+    pattern:  /がが/
+  - expected: する
+    pattern:  /するする/
+  - expected: て
+    pattern:  /(当)?てて/
+    regexpMustEmpty: $1
+  - expected: で
+    pattern:  /でで(?!き)/
+    specs:
+      - from: でで
+        to:   で
+      - from: これでできる
+        to:   これでできる
+  - expected: $1の
+    pattern:  /([^も])のの/
+  - expected: は
+    pattern:  /はは/
