@@ -1,7 +1,9 @@
 # Common issues
 
-## Data Must be Sanitized, Escaped, and Validated
- 
+## Sanitize
+
+**Data Must be Sanitized, Escaped, and Validated**
+
 When you include POST/GET/REQUEST/FILE calls in your plugin, it's important to sanitize, validate, and escape them. The goal here is to prevent a user from accidentally sending trash data through the system, as well as protecting them from potential security issues. 
  
 SANITIZE: Data that is input (either by a user or automatically) must be sanitized as soon as possible. This lessens the possibility of XSS vulnerabilities and MITM attacks where posted data is subverted.
@@ -25,8 +27,9 @@ Always Validate
  
 Clean everything, check everything, escape everything, and never trust the users to always have input sane data. After all, users come from all walks of life.
 
+## Escape
 
-## Variables and options must be escaped when echo'd
+**Variables and options must be escaped when echo'd**
 
 Much related to sanitizing everything, all variables that are echoed need to be escaped when they're echoed, so it can't hijack users or (worse) admin screens. There are many esc_*() functions you can use to make sure you don't show people the wrong data, as well as some that will allow you to echo HTML safely.
 
@@ -44,7 +47,9 @@ There are a number of options to secure all types of content (html, email, etc).
 
 Remember: You must use the most appropriate functions for the context. There is pretty much an option for everything you could echo. Even echoing HTML safely.
 
-## Generic function/class/define/namespace/option names
+## Prefix All Globals
+
+**Generic function/class/define/namespace/option names**
 
 All plugins must have unique function names, namespaces, defines, class and option names. This prevents your plugin from conflicting with other plugins or themes. We need you to update your plugin to use more unique and distinct names.
 
@@ -67,7 +72,6 @@ Related to this, using if (!function_exists('NAME')) { around all your functions
 
 Remember: Good prefix names are unique and distinct to your plugin. This will help you and the next person in debugging, as well as prevent conflicts.
 
-
 ## Calling files remotely
 
 Offloading images, js, css, and other scripts to your servers or any remote service (like Google, MaxCDN, jQuery.com etc) is disallowed. When you call remote data you introduce an unnecessary dependency on another site. If the file you're calling isn't a part of WordPress Core, then you should include it -locally- in your plugin, not remotely. If the file IS included in WordPress core, please call that instead.
@@ -88,7 +92,9 @@ Here are some examples of what we would permit:
 Please remove external dependencies from your plugin and, if possible, include all files within the plugin (that is not called remotely). If instead you feel you are providing a service, please re-write your readme.txt in a manner that explains the service, the servers being called, and if any account is needed to connect.
 
 
-## Using CURL Instead of HTTP API
+## Use HTTP API
+
+**Using CURL Instead of HTTP API**
 
 WordPress comes with an extensive HTTP API that should be used instead of creating your own curl calls. It’s both faster and more extensive. It’ll fall back to curl if it has to, but it’ll use a lot of WordPress’ native functionality first.
 
@@ -106,7 +112,9 @@ It is also not allowed to interfere with the user's actions when activating or d
 
 WordPress 6.5 introduces [Plugin Dependencies](https://make.wordpress.org/core/2024/03/05/introducing-plugin-dependencies-in-wordpress-6-5/), you can use it to manage dependencies (although it's fine if you use this as a fallback).
 
-## ALLOW_UNFILTERED_UPLOADS is not allowed.
+## Unfiltered uploads
+
+**ALLOW_UNFILTERED_UPLOADS is not allowed.**
 
 Setting this constant to true will allow the user to upload any type of file (including PHP and other executables), creating serious potential security risks. As developers, we should not use or allow the use of this constant in any kind of logic, not even in a conditional.
 
@@ -114,23 +122,31 @@ WordPress includes a list of safe files, as you can see in the function [wp_get_
 
 If you need to add a specific file that is not in the list and that won't represent a security risk, you can do so using the [upload_mimes](https://developer.wordpress.org/reference/hooks/upload_mimes/) filter.
 
-## Setting a default timezone
+## Default timezone
+
+**Setting a default timezone**
 
 This is rarely a good idea. People should be able to define their own timezones in WordPress.
 
 Also WordPress explicitly sets and expects the default timezone to be UTC (in settings.php) and the date/time functions sometimes rely on the fact that the default timezone is UTC. For instance if you do date_default_timezone_set(get_option('timezone_string')) and then later try to get a GMT timestamp from get_post_time() or get_post_modified_time(), it will fail to give you the right date.
 
-## Please use WordPress' file uploader
+## File uploader
+
+**Please use WordPress' file uploader**
 
 When plugins use move_uploaded_file(), they exclude their uploads from the built-in checks and balances with WordPress's functions. Instead of that, you should use the built in function:
 
 [https://developer.wordpress.org/reference/functions/wp_handle_upload/](https://developer.wordpress.org/reference/functions/wp_handle_upload/)
 
-## Don't Use Error Reporting in Production Code
+## Error reporting
+
+**Don't Use Error Reporting in Production Code**
 
 While error_reporting() is a great tool in PHP ( [https://www.php.net/manual/en/function.error-reporting.php](https://www.php.net/manual/en/function.error-reporting.php) ) but if you set it permanently in your plugin, you mess things up for everyone who uses your code. Should they have a reason to try to debug their site which happens to use your code, they won't be able to get a clean test because you're messing with the output. It has no place in the day to day function of your plugin.
 
-## Don't Force Set PHP Limits Globally
+## PHP Limits
+
+**Don't Force Set PHP Limits Globally**
 
 While many plugins can need optimal settings for PHP, we ask you please not set them as global defaults.
 
@@ -138,7 +154,9 @@ Having defines like ini_set('memory_limit', '-1'); run globally (like on init or
 
 If you must use those, you need to limit them specifically to only the exact functions that require them.
 
-## Including An Update Checker / Changing Updates functionality
+## Update checker
+
+**Including An Update Checker / Changing Updates functionality**
 
 Please remove the checks you have in your plugin to provide for updates.
 
@@ -146,7 +164,9 @@ We do not permit plugins to phone home to other servers for updates, as we are p
 
 We also ask that plugins not interfere with the built-in updater as it will cause users to have unexpected results with WordPress 5.5 and up.
 
-## Allowing Direct File Access to plugin files
+## Direct file access
+
+**Allowing Direct File Access to plugin files**
 
 Direct file access is when someone directly queries your file. This can be done by simply entering the complete path to the file in the URL bar of the browser but can also be done by doing a POST request directly to the file. For files that only contain a PHP class the risk of something funky happening when directly accessed is pretty small. For files that contain procedural code, functions and function calls, the chance of security risks is a lot bigger.
 
@@ -156,15 +176,9 @@ You can avoid this by putting this code at the top of all PHP files that could p
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 ```
 
-## Internationalization: Don't use variables or defines as text, context or text domain parameters.
+## Variables as text
 
-In order to make a string translatable in your plugin you are using a set of special functions. These functions collectively are known as "gettext".
-
-There is a [dedicated team in the WordPress community](https://make.wordpress.org/polyglots/) to translate and help other translating strings of WordPress core, plugins and themes to other languages.
-
-To make them be able to translate this plugin, please **do not use variables or function calls** for the text, context or text domain parameters of any gettext function, all of them **NEED to be strings**. Note that the translation parser reads the code without executing it, so it won't be able to read anything that is not a string within these functions.
-
-## Internationalization: Don't use variables or defines as text, context or text domain parameters.
+**Internationalization: Don't use variables or defines as text, context or text domain parameters.**
 
 In order to make a string translatable in your plugin you are using a set of special functions. These functions collectively are known as "gettext".
 
@@ -204,43 +218,17 @@ printf(
 You can read [more information here](https://developer.wordpress.org/plugins/internationalization/how-to-internationalize-your-plugin/#text-domains).
 
 
-## Please use WordPress' file uploader
+## Use esc_url_raw
 
-When plugins use move_uploaded_file(), they exclude their uploads from the built-in checks and balances with WordPress's functions. Instead of that, you should use the built in function:
-
-[https://developer.wordpress.org/reference/functions/wp_handle_upload/](https://developer.wordpress.org/reference/functions/wp_handle_upload/)
-
-
-## Don't Use Error Reporting in Production Code
-
-While error_reporting() is a great tool in PHP ([https://www.php.net/manual/en/function.error-reporting.php](https://www.php.net/manual/en/function.error-reporting.php)) but if you set it permanently in your plugin, you mess things up for everyone who uses your code. Should they have a reason to try to debug their site which happens to use your code, they won't be able to get a clean test because you're messing with the output. It has no place in the day to day function of your plugin.
-
-
-## Don't Force Set PHP Limits Globally
-
-While many plugins can need optimal settings for PHP, we ask you please not set them as global defaults.
-
-Having defines like ini_set('memory_limit', '-1'); run globally (like on init or in the __construct() part of your code) means you'll be running that for everything on the site, which may cause your users to fall out of compliance with any limits or restrictions on their host.
-
-If you must use those, you need to limit them specifically to only the exact functions that require them.
-
-
-## Including An Update Checker / Changing Updates functionality
-
-Please remove the checks you have in your plugin to provide for updates.
-
-We do not permit plugins to phone home to other servers for updates, as we are providing that service for you with WordPress.org hosting. One of our guidelines is that you actually use our hosting, so we need you to remove that code.
-
-We also ask that plugins not interfere with the built-in updater as it will cause users to have unexpected results with WordPress 5.5 and up.
-
-
-## Note: esc_url_raw
+**Note: esc_url_raw**
 
 We know this is confusing, the `esc_url_raw` function is not an escaping function, but a sanitizing function similar to `sanitize_url`. Specifically it is used to sanitize a URL for use in a database or a redirection.
 
 The appropriate function to escape a URL is `esc_url`.
 
-## Note: __
+## Escaping __
+
+**Note: __**
 
 The function `__` retrieves the translation without escaping, please either:
 
@@ -253,7 +241,9 @@ Examples:
 <h2><?php echo esc_html(__('Settings page', 'plugin-slug')); ?></h2>
 ```
 
-## Note: _e and _ex
+## Escaping _e and _ex
+
+**Note: _e and _ex**
 
 The functions `_e` and `_ex` output the translation without escaping, please use an alternative function that escapes the output.
 
@@ -267,7 +257,9 @@ Examples:
 <h2><?php echo esc_html(_x('Settings page', 'Settings page title', 'plugin-slug')); ?></h2>
 ```
 
-## Note: wp_json_encode
+## Use wp_json_encode
+
+**Note: wp_json_encode**
 
 When you need to echo a JSON, it's better to make use of the function `wp_json_encode`, also, make sure you are not avoiding escaping with the options passed on the second parameter.
 
@@ -275,7 +267,7 @@ When you need to echo a JSON, it's better to make use of the function `wp_json_e
 echo wp_json_encode($array_or_object);
 ```
 
-## Note: sanitize functions
+## Sanitize functions
 
 Sanitize functions cannot be used to escape. They serve different purposes. Even if they seem to be perfect for this purpose, most of the functions are filterable and people expect to use them to sanitize. Therefore, another plugin may change what they do and make yours at risk and exploitable.
 
@@ -285,7 +277,7 @@ If you are trying to echo the variable, you have to first sanitize it and then e
 echo esc_html(sanitize_text_field($_POST['example']));
 ```
 
-## Note: wp_kses
+## Escaping with wp_kses
 
 When escaping, there are cases where your plugin will need to output HTML. This can be done using the functions `wp_kses_post` or `wp_kses`. The function `wp_kses_post` will allow any common HTML that can go inside a post content, `wp_kses` will allow any HTML that you set up using its second and third parameters, please [refer to its documentation](https://developer.wordpress.org/reference/functions/wp_kses/).
 
@@ -297,7 +289,9 @@ echo wp_kses_post($html_content);
 echo wp_kses($html_content, array( 'a', 'div', 'span' ));
 ```
 
-## Undocumented use of a 3rd Party or external service
+## Undocumented 3rd party
+
+**Undocumented use of a 3rd Party or external service**
 
 We permit plugins to require the use of 3rd party (i.e. external) services, provided they are properly documented in a clear manner.
 
@@ -311,7 +305,9 @@ In order to do so, you must update your readme to do the following:
 
 Remember, this is for your own legal protection. Use of services must be upfront and well documented.
 
-## Using composer but could not find composer.json file
+## Using composer
+
+**Using composer but could not find composer.json file**
 
 We noticed that your plugin is using Composer to handle library dependencies, that's great as it will help maintaining and updating your plugin in the future while avoiding collisions with other plugins that are using same libraries.
 
@@ -380,11 +376,15 @@ While we do not YET have a decent public facing page to list all these libraries
 
 It’s fine to locally include add-ons not in core, but please ONLY add those additional files. For example, you do not need the entire jQuery UI library for one file. If your code doesn't work with the built-in versions of jQuery, it's most likely a noConflict issue.
 
-## Libraries that are no longer maintained are not permitted
+## Libraries not maintained
+
+**Libraries that are no longer maintained are not permitted**
 
 We no longer accept using any library that is no longer supported or maintained by their developers, as they pose a significant security risk. Please consider other options.
 
-## Using Beta / Alpha / Development versions of libraries
+## Using development versions
+
+**Using Beta / Alpha / Development versions of libraries**
 
 We do not recommend you use the beta version of a library unless it has features required by your plugin. Instead, you should be using the most stable release of the library.
 
@@ -415,7 +415,9 @@ This project is listed in the [GitHub Advisory Database](https://github.com/advi
 
 They, and we, recommend not using above 11.4.8 for your users' privacy.
 
-## No publicly documented resource for your compressed content
+## No publicly documented resource
+
+**No publicly documented resource for your compressed content**
 
 In reviewing your plugin, we cannot find a non-compiled version of your javascript and/or css related source code.
 
@@ -431,7 +433,9 @@ For example, if you’ve made a Gutenberg plugin and used npm and webpack to com
 
 We strongly recommend you include directions on the use of any build tools to encourage future developers.
 
-## Do not use HEREDOC or NOWDOC syntax in your plugins
+## Not use HEREDOC-NOWDOC
+
+**Do not use HEREDOC or NOWDOC syntax in your plugins**
 
 While both are totally valid, and in many ways desirable features of PHP that allow you to output content, it comes with a cost that is too high for most plugins.
 
@@ -447,7 +451,9 @@ We know as of PHP 5.4, `<?= ... ?>` tags are supported everywhere, regardless of
 
 Basically the risk here is way higher than the benefits, which is why we don't permit their use.
 
-## The main file of the plugin has a name that does not follow the convention.
+## Main file convention
+
+**The main file of the plugin has a name that does not follow the convention.**
 
 We expect the main plugin file (the file containing the plugin headers) to have the same name as the plugin folder, which is also the same name as the slug / permalink of the plugin.
 
