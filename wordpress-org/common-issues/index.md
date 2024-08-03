@@ -1,5 +1,9 @@
 # Common issues
 
+This is a compilation of some of the most common issues the Plugin Review Team encounters when reviewing plugins.
+
+This list contains excerpts from the team's email messages, and should not be considered a complete or exhaustive list; the outcome of the reviews depends on the manual review performed by the team.
+
 ## Security
 
 ### Sanitize
@@ -7,11 +11,11 @@
 **Input data must be Sanitized, Validated, and Escaped on output**
 
 When you include POST/GET/REQUEST/FILE calls in your plugin, it's important to sanitize, validate, and escape them. The goal here is to prevent a user from accidentally sending trash data through the system, as well as protecting them from potential security issues. 
- 
-SANITIZE: Data that is input (either by a user or automatically) must be sanitized as soon as possible. This lessens the possibility of XSS vulnerabilities and MITM attacks where posted data is subverted.
- 
-VALIDATE: All data should be validated, no matter what. Even when you sanitize, remember that you don’t want someone putting in ‘dog’ when the only valid values are numbers.
- 
+
+SANITIZE: Data that is input (either by a user or automatically) must be sanitized as soon as possible. This lessens the possibility of XSS vulnerabilities and MITM attacks where posted data is subverted. 
+
+VALIDATE: All data should be validated, no matter what. Even when you sanitize, remember that you don’t want someone putting in ‘dog’ when the only valid values are numbers. 
+
 ESCAPE: Data that is output must be escaped properly when it is echo'd, so it can't hijack admin screens. There are many esc_*() functions you can use to make sure you don't show people the wrong data.
 
 To help you with this, WordPress comes with a number of sanitization and escaping functions. You can read about those here:
@@ -23,10 +27,10 @@ Remember: You must use the most appropriate functions for the context. If you’
 
 An easy mantra here is this:
 
-Sanitize early
-Escape Late
+Sanitize early  
+Escape Late  
 Always Validate
- 
+
 Clean everything, check everything, escape everything, and never trust the users to always have input sane data. After all, users come from all walks of life.
 
 #### Sanitize: Confusion about escape and sanitize functions
@@ -146,11 +150,13 @@ If you are trying to echo the variable, you have to first sanitize it and then e
 echo esc_html(sanitize_text_field($_POST['example']));
 ```
 
-### Files: Use the WordPress file uploader
+### Files
+
+#### Files: Use the WordPress file uploader
 
 **Please use WordPress' file uploader**
 
-When plugins use move_uploaded_file(), they exclude their uploads from the built-in checks and balances with WordPress's functions. Instead of that, you should use the built in function:
+When plugins use `move_uploaded_file(), they exclude their uploads from the built-in checks and balances with WordPress's functions. Instead of that, you should use the built in function:
 
 [https://developer.wordpress.org/reference/functions/wp_handle_upload/](https://developer.wordpress.org/reference/functions/wp_handle_upload/)
 
@@ -164,7 +170,7 @@ WordPress includes a list of safe files, as you can see in the function [wp_get_
 
 If you need to add a specific file that is not in the list and that won't represent a security risk, you can do so using the [upload_mimes](https://developer.wordpress.org/reference/hooks/upload_mimes/) filter.
 
-### Calling files remotely
+#### Files: Calling files remotely
 
 Offloading images, js, css, and other scripts to your servers or any remote service (like Google, MaxCDN, jQuery.com etc) is disallowed. When you call remote data you introduce an unnecessary dependency on another site. If the file you're calling isn't a part of WordPress Core, then you should include it -locally- in your plugin, not remotely. If the file IS included in WordPress core, please call that instead.
 
@@ -220,13 +226,16 @@ Please review the following:
 
 You'll need to create a placeholder for each item of the array and pass all the corresponding values to those placeholders, this seems tricky, but here is a snippet to do so.
 
-`$wordcamp_id_placeholders = implode( ', ', array_fill( 0, count( $wordcamp_ids ), '%d' ) );`
-
-`$prepare_values = array_merge( array( $new_status ), $wordcamp_ids );`
-
-
-``$wpdb->query( $wpdb->prepare( "             UPDATE `$table_name`             SET `post_status` = %s             WHERE ID IN ( $wordcamp_id_placeholders )",             $prepare_values         ) );``
-
+```php
+$wordcamp_id_placeholders = implode( ', ', array_fill( 0, count( $wordcamp_ids ), '%d' ) );
+$prepare_values = array_merge( array( $new_status ), $wordcamp_ids );
+$wpdb->query( $wpdb->prepare( "
+    UPDATE `$table_name`
+    SET `post_status` = %s
+    WHERE ID IN ( $wordcamp_id_placeholders )",
+    $prepare_values
+) );
+```
 There is a core ticket that could make this easier in the future: [https://core.trac.wordpress.org/ticket/54042](https://core.trac.wordpress.org/ticket/54042)
 
 ### Not use HEREDOC-NOWDOC
