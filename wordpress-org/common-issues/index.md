@@ -1,8 +1,10 @@
 # Common issues
 
-## Sanitize
+## Security
 
-**Data Must be Sanitized, Escaped, and Validated**
+### Sanitize
+
+**Input data must be Sanitized, Validated, and Escaped on output**
 
 When you include POST/GET/REQUEST/FILE calls in your plugin, it's important to sanitize, validate, and escape them. The goal here is to prevent a user from accidentally sending trash data through the system, as well as protecting them from potential security issues. 
  
@@ -10,9 +12,9 @@ SANITIZE: Data that is input (either by a user or automatically) must be sanitiz
  
 VALIDATE: All data should be validated, no matter what. Even when you sanitize, remember that you don’t want someone putting in ‘dog’ when the only valid values are numbers.
  
-ESCAPE: Data that is output must be escaped properly when it is echo'd, so it can't hijack admin screens. There are many esc_*() functions you can use to make sure you don't show people the wrong data. 
+ESCAPE: Data that is output must be escaped properly when it is echo'd, so it can't hijack admin screens. There are many esc_*() functions you can use to make sure you don't show people the wrong data.
 
-To help you with this, WordPress comes with a number of sanitization and escaping functions. You can read about those here: 
+To help you with this, WordPress comes with a number of sanitization and escaping functions. You can read about those here:
 
 https://developer.wordpress.org/apis/security/sanitizing/
 https://developer.wordpress.org/apis/security/escaping/
@@ -27,7 +29,41 @@ Always Validate
  
 Clean everything, check everything, escape everything, and never trust the users to always have input sane data. After all, users come from all walks of life.
 
-## Escape
+#### Sanitize: Confusion about escape and sanitize functions
+
+**Note**: escape functions cannot be used to sanitize. They serve different purposes. Even if they seem to be perfect for this purpose, most of the functions are filterable and people expect to use them to escape. Therefore, another plugin may change what they do and make yours at risk and exploitable.
+
+If you are trying to echo the variable, you have to first sanitize it and then escape it, as for example:
+
+
+```php
+echo esc_html(sanitize_text_field($_POST['example']));
+```
+
+#### Sanitize: Using filter functions to sanitize
+
+**Note**: When using functions like `filter_var`, `filter_var_array`, `filter_input` and/or `filter_input_array` you will need to [set the FILTER parameter to any kind of filter that sanitizes the input](https://www.php.net/manual/en/filter.filters.php).
+
+Leaving the filter parameter empty, PHP by default will apply the filter "FILTER_DEFAULT" **which is not sanitizing at all**.
+
+```php
+$post_id = filter_input(INPUT_GET, 'post_id', FILTER_SANITIZE_NUMBER_INT);
+```
+
+#### Sanitize: Nonces
+
+**Note**: When checking a nonce using `wp_verify_nonce` you will need to sanitize the input using `wp_unslash` AND `sanitize_text_field`, [this is because this function is pluggable, and extenders should not trust its input values](https://developer.wordpress.org/news/2023/08/understand-and-use-wordpress-nonces-properly/#verifying-the-nonce).
+
+Example:
+```php
+if ( ! isset( $_POST['prefix_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash ( $_POST['prefix_nonce'] ) ) , 'prefix_nonce' ) )
+```
+
+### Processing the whole input
+
+We strongly recommend you **never** attempt to process the whole $_POST/$_REQUEST/$_GET stack. This makes your plugin slower as you're needlessly cycling through data you don't need. Instead, you should only be attempting to process the items within that are required for your plugin to function.
+
+### Escape
 
 **Variables and options must be escaped when echo'd**
 
@@ -47,7 +83,177 @@ There are a number of options to secure all types of content (html, email, etc).
 
 Remember: You must use the most appropriate functions for the context. There is pretty much an option for everything you could echo. Even echoing HTML safely.
 
-## Prefix All Globals
+#### Escape: Use of esc_url_raw
+
+We know this is confusing, the `esc_url_raw` function is not an escaping function, but a sanitizing function similar to `sanitize_url`. Specifically it is used to sanitize a URL for use in a database or a redirection.
+
+The appropriate function to escape a URL is `esc_url`.
+
+#### Escape: Use of __
+
+The function `__` retrieves the translation without escaping, please either:
+
+- Use an alternative function that escapes the resulting value such as `esc_html__` or `esc_attr__`.
+- Or wrap the `__` function with a proper escaping function such as `esc_html`, `esc_attr`, `wp_kses_post`, etc.
+
+Examples:
+```php
+<h2><?php echo esc_html__('Settings page', 'plugin-slug'); ?></h2>
+<h2><?php echo esc_html(__('Settings page', 'plugin-slug')); ?></h2>
+```
+
+#### Escape: Use of _e and _ex
+
+The functions `_e` and `_ex` output the translation without escaping, please use an alternative function that escapes the output.
+
+- An alternative to `_e` would be `esc_html_e`, `esc_attr_e` or simply using `__` wrapped by an escaping function and inside an `echo`.
+- An alternative to `_ex` would be using `_x` wrapped by an escaping function and inside an `echo`.
+
+Examples:
+```php
+<h2><?php esc_html_e('Settings page', 'plugin-slug'); ?></h2>
+<h2><?php echo esc_html(__('Settings page', 'plugin-slug')); ?></h2>
+<h2><?php echo esc_html(_x('Settings page', 'Settings page title', 'plugin-slug')); ?></h2>
+```
+
+#### Escape: Use json_encode
+
+When you need to echo a JSON, it's better to make use of the function `wp_json_encode`, also, make sure you are not avoiding escaping with the options passed on the second parameter.
+
+```php
+echo wp_json_encode($array_or_object);
+```
+
+#### Escape: HTML
+
+When escaping, there are cases where your plugin will need to output HTML. This can be done using the functions `wp_kses_post` or `wp_kses`. The function `wp_kses_post` will allow any common HTML that can go inside a post content, `wp_kses` will allow any HTML that you set up using its second and third parameters, please [refer to its documentation](https://developer.wordpress.org/reference/functions/wp_kses/).
+
+A common mistake is to use `esc_html` to escape HTML. This function is not intended for that, it's intended to escape the output that will go **inside** an HTML tag, therefore it will strip any HTML tags.
+
+Examples:
+```php
+echo wp_kses_post($html_content);
+echo wp_kses($html_content, array( 'a', 'div', 'span' ));
+```
+
+#### Escape: Using sanitizing functions
+
+Sanitize functions cannot be used to escape. They serve different purposes. Even if they seem to be perfect for this purpose, most of the functions are filterable and people expect to use them to sanitize. Therefore, another plugin may change what they do and make yours at risk and exploitable.
+
+If you are trying to echo the variable, you have to first sanitize it and then escape it, as for example:
+
+```php
+echo esc_html(sanitize_text_field($_POST['example']));
+```
+
+### Files: Use the WordPress file uploader
+
+**Please use WordPress' file uploader**
+
+When plugins use move_uploaded_file(), they exclude their uploads from the built-in checks and balances with WordPress's functions. Instead of that, you should use the built in function:
+
+[https://developer.wordpress.org/reference/functions/wp_handle_upload/](https://developer.wordpress.org/reference/functions/wp_handle_upload/)
+
+#### Files: Unfiltered uploads
+
+**ALLOW_UNFILTERED_UPLOADS is not allowed.**
+
+Setting this constant to true will allow the user to upload any type of file (including PHP and other executables), creating serious potential security risks. As developers, we should not use or allow the use of this constant in any kind of logic, not even in a conditional.
+
+WordPress includes a list of safe files, as you can see in the function [wp_get_mime_types](https://developer.wordpress.org/reference/functions/wp_get_mime_types).
+
+If you need to add a specific file that is not in the list and that won't represent a security risk, you can do so using the [upload_mimes](https://developer.wordpress.org/reference/hooks/upload_mimes/) filter.
+
+### Calling files remotely
+
+Offloading images, js, css, and other scripts to your servers or any remote service (like Google, MaxCDN, jQuery.com etc) is disallowed. When you call remote data you introduce an unnecessary dependency on another site. If the file you're calling isn't a part of WordPress Core, then you should include it -locally- in your plugin, not remotely. If the file IS included in WordPress core, please call that instead.
+
+An exception to this rule is if your plugin is performing a service. We will permit this on a case by case basis. Since this can be confusing we have some examples of what are not permitted:
+
+- Offloading jquery CSS files to Google - You should include the CSS in your plugin.
+- Inserting an iframe with a help doc - A link, or including the docs in your plugin is preferred.
+- Calling images from your own domain - They should be included in your plugin.
+
+Here are some examples of what we would permit:
+
+- Calling font families from Google or their approved CDN (if GPL compatible)
+- API calls back to your server to process possible spam comments (like Akismet)
+- Offloading comments to your own servers (like Disqus)
+- oEmbed calls to a service provider (like Twitter or YouTube)
+
+Please remove external dependencies from your plugin and, if possible, include all files within the plugin (that is not called remotely). If instead you feel you are providing a service, please re-write your readme.txt in a manner that explains the service, the servers being called, and if any account is needed to connect.
+
+### Libraries
+
+#### Libraries: Using development versions
+
+**Using Beta / Alpha / Development versions of libraries**
+
+We do not recommend you use the beta version of a library unless it has features required by your plugin. Instead, you should be using the most stable release of the library.
+
+If there is a technical reason you must use the beta version, please explain why. Otherwise, please change your library to the stable release.
+
+#### Libraries: Not maintained
+
+**Libraries that are no longer maintained are not permitted**
+
+We no longer accept using any library that is no longer supported or maintained by their developers, as they pose a significant security risk. Please consider other options.
+
+#### Libraries: Out of Date
+
+At least one of the 3rd party libraries you're using is out of date. Please upgrade to the latest stable version for better support and security. We do not recommend you use beta releases.
+
+### WPDB: Unsafe SQL calls
+
+When making database calls, it's highly important to protect your code from SQL injection vulnerabilities. You need to update your code to use wpdb calls and prepare() with your queries to protect them.
+
+Please review the following:
+
+*   [https://developer.wordpress.org/reference/classes/wpdb/#protect-queries-against-sql-injection-attacks](https://developer.wordpress.org/reference/classes/wpdb/#protect-queries-against-sql-injection-attacks)
+*   [https://codex.wordpress.org/Data\_Validation#Database](https://codex.wordpress.org/Data_Validation#Database)
+*   [https://make.wordpress.org/core/2012/12/12/php-warning-missing-argument-2-for-wpdb-prepare/](https://make.wordpress.org/core/2012/12/12/php-warning-missing-argument-2-for-wpdb-prepare/)
+*   [https://ottopress.com/2013/better-know-a-vulnerability-sql-injection/](https://ottopress.com/2013/better-know-a-vulnerability-sql-injection/)
+
+#### WPDB: Arrays of placeholders
+
+**Note**: Passing individual values to wpdb::prepare using placeholders is fairly straightforward, but what if we need to pass an array of values instead?
+
+You'll need to create a placeholder for each item of the array and pass all the corresponding values to those placeholders, this seems tricky, but here is a snippet to do so.
+
+`$wordcamp_id_placeholders = implode( ', ', array_fill( 0, count( $wordcamp_ids ), '%d' ) );`
+
+`$prepare_values = array_merge( array( $new_status ), $wordcamp_ids );`
+
+
+``$wpdb->query( $wpdb->prepare( "             UPDATE `$table_name`             SET `post_status` = %s             WHERE ID IN ( $wordcamp_id_placeholders )",             $prepare_values         ) );``
+
+There is a core ticket that could make this easier in the future: [https://core.trac.wordpress.org/ticket/54042](https://core.trac.wordpress.org/ticket/54042)
+
+### Not use HEREDOC-NOWDOC
+
+**Do not use HEREDOC or NOWDOC syntax in your plugins**
+
+While both are totally valid, and in many ways desirable features of PHP that allow you to output content, it comes with a cost that is too high for most plugins.
+
+The primary issue is that most (if not all) codesniffers won't detect lack of escaping in code when you use HEREDOC or NOWDOC. While there are ways around this they have the end result of dashing all that readability to the rubbish pile and leaving you with a jumbled mess that won't properly be scanned.
+
+We feel the risk here is much higher than the benefits, which is why we don't permit their use.
+
+### Direct file access
+
+**Allowing Direct File Access to plugin files**
+
+Direct file access is when someone directly queries your file. This can be done by simply entering the complete path to the file in the URL bar of the browser but can also be done by doing a POST request directly to the file. For files that only contain a PHP class the risk of something funky happening when directly accessed is pretty small. For files that contain procedural code, functions and function calls, the chance of security risks is a lot bigger.
+
+You can avoid this by putting this code at the top of all PHP files that could potentially execute code if accessed directly :
+
+```php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+```
+
+## Compatibility
+
+### Prefixing
 
 **Generic function/class/define/namespace/option names**
 
@@ -72,27 +278,98 @@ Related to this, using if (!function_exists('NAME')) { around all your functions
 
 Remember: Good prefix names are unique and distinct to your plugin. This will help you and the next person in debugging, as well as prevent conflicts.
 
-## Calling files remotely
+### PHP
 
-Offloading images, js, css, and other scripts to your servers or any remote service (like Google, MaxCDN, jQuery.com etc) is disallowed. When you call remote data you introduce an unnecessary dependency on another site. If the file you're calling isn't a part of WordPress Core, then you should include it -locally- in your plugin, not remotely. If the file IS included in WordPress core, please call that instead.
+#### PHP: Do not use Short Tags
 
-An exception to this rule is if your plugin is performing a service. We will permit this on a case by case basis. Since this can be confusing we have some examples of what are not permitted:
+The primary issue with PHP's short tags is that PHP managed to choose a tag (`<?`) that was used by another syntax: XML. This is a big issue when you consider how common XML parsing and management is.
 
-- Offloading jquery CSS files to Google - You should include the CSS in your plugin.
-- Inserting an iframe with a help doc - A link, or including the docs in your plugin is preferred.
-- Calling images from your own domain - They should be included in your plugin.
+We know as of PHP 5.4, `<?= ... ?>` tags are supported everywhere, regardless of short tags settings. This should mean they're safe to use in portable code but in reality that has proven not to be the case. Add on to that the fact that many codesniffers won't detect lack of escaping in code when you use short-tags, and it becomes not worth the headache for anyone.
 
-Here are some examples of what we would permit:
+Basically the risk here is way higher than the benefits, which is why we don't permit their use.
 
-- Calling font families from Google or their approved CDN (if GPL compatible)
-- API calls back to your server to process possible spam comments (like Akismet)
-- Offloading comments to your own servers (like Disqus)
-- oEmbed calls to a service provider (like Twitter or YouTube)
+#### PHP: Changing Settings globally
 
-Please remove external dependencies from your plugin and, if possible, include all files within the plugin (that is not called remotely). If instead you feel you are providing a service, please re-write your readme.txt in a manner that explains the service, the servers being called, and if any account is needed to connect.
+**Don't Force Set PHP Settings Globally**
 
+While many plugins can need optimal settings for PHP, we ask you please not set them as global defaults.
 
-## Use HTTP API
+Having defines like ini_set('memory_limit', '-1'); run globally (like on init or in the __construct() part of your code) means you'll be running that for everything on the site, which may cause your users to fall out of compliance with any limits or restrictions on their host.
+
+If you must use those, you need to limit them specifically to only the exact functions that require them.
+
+#### PHP: Setting a default timezone
+
+This is rarely a good idea. People should be able to define their own timezones in WordPress.
+
+Also WordPress explicitly sets and expects the default timezone to be UTC (in settings.php) and the date/time functions sometimes rely on the fact that the default timezone is UTC. For instance if you do date_default_timezone_set(get_option('timezone_string')) and then later try to get a GMT timestamp from get_post_time() or get_post_modified_time(), it will fail to give you the right date.
+
+#### PHP: Error reporting
+
+**Don't Use Error Reporting in Production Code**
+
+While error_reporting() is a great tool in PHP ( [https://www.php.net/manual/en/function.error-reporting.php](https://www.php.net/manual/en/function.error-reporting.php) ) but if you set it permanently in your plugin, you mess things up for everyone who uses your code. Should they have a reason to try to debug their site which happens to use your code, they won't be able to get a clean test because you're messing with the output. It has no place in the day to day function of your plugin.
+
+### Plugin standards
+
+#### Main file convention
+
+**The main file of the plugin has a name that does not follow the convention.**
+
+We expect the main plugin file (the file containing the plugin headers) to have the same name as the plugin folder, which is also the same name as the slug / permalink of the plugin.
+
+For example, if your plugin slug is `ecpt-social-manager` we expect your main plugin filename to be `ecpt-social-manager.php`.
+
+Note that using some common names as the filename for the main plugin file can lead to issues in some configurations.
+
+Please check out our tips on how to [structure files and folders in a plugin](https://developer.wordpress.org/plugins/plugin-basics/best-practices/#folder-structure).
+
+#### Incomplete Headers
+
+Your headers are either missing or incomplete.
+
+Please review [Header Requirements](https://developer.wordpress.org/plugins/the-basics/header-requirements/) and update your plugin accordingly, putting the headers in only the main file.
+
+#### Incomplete Readme
+
+Your readme is either missing or incomplete.
+
+In some cases, such as for first plugins, ones with dependencies, or plugins that call external services, we require you to provide a complete readme. This means your readme has to have headers as well as a proper description and documentation as to how it works and how one can use it.
+
+Our goal with this is to make sure everyone knows what they're installing and what they need to do before they install it. No surprises. This is especially important if your plugin is making calls to other servers. You are expected to provide users with all the information they need before they install your plugin.
+
+Your readme also must validate per [Validator](https://wordpress.org/plugins/about/validator/) or we will reject it. Keep in mind, we don't want to see a readme.MD. While they can work, a readme.txt file will always be given priority, and not all of the markdown will work as expected.
+
+We ask you please create your readme one based on this: [https://wordpress.org/plugins/readme.txt](https://wordpress.org/plugins/readme.txt)
+
+#### No GPL-compatible license declared
+
+It is necessary to declare the license of this plugin. You can do this using the fields available both in the plugin readme and in the plugin headers.
+
+Remember that all code, data, and images — anything stored in the plugin directory hosted on WordPress.org — must comply with the GPL or a GPL-Compatible license. Included third-party libraries, code, images, or otherwise, must be also compatible.
+
+For a specific list of compatible licenses, [please read the GPL-Compatible license list on gnu.org](https://www.gnu.org/licenses/license-list.html#GPLCompatibleLicenses).
+
+Your Stable Tag is meant to be the stable version of your plugin, not of WordPress. For your plugin to be properly downloaded from WordPress.org, those values need to be the same. If they're out of sync, your users won't get the right version of your code.
+
+We recommend you use Semantic Versioning (aka SemVer) for managing versions:
+
+- [Software Versioning](https://en.wikipedia.org/wiki/Software_versioning)
+- [SemVer](https://semver.org/)
+
+Please note: While currently using the stable tag of trunk currently works in the Plugin Directory, it's not actually a supported or recommended method to indicate new versions and has been known to cause issues with automatic updates.
+
+We ask you please properly use tags and increment them when you release new versions of your plugin, just like you update the plugin version in the main file. Having them match is the best way to be fully forward supporting.
+
+#### Declared license mismatched
+
+When declaring the license for this plugin, it has to be the same.
+
+Please make sure that you are declaring the same license in both the readme file and the plugin headers.
+
+It is fine for this plugin to contain code from other sources under other licenses as long those are well documented and are under GPL or GPL-Compatible license, but we need a sole license declared for your code.
+
+### Use HTTP API
 
 **Using CURL Instead of HTTP API**
 
@@ -104,79 +381,47 @@ In case you need, you can use setopt with [https://developer.wordpress.org/refer
 
 Please note: If you're using CURL in 3rd party vendor libraries, that's permitted. It's in your own code unique to this plugin (or any dedicated WordPress libraries) that we need it corrected.
 
-## Changing Active Plugins
+### Use wp_enqueue commands
 
-It is not allowed for plugins to change the activation status of other plugins, this is an action that must be performed by the user.
+Your plugin is not correctly including JS and/or CSS. You should be using the built in functions for this:
 
-It is also not allowed to interfere with the user's actions when activating or deactivating a plugin, unless that's done to prevent errors (For example: When your plugin depends on another plugin, deactivate your own plugin when that other plugin is not active).
+When including **JavaScript code** you can use:
 
-WordPress 6.5 introduces [Plugin Dependencies](https://make.wordpress.org/core/2024/03/05/introducing-plugin-dependencies-in-wordpress-6-5/), you can use it to manage dependencies (although it's fine if you use this as a fallback).
+- wp_register_script() and [wp_enqueue_script()](https://developer.wordpress.org/reference/functions/wp_enqueue_script/) to add JavaScript code from a file.
+- [wp_add_inline_script()](https://developer.wordpress.org/reference/functions/wp_add_inline_script/) to add inline JavaScript code to previous declared scripts.
 
-## Unfiltered uploads
+When including **CSS** you can use:
 
-**ALLOW_UNFILTERED_UPLOADS is not allowed.**
+- wp_register_style() and [wp_enqueue_style()](https://developer.wordpress.org/reference/functions/wp_enqueue_style/) to add CSS from a file.
+- [wp_add_inline_style()](https://developer.wordpress.org/reference/functions/wp_add_inline_style/) to add inline CSS to previously declared CSS.
 
-Setting this constant to true will allow the user to upload any type of file (including PHP and other executables), creating serious potential security risks. As developers, we should not use or allow the use of this constant in any kind of logic, not even in a conditional.
+Note that as of WordPress 5.7, you can pass attributes like async, nonce, and type by using new functions and filters: [Script Attributes Related Functions in WordPress 5.7](https://make.wordpress.org/core/2021/02/23/introducing-script-attributes-related-functions-in-wordpress-5-7/)
 
-WordPress includes a list of safe files, as you can see in the function [wp_get_mime_types](https://developer.wordpress.org/reference/functions/wp_get_mime_types).
+If you're trying to enqueue on the admin pages you'll want to use the admin enqueues.
 
-If you need to add a specific file that is not in the list and that won't represent a security risk, you can do so using the [upload_mimes](https://developer.wordpress.org/reference/hooks/upload_mimes/) filter.
+- [admin_enqueue_scripts](https://developer.wordpress.org/reference/hooks/admin_enqueue_scripts/)
+- [admin_print_scripts](https://developer.wordpress.org/reference/hooks/admin_print_scripts/)
+- [admin_print_styles](https://developer.wordpress.org/reference/hooks/admin_print_styles/)
 
-## Default timezone
+### Including Libraries Already In Core
 
-**Setting a default timezone**
+Your plugin has included a copy of a library that WordPress already includes.
 
-This is rarely a good idea. People should be able to define their own timezones in WordPress.
+WordPress includes a number of useful libraries, such as jQuery, Atom Lib, SimplePie, PHPMailer, PHPass, and more. For security and stability reasons, plugins may not include those libraries in their own code, but instead must use the versions of those libraries packaged with WordPress.
 
-Also WordPress explicitly sets and expects the default timezone to be UTC (in settings.php) and the date/time functions sometimes rely on the fact that the default timezone is UTC. For instance if you do date_default_timezone_set(get_option('timezone_string')) and then later try to get a GMT timestamp from get_post_time() or get_post_modified_time(), it will fail to give you the right date.
+You can see the list of JS Libraries here:
 
-## File uploader
+[Default Scripts and JS Libraries included and registered by WordPress](https://developer.wordpress.org/reference/functions/wp_enqueue_script/#default-scripts-and-js-libraries-included-and-registered-by-wordpress)
 
-**Please use WordPress' file uploader**
+While we do not YET have a decent public facing page to list all these libraries, we do have a list here:
 
-When plugins use move_uploaded_file(), they exclude their uploads from the built-in checks and balances with WordPress's functions. Instead of that, you should use the built in function:
+[Core Credits](https://meta.trac.wordpress.org/browser/sites/trunk/api.wordpress.org/public_html/core/credits/wp-59.php#L739)
 
-[https://developer.wordpress.org/reference/functions/wp_handle_upload/](https://developer.wordpress.org/reference/functions/wp_handle_upload/)
+It’s fine to locally include add-ons not in core, but please ONLY add those additional files. For example, you do not need the entire jQuery UI library for one file. If your code doesn't work with the built-in versions of jQuery, it's most likely a noConflict issue.
 
-## Error reporting
+### Internationalization
 
-**Don't Use Error Reporting in Production Code**
-
-While error_reporting() is a great tool in PHP ( [https://www.php.net/manual/en/function.error-reporting.php](https://www.php.net/manual/en/function.error-reporting.php) ) but if you set it permanently in your plugin, you mess things up for everyone who uses your code. Should they have a reason to try to debug their site which happens to use your code, they won't be able to get a clean test because you're messing with the output. It has no place in the day to day function of your plugin.
-
-## PHP Limits
-
-**Don't Force Set PHP Limits Globally**
-
-While many plugins can need optimal settings for PHP, we ask you please not set them as global defaults.
-
-Having defines like ini_set('memory_limit', '-1'); run globally (like on init or in the __construct() part of your code) means you'll be running that for everything on the site, which may cause your users to fall out of compliance with any limits or restrictions on their host.
-
-If you must use those, you need to limit them specifically to only the exact functions that require them.
-
-## Update checker
-
-**Including An Update Checker / Changing Updates functionality**
-
-Please remove the checks you have in your plugin to provide for updates.
-
-We do not permit plugins to phone home to other servers for updates, as we are providing that service for you with WordPress.org hosting. One of our guidelines is that you actually use our hosting, so we need you to remove that code.
-
-We also ask that plugins not interfere with the built-in updater as it will cause users to have unexpected results with WordPress 5.5 and up.
-
-## Direct file access
-
-**Allowing Direct File Access to plugin files**
-
-Direct file access is when someone directly queries your file. This can be done by simply entering the complete path to the file in the URL bar of the browser but can also be done by doing a POST request directly to the file. For files that only contain a PHP class the risk of something funky happening when directly accessed is pretty small. For files that contain procedural code, functions and function calls, the chance of security risks is a lot bigger.
-
-You can avoid this by putting this code at the top of all PHP files that could potentially execute code if accessed directly :
-
-```php
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
-```
-
-## Variables as text
+#### Internationalization: Using variables
 
 **Internationalization: Don't use variables or defines as text, context or text domain parameters.**
 
@@ -217,79 +462,27 @@ printf(
 
 You can read [more information here](https://developer.wordpress.org/plugins/internationalization/how-to-internationalize-your-plugin/#text-domains).
 
+## Compliance
 
-## Use esc_url_raw
+### Changing Active Plugins
 
-**Note: esc_url_raw**
+It is not allowed for plugins to change the activation status of other plugins, this is an action that must be performed by the user.
 
-We know this is confusing, the `esc_url_raw` function is not an escaping function, but a sanitizing function similar to `sanitize_url`. Specifically it is used to sanitize a URL for use in a database or a redirection.
+It is also not allowed to interfere with the user's actions when activating or deactivating a plugin, unless that's done to prevent errors (For example: When your plugin depends on another plugin, deactivate your own plugin when that other plugin is not active).
 
-The appropriate function to escape a URL is `esc_url`.
+WordPress 6.5 introduces [Plugin Dependencies](https://make.wordpress.org/core/2024/03/05/introducing-plugin-dependencies-in-wordpress-6-5/), you can use it to manage dependencies (although it's fine if you use this as a fallback).
 
-## Escaping __
+### Update checker
 
-**Note: __**
+**Including An Update Checker / Changing Updates functionality**
 
-The function `__` retrieves the translation without escaping, please either:
+Please remove the checks you have in your plugin to provide for updates.
 
-- Use an alternative function that escapes the resulting value such as `esc_html__` or `esc_attr__`.
-- Or wrap the `__` function with a proper escaping function such as `esc_html`, `esc_attr`, `wp_kses_post`, etc.
+We do not permit plugins to phone home to other servers for updates, as we are providing that service for you with WordPress.org hosting. One of our guidelines is that you actually use our hosting, so we need you to remove that code.
 
-Examples:
-```php
-<h2><?php echo esc_html__('Settings page', 'plugin-slug'); ?></h2>
-<h2><?php echo esc_html(__('Settings page', 'plugin-slug')); ?></h2>
-```
+We also ask that plugins not interfere with the built-in updater as it will cause users to have unexpected results with WordPress 5.5 and up.
 
-## Escaping _e and _ex
-
-**Note: _e and _ex**
-
-The functions `_e` and `_ex` output the translation without escaping, please use an alternative function that escapes the output.
-
-- An alternative to `_e` would be `esc_html_e`, `esc_attr_e` or simply using `__` wrapped by an escaping function and inside an `echo`.
-- An alternative to `_ex` would be using `_x` wrapped by an escaping function and inside an `echo`.
-
-Examples:
-```php
-<h2><?php esc_html_e('Settings page', 'plugin-slug'); ?></h2>
-<h2><?php echo esc_html(__('Settings page', 'plugin-slug')); ?></h2>
-<h2><?php echo esc_html(_x('Settings page', 'Settings page title', 'plugin-slug')); ?></h2>
-```
-
-## Use wp_json_encode
-
-**Note: wp_json_encode**
-
-When you need to echo a JSON, it's better to make use of the function `wp_json_encode`, also, make sure you are not avoiding escaping with the options passed on the second parameter.
-
-```php
-echo wp_json_encode($array_or_object);
-```
-
-## Sanitize functions
-
-Sanitize functions cannot be used to escape. They serve different purposes. Even if they seem to be perfect for this purpose, most of the functions are filterable and people expect to use them to sanitize. Therefore, another plugin may change what they do and make yours at risk and exploitable.
-
-If you are trying to echo the variable, you have to first sanitize it and then escape it, as for example:
-
-```php
-echo esc_html(sanitize_text_field($_POST['example']));
-```
-
-## Escaping with wp_kses
-
-When escaping, there are cases where your plugin will need to output HTML. This can be done using the functions `wp_kses_post` or `wp_kses`. The function `wp_kses_post` will allow any common HTML that can go inside a post content, `wp_kses` will allow any HTML that you set up using its second and third parameters, please [refer to its documentation](https://developer.wordpress.org/reference/functions/wp_kses/).
-
-A common mistake is to use `esc_html` to escape HTML. This function is not intended for that, it's intended to escape the output that will go **inside** an HTML tag, therefore it will strip any HTML tags.
-
-Examples:
-```php
-echo wp_kses_post($html_content);
-echo wp_kses($html_content, array( 'a', 'div', 'span' ));
-```
-
-## Undocumented 3rd party
+### Undocumented 3rd party
 
 **Undocumented use of a 3rd Party or external service**
 
@@ -305,17 +498,7 @@ In order to do so, you must update your readme to do the following:
 
 Remember, this is for your own legal protection. Use of services must be upfront and well documented.
 
-## Using composer
-
-**Using composer but could not find composer.json file**
-
-We noticed that your plugin is using Composer to handle library dependencies, that's great as it will help maintaining and updating your plugin in the future while avoiding collisions with other plugins that are using same libraries.
-
-The `composer.json` file describes the dependencies of your project and may contain other metadata as well. It's a small file that typically can be found in the top-most directory of your plugin.
-
-As one of the strengths of open source is the ability to review, observe, and adapt code, **we would like to ask you to include that file in your plugin**, even if it is only used for development purposes. This will allow others to exercise the open source freedoms from which we all benefit.
-
-## Included Unneeded Folders
+### Included Unneeded Folders
 
 This plugin includes folders and files that looks like are not required for the running of your plugin. Some examples are:
 
@@ -332,65 +515,19 @@ You should also keep and/or link configuration files, as for example, the `compo
 
 But you can, and should, safely remove those other unneeded folders from your plugins.
 
-## Use wp_enqueue commands
-
-Your plugin is not correctly including JS and/or CSS. You should be using the built in functions for this:
-
-When including **JavaScript code** you can use:
-
-- wp_register_script() and [wp_enqueue_script()](https://developer.wordpress.org/reference/functions/wp_enqueue_script/) to add JavaScript code from a file.
-- [wp_add_inline_script()](https://developer.wordpress.org/reference/functions/wp_add_inline_script/) to add inline JavaScript code to previous declared scripts.
-
-When including **CSS** you can use:
-
-- wp_register_style() and [wp_enqueue_style()](https://developer.wordpress.org/reference/functions/wp_enqueue_style/) to add CSS from a file.
-- [wp_add_inline_style()](https://developer.wordpress.org/reference/functions/wp_add_inline_style/) to add inline CSS to previously declared CSS.
-
-Note that as of WordPress 5.7, you can pass attributes like async, nonce, and type by using new functions and filters: [Script Attributes Related Functions in WordPress 5.7](https://make.wordpress.org/core/2021/02/23/introducing-script-attributes-related-functions-in-wordpress-5-7/)
-
-If you're trying to enqueue on the admin pages you'll want to use the admin enqueues.
-
-- [admin_enqueue_scripts](https://developer.wordpress.org/reference/hooks/admin_enqueue_scripts/)
-- [admin_print_scripts](https://developer.wordpress.org/reference/hooks/admin_print_scripts/)
-- [admin_print_styles](https://developer.wordpress.org/reference/hooks/admin_print_styles/)
-
-## Not permitted files
+### Not permitted files
 
 A plugin typically consists of files related to the plugin functionality (php, js, css, txt, md) and maybe some multimedia files (png, svg, jpg) and / or data files (json, xml).
 
 We have detected files that are not among of the files normally found in a plugin, are they necessary? If not, then those won't be allowed.
 
-## Including Libraries Already In Core
+#### Including code from a "premium" source
 
-Your plugin has included a copy of a library that WordPress already includes.
+Some premium libraries are specifically not permitted to be included in free (WordPress.org hosted) plugins. Those must be removed.
 
-WordPress includes a number of useful libraries, such as jQuery, Atom Lib, SimplePie, PHPMailer, PHPass, and more. For security and stability reasons, plugins may not include those libraries in their own code, but instead must use the versions of those libraries packaged with WordPress.
+### GPL
 
-You can see the list of JS Libraries here:
-
-[Default Scripts and JS Libraries included and registered by WordPress](https://developer.wordpress.org/reference/functions/wp_enqueue_script/#default-scripts-and-js-libraries-included-and-registered-by-wordpress)
-
-While we do not YET have a decent public facing page to list all these libraries, we do have a list here:
-
-[Core Credits](https://meta.trac.wordpress.org/browser/sites/trunk/api.wordpress.org/public_html/core/credits/wp-59.php#L739)
-
-It’s fine to locally include add-ons not in core, but please ONLY add those additional files. For example, you do not need the entire jQuery UI library for one file. If your code doesn't work with the built-in versions of jQuery, it's most likely a noConflict issue.
-
-## Libraries not maintained
-
-**Libraries that are no longer maintained are not permitted**
-
-We no longer accept using any library that is no longer supported or maintained by their developers, as they pose a significant security risk. Please consider other options.
-
-## Using development versions
-
-**Using Beta / Alpha / Development versions of libraries**
-
-We do not recommend you use the beta version of a library unless it has features required by your plugin. Instead, you should be using the most stable release of the library.
-
-If there is a technical reason you must use the beta version, please explain why. Otherwise, please change your library to the stable release.
-
-## Non-GPL Code Included
+#### GPL: Non-GPL compatible Code Included
 
 It's required that all code be compatible with the GPLv2 (or later) license in order to be included in our directory.
 
@@ -399,23 +536,7 @@ You must remove the code and alter the plugin so it is not required. We suggest 
 - [GNU Licenses - License List](https://www.gnu.org/licenses/license-list.html)
 - [GPL FAQ - All Compatibility](https://www.gnu.org/licenses/gpl-faq.html#AllCompatibility)
 
-## Out of Date Libraries
-
-At least one of the 3rd party libraries you're using is out of date. Please upgrade to the latest stable version for better support and security. We do not recommend you use beta releases.
-
-## Including code from a "premium" source
-
-Some premium libraries are specifically not permitted to be included in free (WordPress.org hosted) plugins. Those must be removed.
-
-## Newer versions of Sweetalert violate our guidelines
-
-SweetAlert2 v11.4.9 and upward make remote calls that are not required for use. This is a violation of our guidelines, as it allows 3rd parties to track usage without consent or permission.
-
-This project is listed in the [GitHub Advisory Database](https://github.com/advisories/GHSA-qq6h-5g6j-q3cm) and [Snyk Vulnerability DB](https://security.snyk.io/package/npm/sweetalert2/11.5.2).
-
-They, and we, recommend not using above 11.4.8 for your users' privacy.
-
-## No publicly documented resource
+#### GPL: No publicly documented resource
 
 **No publicly documented resource for your compressed content**
 
@@ -433,138 +554,10 @@ For example, if you’ve made a Gutenberg plugin and used npm and webpack to com
 
 We strongly recommend you include directions on the use of any build tools to encourage future developers.
 
-## Not use HEREDOC-NOWDOC
+#### GPL: Using composer but no composer.json file
 
-**Do not use HEREDOC or NOWDOC syntax in your plugins**
+We noticed that your plugin is using Composer to handle library dependencies, that's great as it will help maintaining and updating your plugin in the future while avoiding collisions with other plugins that are using same libraries.
 
-While both are totally valid, and in many ways desirable features of PHP that allow you to output content, it comes with a cost that is too high for most plugins.
+The `composer.json` file describes the dependencies of your project and may contain other metadata as well. It's a small file that typically can be found in the top-most directory of your plugin.
 
-The primary issue is that most (if not all) codesniffers won't detect lack of escaping in code when you use HEREDOC or NOWDOC. While there are ways around this they have the end result of dashing all that readability to the rubbish pile and leaving you with a jumbled mess that won't properly be scanned.
-
-We feel the risk here is much higher than the benefits, which is why we don't permit their use.
-
-## Do not use PHP Short Tags
-
-The primary issue with PHP's short tags is that PHP managed to choose a tag (`<?`) that was used by another syntax: XML. This is a big issue when you consider how common XML parsing and management is.
-
-We know as of PHP 5.4, `<?= ... ?>` tags are supported everywhere, regardless of short tags settings. This should mean they're safe to use in portable code but in reality that has proven not to be the case. Add on to that the fact that many codesniffers won't detect lack of escaping in code when you use short-tags, and it becomes not worth the headache for anyone.
-
-Basically the risk here is way higher than the benefits, which is why we don't permit their use.
-
-## Main file convention
-
-**The main file of the plugin has a name that does not follow the convention.**
-
-We expect the main plugin file (the file containing the plugin headers) to have the same name as the plugin folder, which is also the same name as the slug / permalink of the plugin.
-
-For example, if your plugin slug is `ecpt-social-manager` we expect your main plugin filename to be `ecpt-social-manager.php`.
-
-Note that using some common names as the filename for the main plugin file can lead to issues in some configurations.
-
-Please check out our tips on how to [structure files and folders in a plugin](https://developer.wordpress.org/plugins/plugin-basics/best-practices/#folder-structure).
-
-## Incomplete Headers
-
-Your headers are either missing or incomplete.
-
-Please review [Header Requirements](https://developer.wordpress.org/plugins/the-basics/header-requirements/) and update your plugin accordingly, putting the headers in only the main file.
-
-## Incomplete Readme
-
-Your readme is either missing or incomplete.
-
-In some cases, such as for first plugins, ones with dependencies, or plugins that call external services, we require you to provide a complete readme. This means your readme has to have headers as well as a proper description and documentation as to how it works and how one can use it.
-
-Our goal with this is to make sure everyone knows what they're installing and what they need to do before they install it. No surprises. This is especially important if your plugin is making calls to other servers. You are expected to provide users with all the information they need before they install your plugin.
-
-Your readme also must validate per [Validator](https://wordpress.org/plugins/about/validator/) or we will reject it. Keep in mind, we don't want to see a readme.MD. While they can work, a readme.txt file will always be given priority, and not all of the markdown will work as expected.
-
-We ask you please create your readme one based on this: [https://wordpress.org/plugins/readme.txt](https://wordpress.org/plugins/readme.txt)
-
-## Declared license mismatched
-
-When declaring the license for this plugin, it has to be the same.
-
-Please make sure that you are declaring the same license in both the readme file and the plugin headers.
-
-It is fine for this plugin to contain code from other sources under other licenses as long those are well documented and are under GPL or GPL-Compatible license, but we need a sole license declared for your code.
-
-## No GPL-compatible license declared
-
-It is necessary to declare the license of this plugin. You can do this using the fields available both in the plugin readme and in the plugin headers.
-
-Remember that all code, data, and images — anything stored in the plugin directory hosted on WordPress.org — must comply with the GPL or a GPL-Compatible license. Included third-party libraries, code, images, or otherwise, must be also compatible.
-
-For a specific list of compatible licenses, [please read the GPL-Compatible license list on gnu.org](https://www.gnu.org/licenses/license-list.html#GPLCompatibleLicenses).
-
-Your Stable Tag is meant to be the stable version of your plugin, not of WordPress. For your plugin to be properly downloaded from WordPress.org, those values need to be the same. If they're out of sync, your users won't get the right version of your code.
-
-We recommend you use Semantic Versioning (aka SemVer) for managing versions:
-
-- [Software Versioning](https://en.wikipedia.org/wiki/Software_versioning)
-- [SemVer](https://semver.org/)
-
-Please note: While currently using the stable tag of trunk currently works in the Plugin Directory, it's not actually a supported or recommended method to indicate new versions and has been known to cause issues with automatic updates.
-
-We ask you please properly use tags and increment them when you release new versions of your plugin, just like you update the plugin version in the main file. Having them match is the best way to be fully forward supporting.
-
-## Processing the whole input
-
-We strongly recommend you **never** attempt to process the whole $_POST/$_REQUEST/$_GET stack. This makes your plugin slower as you're needlessly cycling through data you don't need. Instead, you should only be attempting to process the items within that are required for your plugin to function.
-
-## Confusion about escape and sanitize functions
-
-**Note**: escape functions cannot be used to sanitize. They serve different purposes. Even if they seem to be perfect for this purpose, most of the functions are filterable and people expect to use them to escape. Therefore, another plugin may change what they do and make yours at risk and exploitable.
-
-If you are trying to echo the variable, you have to first sanitize it and then escape it, as for example:
-
-
-```php
-echo esc_html(sanitize_text_field($_POST['example']));
-```
-
-## Using filter functions to sanitize
-
-**Note**: When using functions like `filter_var`, `filter_var_array`, `filter_input` and/or `filter_input_array` you will need to [set the FILTER parameter to any kind of filter that sanitizes the input](https://www.php.net/manual/en/filter.filters.php).
-
-Leaving the filter parameter empty, PHP by default will apply the filter "FILTER_DEFAULT" **which is not sanitizing at all**.
-
-```php
-$post_id = filter_input(INPUT_GET, 'post_id', FILTER_SANITIZE_NUMBER_INT);
-```
-
-## Sanitize function when use wp_verify_nonce
-
-**Note**: When checking a nonce using `wp_verify_nonce` you will need to sanitize the input using `wp_unslash` AND `sanitize_text_field`, [this is because this function is pluggable, and extenders should not trust its input values](https://developer.wordpress.org/news/2023/08/understand-and-use-wordpress-nonces-properly/#verifying-the-nonce).
-
-Example:
-```php
-if ( ! isset( $_POST['prefix_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash ( $_POST['prefix_nonce'] ) ) , 'prefix_nonce' ) )
-```
-
-## WPDB Prepare function confuse
-  
-**Note**: Passing individual values to wpdb::prepare using placeholders is fairly straightforward, but what if we need to pass an array of values instead?  
-  
-You'll need to create a placeholder for each item of the array and pass all the corresponding values to those placeholders, this seems tricky, but here is a snippet to do so.  
-
-      
-`$wordcamp_id_placeholders = implode( ', ', array_fill( 0, count( $wordcamp_ids ), '%d' ) );`
-      
-`$prepare_values = array_merge( array( $new_status ), $wordcamp_ids );`
-      
-      
-``$wpdb->query( $wpdb->prepare( "             UPDATE `$table_name`             SET `post_status` = %s             WHERE ID IN ( $wordcamp_id_placeholders )",             $prepare_values         ) );``
-
-There is a core ticket that could make this easier in the future: [https://core.trac.wordpress.org/ticket/54042](https://core.trac.wordpress.org/ticket/54042)  
-
-## Unsafe SQL calls**  
-  
-When making database calls, it's highly important to protect your code from SQL injection vulnerabilities. You need to update your code to use wpdb calls and prepare() with your queries to protect them.  
-  
-Please review the following:
-
-*   [https://developer.wordpress.org/reference/classes/wpdb/#protect-queries-against-sql-injection-attacks](https://developer.wordpress.org/reference/classes/wpdb/#protect-queries-against-sql-injection-attacks)
-*   [https://codex.wordpress.org/Data\_Validation#Database](https://codex.wordpress.org/Data_Validation#Database)
-*   [https://make.wordpress.org/core/2012/12/12/php-warning-missing-argument-2-for-wpdb-prepare/](https://make.wordpress.org/core/2012/12/12/php-warning-missing-argument-2-for-wpdb-prepare/)
-*   [https://ottopress.com/2013/better-know-a-vulnerability-sql-injection/](https://ottopress.com/2013/better-know-a-vulnerability-sql-injection/)
+As one of the strengths of open source is the ability to review, observe, and adapt code, **we would like to ask you to include that file in your plugin**, even if it is only used for development purposes. This will allow others to exercise the open source freedoms from which we all benefit.
