@@ -359,6 +359,10 @@ Remember that all code, data, and images — anything stored in the plugin direc
 
 For a specific list of compatible licenses, [please read the GPL-Compatible license list on gnu.org](https://www.gnu.org/licenses/license-list.html#GPLCompatibleLicenses).
 
+#### Incorrect Stable Tag
+
+In your readme, your 'Stable Tag' does not match the Plugin Version as indicated in your main plugin file.
+
 Your Stable Tag is meant to be the stable version of your plugin, not of WordPress. For your plugin to be properly downloaded from WordPress.org, those values need to be the same. If they're out of sync, your users won't get the right version of your code.
 
 We recommend you use Semantic Versioning (aka SemVer) for managing versions:
