@@ -37,12 +37,11 @@ There are three directories created by default in all SVN repositories.
 /trunk/
 ```
 
-_The /branches/ directory is no longer created by default, as it was unused._
-
 - Use `assets` for [screenshots, plugin headers, and plugin icons](https://developer.wordpress.org/plugins/wordpress-org/plugin-assets/).
 - Development work belongs in `trunk`.
 - Releases go in `tags`.
-- Divergent branches of code go into `branches`.
+
+_A `/branches/` directory that was used for divergent code is no longer created by default, as it was unused._
 
 ### Trunk
 
