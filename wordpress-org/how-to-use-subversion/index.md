@@ -88,7 +88,7 @@ Many people use `trunk` as a placeholder. While it's possible to simply update t
 
 ### Always Tag Releases
 
-While it's possible to use trunk as a stable tag for plugins, this feature is not actually supported nor recommended. Instead, releases should be properly tagged an iterated. This will ensure full compatibility with any automatic updater, as well as allow for rollbacks should there be an issue with your code.
+While it's possible to use trunk as a stable tag for plugins, this feature is not actually supported nor recommended. Instead, releases should be properly tagged and iterated. This will ensure full compatibility with any automatic updater, as well as allow for rollbacks should there be an issue with your code.
 
 ### Create tags from trunk
 
