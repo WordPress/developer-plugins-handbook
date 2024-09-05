@@ -54,8 +54,7 @@ A function with a priority of 11 will run _after_ a function with a priority of 
 
 The second way that callback function order is determined is simply by the order in which it was registered _within the same priority value_. So if two callback functions are registered for the same hook with the same priority, they will be run in the order that they were registered to the hook.
 
-For example, the following callback functions are all registered to the  
-`init` hook, but with different priorities:
+For example, the following callback functions are all registered to the `init` hook, but with different priorities:
 
 ```
 add_action( 'init', 'wporg_callback_run_me_late', 11 );
