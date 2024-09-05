@@ -77,7 +77,7 @@ Log in as the official company user account and submit with that account _only_.
 
 We cannot accept plugins submitted by individual developer accounts, unless they're clearly company ones as well. For example, submitting your official Facerange plugin with a user that has a gmail address is likely to be flagged for trademark infringement.
 
-What if I submitted the plugin with the wrong user ID?
+### What if I submitted the plugin with the wrong user ID?
 
 Just reply to the email right away and let us know. We can transfer ownership for you. If you forget to do this, you can fix it yourself by [adding the correct account as a committer](https://developer.wordpress.org/plugins/wordpress-org/plugin-developer-faq/#how-do-i-give-someone-else-access-to-my-plugin) and then having that account remove your own.
 
@@ -310,7 +310,7 @@ Consider the real life example of Keurig. If you made an eco-friendly brew cup, 
 
 [alert]We no longer have permission to permit new plugins to use `woo` as the start of their permalink, and are required to enforce the use of `wc` instead.[/alert]
 
-Can a company give me permission to use their trademark in my permalink?
+### Can a company give me permission to use their trademark in my permalink?
 
 No.
 
