@@ -73,8 +73,7 @@ function wporg_remove_location_meta_from_comments_for_email( $email_address, $pa
 
 The next thing the plugin needs to do is to register the callback by filtering the eraser array using the [`wp_privacy_personal_data_erasers`](https://developer.wordpress.org/reference/hooks/wp_privacy_personal_data_erasers/) filter.
 
-When registering you provide a friendly name for the eraser (to aid in debugging – this friendly name is not shown to anyone at this time)  
-and the callback, e.g.
+When registering you provide a friendly name for the eraser (to aid in debugging – this friendly name is not shown to anyone at this time) and the callback, e.g.
 
 ```
 /**
