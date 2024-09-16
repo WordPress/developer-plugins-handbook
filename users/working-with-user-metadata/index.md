@@ -147,9 +147,9 @@ update_user_meta(
 );
 ```
 
-#### Delete
-
 Please refer to the Function Reference about [`update_user_meta()`](https://developer.wordpress.org/reference/functions/update_user_meta/) for full explanation about the used parameters.
+
+#### Delete
 
 ```
 delete_user_meta(
