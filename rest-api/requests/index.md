@@ -1,5 +1,7 @@
 # Requests
 
+## Overview
+
 The REST API is very simple in many ways. There is input, known as the request. The input is interpreted by the server and output is created. The output, is known as the response. In some ways, you can think of a request to the WordPress REST API as a set of directions or instructions that should be carried out and interpreted by the API. By default, the WordPress REST API is intended to use HTTP requests as its request medium. HTTP is the foundation for communication of data over the internet, which makes the WordPress REST API a very far reaching API. Requests in the API utilize a lot of the different aspects present in HTTP requests like URIs, HTTP methods, headers, and parameters. The data structure of a request is conveniently handled by the `WP_REST_Request` class.
 
 ## WP_REST_Request
