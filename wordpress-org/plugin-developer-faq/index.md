@@ -211,7 +211,7 @@ If you have complicated plugin with lots of files, you can of course organize th
 
 ### How should I name my tags (a.k.a. releases)?
 
-Your Subversion tags should look like version numbers. Specifically, they should only contain **numbers and periods**. `2.8.4` is a good lookin' tag, `my neato releaso` is a bad lookin' tag. We recommend you use [Semantic Versioning](http://semver.org) to keep track of releases, but we do not enforce this.
+Your Subversion tags should look like version numbers. Specifically, they should only contain **numbers and periods**. `2.8.4` is a good lookin' tag, `my neato releaso` is a bad lookin' tag. We recommend you use [Semantic Versioning](https://semver.org) to keep track of releases, but we do not enforce this.
 
 Note that we're talking about _Subversion_ tags here, not `readme.txt search type tags.
 
@@ -267,7 +267,7 @@ Yes. Otherwise no one gets updated.
 
 ### What should be in my changelog?
 
-A changelog is a log or record of all or all notable changes made to your plugin, including records of changes such as bug fixes, new features, etc. If you need help formatting your changelogs, we recommend [Keep A Changelog](https://keepachangelog.com/en/1.1.0/) as  that's the format used by many products out there.
+A changelog is a log or record of all or all notable changes made to your plugin, including records of changes such as bug fixes, new features, etc. If you need help formatting your changelogs, we recommend [Keep A Changelog](https://keepachangelog.com/en/1.1.0/) as that's the format used by many products out there.
 
 ### How many versions should I keep in my changelog?
 
