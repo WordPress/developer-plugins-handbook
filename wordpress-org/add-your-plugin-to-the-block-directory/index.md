@@ -15,7 +15,7 @@ Block Plugins are required to be much smaller and more minimalist than a regular
 
 If you’re a committer of a block plugin that does meet the criteria for adding it to the [Block Directory](https://wordpress.org/plugins/browse/block/) as confirmed by the Checker tool, you can then add it yourself [using the Block Checker tool](https://wordpress.org/plugins/developers/block-plugin-validator/):
 
-![](https://i0.wp.com/developer.wordpress.org/files/2020/08/Screen-Shot-2020-07-10-at-1.29.25-pm.png?resize=1024%2C308&ssl=1)
+![Block checker tool interface with a "Add Plugin Name to the Block Directory" button](https://i0.wp.com/developer.wordpress.org/files/2020/08/Screen-Shot-2020-07-10-at-1.29.25-pm.png?resize=1024%2C308&ssl=1)
 
 Likewise you can remove it at any time using that same tool if you notice problems or would prefer it wasn’t included.
 
