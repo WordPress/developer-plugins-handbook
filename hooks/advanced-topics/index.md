@@ -67,7 +67,7 @@ add_filter( 'the_excerpt', 'wporg_modify_content' );
 
 Some hooks are called multiple times in the course of execution, but you may only want your callback function to run once.
 
-In this situation, you can check how many times the hook has run with the [` did_action()`](https://developer.wordpress.org/reference/functions/did_action/).
+In this situation, you can check how many times the hook has run with the [`did_action()`](https://developer.wordpress.org/reference/functions/did_action/).
 
 ```
 function wporg_custom() {
