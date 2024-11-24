@@ -8,14 +8,14 @@ If you’re transferring your plugin to a new owner, there are two steps that mu
 
 First, add the new user as a **committer** to the plugin:
 
-- go to `https://wordpress.org/plugins/YOURPLUGIN/advanced` and add their username in as a committer
+- go to `https://wordpress.org/plugins/YOURPLUGIN/advanced` and add their username in as a committer
 - update the `readme.txt` to add their userID as an author
 
 Next, go to the Advanced tab and scroll down to the Danger Zone. There you will see a section for **Transfer Your Plugin**. Pick someone from the dropdown and click the button.
 
 If there are no other committers, the plugin will not be available to be transferred, so you must do that first.
 
-![](https://i0.wp.com/developer.wordpress.org/files/2020/04/transfer.jpeg?resize=1024%2C558&ssl=1)
+![Transfer this plugin interface with a selector for the new owner and a "Please transfer -Plugin Name-" button](https://i0.wp.com/developer.wordpress.org/files/2020/04/transfer.jpeg?resize=1024%2C558&ssl=1)
 
 ## For Plugins with OVER 10,000 Users (or are beta/featured)
 
