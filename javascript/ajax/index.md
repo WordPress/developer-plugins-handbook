@@ -108,7 +108,7 @@ XML is the old data exchange format for AJAX. It is after all the ‘X' in AJAX.
 
 #### JSON
 
-JSON is often favored for its light weight and ease of use. You can actually parse JSON using `eval()`, but don't do that! The use of `eval()` carries significant security risks. Instead, use a dedicated parser, which is also faster. Use the global instance of the parser object `JSON`. To ensure that it is available, be sure it is enqueued with other scripts on the page. More information about enqueuing is included later in the [PHP section](https://developer.wordpress.org/plugins/javascript/ajax/#json "Page section").
+JSON is often favored for its light weight and ease of use. You can actually parse JSON using `eval()`, but don't do that! The use of `eval()` carries significant security risks. Instead, use a dedicated parser, which is also faster. Use the global instance of the parser object `JSON`. There are [specific functions to provide an easy way to give a response in JSON format](https://developer.wordpress.org/plugins/javascript/enqueuing/#json) to your AJAX call.
 
 #### Other
 
