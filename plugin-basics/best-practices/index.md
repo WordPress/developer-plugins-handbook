@@ -181,5 +181,6 @@ These also serve as further examples of different yet comparable architectures.
 - [WordPress Plugin Bootstrap](https://github.com/claudiosanches/wordpress-plugin-boilerplate): Basic bootstrap to develop WordPress plugins using Grunt, Compass, GIT, and SVN.
 - [WP Skeleton Plugin](https://github.com/ptahdunbar/wp-skeleton-plugin): Skeleton plugin that focuses on unit tests and use of composer for development.
 - [WP CLI Scaffold](https://developer.wordpress.org/cli/commands/scaffold/plugin/): The Scaffold command of WP CLI creates a skeleton plugin with options such as CI configuration files.
+- [WP Launchpad](https://wp-launchpad.gitbook.io/launchpad): A modular framework to create modern PHP standards WordPress plugins.
 
 Of course, you could take different aspects of these and others to create your own custom boilerplate.
