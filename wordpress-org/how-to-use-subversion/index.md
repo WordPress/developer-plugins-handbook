@@ -253,8 +253,6 @@ To work around this issue, you can increase SVN's timeout during commit with the
 svn ci -m "new version" --config-option=servers:global:http-timeout=900
 ```
 
-In this command, 900 is the number of seconds. Using this trick, you'll be able to bypass the timeout issue.
-
 ## Notes
 
 Don't put anything in SVN that you're not willing and prepared to have deployed to everyone who uses your plugin. This _includes_ vendor files, `.gitignore` and everything else.
