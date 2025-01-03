@@ -252,9 +252,11 @@ We feel the risk here is much higher than the benefits, which is why we don't pe
 
 **Allowing Direct File Access to plugin files**
 
-Direct file access is when someone directly queries your file. This can be done by simply entering the complete path to the file in the URL bar of the browser but can also be done by doing a POST request directly to the file. For files that only contain a PHP class the risk of something funky happening when directly accessed is pretty small. For files that contain procedural code, functions and function calls, the chance of security risks is a lot bigger.
+Direct file access occurs when someone directly queries a PHP file. This can be done by entering the complete path to the file in the browser's URL bar or by sending a POST request directly to the file. 
 
-You can avoid this by putting this code at the top of all PHP files that could potentially execute code if accessed directly :
+For files that only contain class or function definitions, the risk of something funky happening when accessed directly is minimal. However, for files that contain executable code (e.g., function calls, class instance creation, class method calls, or inclusion of other PHP files), the risk of security issues is hard to predict because it depends on the specific case, but it can exist and it can be high.
+
+You can easily prevent this by adding the following code at the top of all PHP files that could potentially execute code if accessed directly:
 
 ```php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
