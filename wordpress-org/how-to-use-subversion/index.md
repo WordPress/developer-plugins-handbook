@@ -245,11 +245,9 @@ In this section, you'll find descriptions of the issues you may encounter and wa
 
 ### svn: E175012: Connection timed out
 
-This issue occurs on the client's (your) side when the server (wordpress.org) takes a very long time to process the input.
+This issue can occur when the SVN repository takes a long time to process uploaded files, particularly with large plugins that contain hundreds of files. The default timeout for SVN in the plugin repository is 10 minutes (600 seconds).
 
-Usually, it happens only with large plugins that contain hundreds of files. For example, contributors to the Gutenberg plugin (which is a part of WordPress but is also available as a plugin) [have faced](https://github.com/WordPress/gutenberg/issues/55295) this issue.
-
-To solve this problem, you need to add a special timeout-increasing option to the commit command:
+To work around this issue, you can increase SVN's timeout during commit with the `servers:global:http-timeout` option, passing it a timeout in seconds. For instance, to set the timeout to 15 minutes:
 
 ```
 svn ci -m "new version" --config-option=servers:global:http-timeout=900
