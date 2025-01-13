@@ -213,7 +213,7 @@ If you have complicated plugin with lots of files, you can of course organize th
 
 Your Subversion tags should look like version numbers. Specifically, they should only contain **numbers and periods**. `2.8.4` is a good lookin' tag, `my neato releaso` is a bad lookin' tag. We recommend you use [Semantic Versioning](https://semver.org) to keep track of releases, but we do not enforce this.
 
-Note that we're talking about _Subversion_ tags here, not `readme.txt search type tags.
+Note that we're talking about _Subversion_ tags here, not `readme.txt` search type tags.
 
 ### How many old releases should I keep in SVN?
 
