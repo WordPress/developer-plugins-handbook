@@ -50,12 +50,12 @@ If you do not use an icon, an auto-generated one will be made for you. Some exam
 
 [![Example of auto-generated icons](https://i0.wp.com/developer.wordpress.org/files/2015/05/auto-generated-icons.jpg?resize=798%2C332&ssl=1)](https://i0.wp.com/developer.wordpress.org/files/2015/05/auto-generated-icons.jpg?ssl=1)
 
-1MB is maximum file size for icons, but as with headers, the smaller the better.
+1MB is the maximum file size for icons, but as with headers, the smaller the better.
 
 ### [Filenames](#filenames)
 
-* Normal: `icon-128x128.(png|jpg)`
-* High-DPI (Retina): `icon-256x256.(png|jpg)`
+* Normal: `icon-128x128.(png|jpg|gif)`
+* High-DPI (Retina): `icon-256x256.(png|jpg|gif)`
 * SVG: `icon.svg`
 
 There are no plans to change these sizes.
