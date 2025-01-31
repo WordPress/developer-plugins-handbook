@@ -16,7 +16,7 @@ By default, all variables, functions and classes are defined in the **global nam
 
 All globally accessible code should be prefixed with a _unique_ identifier. Prefixes prevent conflicts with other plugins and prevents them from overwriting your variables and accidentally calling your functions and classes.
 
-In order to prevent conflicts with other plugins, your prefix should be at least 3 letters long, though we recommend 5. You should avoid using a common English word, and instead choose something unique to your plugin. We host tens of thousands of plugins on WordPress.org alone. There are hundreds of thousands more outside our servers. You're _going_ to run into conflicts.
+In order to prevent conflicts with other plugins, your prefix should be at least 4 letters long, though we recommend 5. You should avoid using a common English word, and instead choose something unique to your plugin. We host tens of thousands of plugins on WordPress.org alone. There are hundreds of thousands more outside our servers. You're _going_ to run into conflicts.
 
 A good way to do this is with a prefix. For example, if your plugin is called "Easy Custom Post Types" then you could use names like these:
 
