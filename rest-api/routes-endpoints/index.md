@@ -157,9 +157,9 @@ Endpoints are the destination that a route needs to map to. For any given route,
 function prefix_get_products( $request ) {
     // In practice this function would fetch the desired data. Here we are just making stuff up.
     $products = array(
-        '1' =&gt; 'I am product 1',
-        '2' =&gt; 'I am product 2',
-        '3' =&gt; 'I am product 3',
+        '1' => 'I am product 1',
+        '2' => 'I am product 2',
+        '3' => 'I am product 3',
     );
 
     return rest_ensure_response( $products );
@@ -183,15 +183,15 @@ function prefix_register_product_routes() {
     register_rest_route( 'my-shop/v1', '/products', array(
         array(
             // By using this constant we ensure that when the WP_REST_Server changes, our readable endpoints will work as intended.
-            'methods'  =&gt; WP_REST_Server::READABLE,
+            'methods'  => WP_REST_Server::READABLE,
             // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
-            'callback' =&gt; 'prefix_get_products',
+            'callback' => 'prefix_get_products',
         ),
         array(
             // By using this constant we ensure that when the WP_REST_Server changes, our create endpoints will work as intended.
-            'methods'  =&gt; WP_REST_Server::CREATABLE,
+            'methods'  => WP_REST_Server::CREATABLE,
             // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
-            'callback' =&gt; 'prefix_create_product',
+            'callback' => 'prefix_create_product',
         ),
     ) );
 }
