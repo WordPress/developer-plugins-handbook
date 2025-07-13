@@ -4,9 +4,9 @@ There are lot of ins and outs to hosting WordPress plugins. Please take a minute
 
 [info]Last Updated: 25 August 2024[/info]
 
-## The Plugin Review Team
+## The Plugins Team
 
-### How do I contact the Plugin Review team?
+### How do I contact the Plugins team?
 
 You can contact us by email at `plugins@wordpress.org` – we reply to all emails within 7 business days.
 

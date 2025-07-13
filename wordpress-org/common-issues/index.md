@@ -1,6 +1,6 @@
 # Common issues
 
-This is a compilation of some of the most common issues the Plugin Review Team encounters when reviewing plugins.
+This is a compilation of some of the most common issues the Plugins Team encounters when reviewing plugins.
 
 This list contains excerpts from the team's email messages, and should not be considered a complete or exhaustive list; the outcome of the reviews depends on the manual review performed by the team.
 
