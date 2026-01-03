@@ -8,9 +8,17 @@ We have chosen to document it here for the education of developers, as well as t
 
 ## Always Use Good Folder Names
 
-Before we get into the code, we must stress the absolute best way to ensure your plugin won’t get overwritten by an update from WordPress.org is to use a good name. If you’re making a plugin for your company, give it a folder name like `companyname-function-plugin` — for example, if you work for FaceRange and you’re making a status plugin, you could name it `facerange-status-plugin`
+A simple way to prevent your plugin from receiving updates from WordPress.org is to use a folder name that would not be allowed in the plugin directory.
 
-Not only would we not accept it for using the prohibited term ‘plugin’, the plugin team would validate that the plugin owner **legally** represents FaceRange.
+If the folder name of your plugin cannot exist on WordPress.org, it cannot collide with a plugin hosted in the directory.
+
+The WordPress.org plugin directory does not allow plugin slugs containing the term `plugin`, so any folder name ending in `-plugin` cannot be registered there.
+
+As part of the directory submission process, it is validated that the plugin owner has the right to represent the company name used.
+
+If you’re making a plugin for your company, you can use a folder name like `companyname-function-plugin`. For example, if you work for FaceRange and you’re making a status plugin, you could name the folder `facerange-status-plugin`.
+
+This approach affects only the plugin’s folder name and does not change the plugin name shown in the admin UI.
 
 ## Update URI
 
