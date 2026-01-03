@@ -40,7 +40,7 @@ To apply it, add a new header for **Update URI** and put a **non** WordPress.org
  * Update URI: https://example.com/my-updater/
 ```
 
-You can also set it to `Update URI: false` if you want. As long as it does not include `worpress.org/plugins` or `w.org/plugins` it will be protected.
+You can also set it to `Update URI: false` if you want. As long as it does not include `wordpress.org/plugins` or `w.org/plugins` it will be protected.
 
 ## Filtering Updates
 
