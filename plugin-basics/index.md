@@ -75,3 +75,4 @@ When WordPress loads the list of installed plugins on the Plugins page of the Wo
 ## Sharing your Plugin
 
 Sometimes a plugin you create is just for your site. But many people like to share their plugins with the rest of the WordPress community. Before sharing your plugin, one thing you need to do is [choose a license](https://choosealicense.com/). This lets the user of your plugin know how they are allowed to use your code. To maintain compatibility with WordPress core, it is recommended that you pick a license that works with GNU General Public License (GPLv2+).
+This section provides a clear foundation for understanding WordPress plugin structure and recommended development practices.
