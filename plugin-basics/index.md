@@ -22,7 +22,7 @@ $ cd plugin-name/
 $ vim plugin-name.php
 ```
 
-In the example above, `vim` is the name of the text editor. Use whichever editor that is comfortable for you.
+In the example above, `vim` is the name of the text editor. Use whichever editor is comfortable for you.
 
 Now that you're editing your new plugin's PHP file, you'll need to add a plugin header comment. This is a specially formatted PHP block comment that contains metadata about the plugin, such as its name, author, version, license, etc. The plugin header comment must comply with the [header requirements](https://developer.wordpress.org/plugins/plugin-basics/header-requirements/), and at the very least, contain the name of the plugin.
 
