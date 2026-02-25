@@ -32,6 +32,6 @@ The `[playlist]` shortcode allows you to attach more than one media file and ren
 
 ## Video Shortcode
 
-The `[video]` shortcode is very similar to the `[audio]` shortcode, it simply renders a video instead of audio.
+The `[video]` shortcode is very similar to the `[audio]` shortcode; it simply renders a video instead of audio.
 
 ![The video shortcode](https://i3.wp.com/developer.wordpress.org/files/2014/09/shortcodes-tinymce-enhanced-shortcodes-05.png)
