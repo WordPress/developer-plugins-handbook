@@ -238,6 +238,20 @@ When tagging a new version, **remember to update** the `Stable Tag` field in [`t
 
 Congratulations! You've updated your code!
 
+## Troubleshooting
+
+In this section, you'll find descriptions of the issues you may encounter and ways to solve them.
+
+### svn: E175012: Connection timed out
+
+This issue can occur when the SVN repository takes a long time to process uploaded files, particularly with large plugins that contain hundreds of files. The default timeout for SVN in the plugin repository is 10 minutes (600 seconds).
+
+To work around this issue, you can increase SVN's timeout during commit with the `servers:global:http-timeout` option, passing it a timeout in seconds. For instance, to set the timeout to 15 minutes:
+
+```
+svn ci -m "new version" --config-option=servers:global:http-timeout=900
+```
+
 ## Notes
 
 Don't put anything in SVN that you're not willing and prepared to have deployed to everyone who uses your plugin. This _includes_ vendor files, `.gitignore` and everything else.
