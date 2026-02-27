@@ -8,7 +8,7 @@ A capability such as **edit_others_posts** can be granted to the subscriber role
 get_role( 'subscriber' )->add_cap( 'edit_others_posts' );
 ```
 
-By default, super admins would have the **edit_others_posts** capability and any other capabilities. WordPress uses the **current_user_can()** function to check if the current user has the passed capability, and this function is what grants all capabilities to super admins. **current_user_can()** is a wrapper function for **user_can()**, which calls the **has_cap** method on the **WP_User** object. In the **has_cap()** method, there exists the code that grants super admin all capabilities:
+By default, super admins would have the **edit_others_posts** capability and any other capabilities. WordPress uses the **current_user_can()** function to check if the current user has the passed capability, and this function is what grants all capabilities to super admins. **current_user_can()** is a wrapper function for **user_can()**, which calls the **has_cap()** method on the **WP_User** object. In the **has_cap()** method, there exists the code that grants super admin all capabilities:
 
 ```php
 //Multisite super admin has all caps by definition, Unless specifically denied.
