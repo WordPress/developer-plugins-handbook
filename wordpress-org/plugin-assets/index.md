@@ -22,10 +22,10 @@ When designing your header image, keep in mind the use of international plugin d
 
 ### [Filenames](#banner-filenames)
 
-* Normal Banner: `banner-772x250.(jpg|png)`
-* Normal Banner (Localized): `banner-772x250-(rtl|es|es_ES).(jpg|png)`
-* High-DPI (Retina): `banner-1544x500.(jpg|png)`
-* High-DPI (Retina Localized): `banner-1544x500-(rtl|es|es_ES).(jpg|png)`
+* Normal Banner: `banner-772x250.(jpg|png|gif)`
+* Normal Banner (Localized): `banner-772x250-(rtl|es|es_ES).(jpg|png|gif)`
+* High-DPI (Retina): `banner-1544x500.(jpg|png|gif)`
+* High-DPI (Retina Localized): `banner-1544x500-(rtl|es|es_ES).(jpg|png|gif)`
 
 Images can be localised to a specific language, or for all RTL languages.  
 The locale can be specified as a full locale (`es_ES`) or as a partial locale (`es`), if the language is RTL and a locale-specific image isn’t provided, the `rtl` image will be checked for.  
