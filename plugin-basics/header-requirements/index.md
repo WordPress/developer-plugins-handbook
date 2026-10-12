@@ -1,6 +1,6 @@
 # Header Requirements
 
-As described in [Getting Started](https://developer.wordpress.org/plugins/plugin-basics/#getting-started), the main PHP file should include header comment what tells WordPress that a file is a plugin and provides information about the plugin.
+As described in [Getting Started](https://developer.wordpress.org/plugins/plugin-basics/#getting-started), the main PHP file should include a header comment that tells WordPress that the file is a plugin and provides information about the plugin.
 
 ## Minimum Fields
 
@@ -17,8 +17,8 @@ At a minimum, a header comment must contain the Plugin Name:
 Available header fields:
 
 - **Plugin Name:** (_required_) The name of your plugin, which will be displayed in the Plugins list in the WordPress Admin.
-- **Plugin URI:** The home page of the plugin, which should be a unique URL, preferably on your own website. This _must be unique_ to your plugin. You cannot use a WordPress.org URL here.
-- **Description:** A short description of the plugin, as displayed in the Plugins section in the WordPress Admin. Keep this description to fewer than 140 characters.
+- **Plugin URI:** The home page of the plugin, preferably on your own website. This _must be unique_ to your plugin. You cannot use a WordPress.org URL here.
+- **Description:** A short description of the plugin, as displayed in the Plugins list in the WordPress Admin. Keep this description to fewer than 140 characters.
 - **Version:** The current version number of the plugin, such as 1.0 or 1.0.3.
 - **Requires at least:** The lowest WordPress version that the plugin will work on.
 - **Requires PHP:** The minimum required PHP version.
@@ -28,8 +28,8 @@ Available header fields:
 - **License URI:** A link to the full text of the license (e.g. [https://www.gnu.org/licenses/old-licenses/gpl-2.0.html](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)).
 - **Text Domain:** The [gettext](https://www.gnu.org/software/gettext/) text domain of the plugin. More information can be found in the [Text Domain](https://developer.wordpress.org/plugins/internationalization/how-to-internationalize-your-plugin/#text-domains) section of the [How to Internationalize your Plugin](https://developer.wordpress.org/plugins/internationalization/how-to-internationalize-your-plugin/) page.
 - **Domain Path:** The domain path lets WordPress know where to find the translations. More information can be found in the [Domain Path](https://developer.wordpress.org/plugins/internationalization/how-to-internationalize-your-plugin/#domain-path) section of the [How to Internationalize your Plugin](https://developer.wordpress.org/plugins/internationalization/how-to-internationalize-your-plugin/) page.
-- **Network:** Whether the plugin can only be activated network-wide. Can only be set to _true_, and should be left out when not needed.
-- **Update URI:** **(_Important: never use for a plugin hosted in the WordPress.org Plugin Directory_)** Allows non WordPress.org plugins to avoid accidentally being overwritten with an update of a plugin of a similar name from the WordPress.org Plugin Directory. For more info read related [dev note](https://make.wordpress.org/core/2021/06/29/introducing-update-uri-plugin-header-in-wordpress-5-8/).
+- **Network:** Whether the plugin can only be activated network-wide. Can only be set to _true_ and should be left out when not needed.
+- **Update URI:** **(_Important: never use for a plugin hosted in the WordPress.org Plugin Directory_)** Allows non-WordPress.org plugins to avoid accidentally being overwritten with an update of a plugin of a similar name from the WordPress.org Plugin Directory. For more info read the related [dev note](https://make.wordpress.org/core/2021/06/29/introducing-update-uri-plugin-header-in-wordpress-5-8/).
 
 A valid PHP file with a header comment might look like this:
 
@@ -50,7 +50,7 @@ A valid PHP file with a header comment might look like this:
  */
 ```
 
-Here's another example which allows file-level PHPDoc DocBlock as well as WordPress plugin file headers:
+Here's another example that allows file-level PHPDoc DocBlock as well as WordPress plugin file headers:
 
 ```
 /**
