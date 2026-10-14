@@ -95,9 +95,20 @@ Instead of pushing your code directly to a tag folder, you should edit the code 
 
 Not only will this make it easier see any changes, you will be making smaller commits as SVN will only update the changed code. This will save you time and reduce potential errors (such as updating to the wrong stable tag and pushing bad code to users).
 
-Don't worry about the tag folder not existing for a short while. You can use `svn cp` to copy trunk to the tag and then push them up to SVN at the same time.
+Don't worry about the tag folder not existing for a short while. You can use `svn cp` to copy trunk to the tag. SVN is a system based on differences, and as long as you use SVN to do the copy operation, it preserves history and makes everything easy for others to follow along with.
 
-If you are operating locally, then you can update trunk and create tags from it all in one go. Checkout the root of your repository, update the files in /trunk, then `svn copy /trunk /tags/1.2.3` (or whatever the version number is) and then commit the whole thing in one go. SVN is a system based on differences, and as long as you use svn to do the copy operation, then it preserves history and makes everything easy for others to follow along with.
+Most plugin authors should work from a local checkout of `trunk/` instead of checking out the repository root. After committing your release changes to `trunk`, create the release tag from that trunk revision:
+
+```
+svn cp ^/plugin-slug/trunk ^/plugin-slug/tags/1.2.3 -m "Tag version 1.2.3"
+```
+
+If you need to inspect another tagged version locally, you can switch your working copy to that tag and then switch back to trunk:
+
+```
+svn sw ^/plugin-slug/tags/1.2.3
+svn sw ^/plugin-slug/trunk
+```
 
 ### Delete old versions
 
