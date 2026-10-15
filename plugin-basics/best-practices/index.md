@@ -168,7 +168,6 @@ While there are a number of possible architecture patterns, they can broadly be 
 
 Specific implementations of the more complex of the above code organizations have already been written up as tutorials and slides:
 
-- [Slash – Singletons, Loaders, Actions, Screens, Handlers](https://jjj.blog/2012/12/slash-architecture-my-approach-to-building-wordpress-plugins/)
 - [Implementing the MVC Pattern in WordPress Plugins](https://iandunn.name/content/presentations/wp-oop-mvc/mvc.php)
 
 ## Boilerplate Starting Points
