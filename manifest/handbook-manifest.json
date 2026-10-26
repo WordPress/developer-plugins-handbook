@@ -455,6 +455,13 @@
     "parent": "cron",
     "order": 4
   },
+  "cron\/limitations-and-best-practices": {
+    "title": "WP-Cron Limitations and Best Practices",
+    "slug": "limitations-and-best-practices",
+    "markdown_source": "https:\/\/github.com\/WordPress\/developer-plugins-handbook\/blob\/main\/cron\/limitations-and-best-practices\/index.md",
+    "parent": "cron",
+    "order": 5
+  },
 
   "internationalization": {
     "title": "Internationalization",
