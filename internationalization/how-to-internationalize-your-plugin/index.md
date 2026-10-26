@@ -259,7 +259,7 @@ It is good to escape all of your strings, this way the translators cannot run ma
 
 ### Translate & Escape functions 
 
-Strings that require translation and is used in attributes of html tags must be escaped.
+Strings that require translation and are used in attributes of HTML tags must be escaped.
 
 - [`esc_html__()`](https://developer.wordpress.org/reference/functions/esc_html__/)
 - [`esc_html_e()`](https://developer.wordpress.org/reference/functions/esc_html_e/)
