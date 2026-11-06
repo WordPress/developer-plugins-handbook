@@ -149,11 +149,13 @@ if ( current_user_can( 'edit_posts' ) ) {
 
 ## Multisite
 
-The [`current_user_can_for_blog()`](https://developer.wordpress.org/reference/functions/current_user_can_for_blog/) function is used to test if the current user has a certain **role** or **capability** on a specific blog.
+The [`current_user_can_for_site()`](https://developer.wordpress.org/reference/functions/current_user_can_for_site/) function is used to test if the current user has a certain **role** or **capability** on a specific site.
 
 ```
-current_user_can_for_blog( $blog_id, $capability );
+current_user_can_for_site( $site_id, $capability );
 ```
+
+`current_user_can_for_site()` was added in WordPress 6.7. On older versions, use [`current_user_can_for_blog()`](https://developer.wordpress.org/reference/functions/current_user_can_for_blog/), which is now deprecated.
 
 ## Reference
 
