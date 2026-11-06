@@ -155,8 +155,6 @@ The [`current_user_can_for_site()`](https://developer.wordpress.org/reference/fu
 current_user_can_for_site( $site_id, $capability );
 ```
 
-`current_user_can_for_site()` was added in WordPress 6.7. On older versions, use [`current_user_can_for_blog()`](https://developer.wordpress.org/reference/functions/current_user_can_for_blog/), which is now deprecated.
-
 ## Reference
 
 Codex Reference for [User Roles and Capabilities](https://wordpress.org/documentation/article/roles-and-capabilities/).
