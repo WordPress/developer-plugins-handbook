@@ -11,7 +11,8 @@ add_submenu_page(
   string $menu_title,
   string $capability,
   string $menu_slug,
-  callable $function = ''
+  callable $callback = '',
+  int|float $position = null
 );
 ```
 ### Example
@@ -78,10 +79,9 @@ Below is a list of parent slugs and their helper functions:
 - [`add_comments_page()`](https://developer.wordpress.org/reference/functions/add_comments_page/) – `edit-comments.php`
 - [`add_theme_page()`](https://developer.wordpress.org/reference/functions/add_theme_page/) – `themes.php`
 - [`add_plugins_page()`](https://developer.wordpress.org/reference/functions/add_plugins_page/) – `plugins.php`
-- [`add_users_page()`](hhttps://developer.wordpress.org/reference/functions/add_users_page/) – `users.php`
+- [`add_users_page()`](https://developer.wordpress.org/reference/functions/add_users_page/) – `users.php`
 - [`add_management_page()`](https://developer.wordpress.org/reference/functions/add_management_page/) – `tools.php`
 - [`add_options_page()`](https://developer.wordpress.org/reference/functions/add_options_page/) – `options-general.php`
-- [`add_options_page()`](https://developer.wordpress.org/reference/functions/add_options_page/) – `settings.php`
 - [`add_links_page()`](https://developer.wordpress.org/reference/functions/add_links_page/) – `link-manager.php` – requires a plugin since WP 3.5+
 - Custom Post Type – `edit.php?post_type=wporg_post_type`
 - Network Admin – `settings.php`
