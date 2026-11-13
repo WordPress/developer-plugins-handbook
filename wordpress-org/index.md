@@ -31,6 +31,7 @@ If you're just getting started, it helps to know how to submit your plugin, use 
 
 - [...plan, submit, and maintain your plugin](https://developer.wordpress.org/plugins/wordpress-org/planning-submitting-and-maintaining-plugins/)
 - [...use SVN (aka Subversion)](https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/)
+- [...use the MCP server](https://developer.wordpress.org/plugins/wordpress-org/using-the-mcp-server/)
 - [...manage your readme.txt](https://developer.wordpress.org/plugins/wordpress-org/how-your-readme-txt-works/)
 - [...write proper plugin headers](https://developer.wordpress.org/plugins/plugin-basics/header-requirements/)
 - [...use plugin assets (header images and icons)](https://developer.wordpress.org/plugins/wordpress-org/plugin-assets/)
