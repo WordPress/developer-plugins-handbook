@@ -64,9 +64,9 @@ You can learn more about creating hooks and interacting with them in the [Hooks]
 
 Did you know that WordPress provides a number of [Application Programming Interfaces (APIs)](https://make.wordpress.org/core/handbook/best-practices/core-apis/)? These APIs can greatly simplify the code you need to write in your plugins. You don't want to reinvent the wheel, especially when so many people have done a lot of the work and testing for you.
 
-The most common one is the [Options API](https://codex.wordpress.org/Options_API), which makes it easy to store data in the database for your plugin. If you're thinking of using [cURL](https://en.wikipedia.org/wiki/CURL) in your plugin, the [HTTP API](https://developer.wordpress.org/plugins/http-api/) might be of interest to you.
+The most common one is the [Options API](https://developer.wordpress.org/apis/options/), which makes it easy to store data in the database for your plugin. If you're thinking of using [cURL](https://en.wikipedia.org/wiki/CURL) in your plugin, the [HTTP API](https://developer.wordpress.org/plugins/http-api/) might be of interest to you.
 
-Since we're talking about plugins, you'll want to study the [Plugin API](https://codex.wordpress.org/Plugin_API). It has a variety of functions that will assist you in developing plugins.
+Since we're talking about plugins, you'll want to study the [Plugin API](https://developer.wordpress.org/reference/). It has a variety of functions that will assist you in developing plugins.
 
 ## How WordPress Loads Plugins
 
