@@ -191,7 +191,7 @@ $title = wp_unslash( $_POST['title'] );
 We can save the user's selection in user meta by using [`update_user_meta()`](https://developer.wordpress.org/reference/functions/update_user_meta/).
 
 ```
-update_user_meta( get_current_user_id(), 'title_preference', sanitize_post_title( $title ) );
+update_user_meta( get_current_user_id(), 'title_preference', sanitize_text_field( $title ) );
 ```
 
 Then we build a query in order to get the post count for the selected title tag.
@@ -239,7 +239,7 @@ function my_ajax_handler__json() {
   check_ajax_referer( 'title_example' );
   $title = wp_unslash( $_POST['title'] );
 
-  update_user_meta( get_current_user_id(), 'title_preference', sanitize_post_title( $title ) );
+  update_user_meta( get_current_user_id(), 'title_preference', sanitize_text_field( $title ) );
 
   $args      = array(
     'tag' => $title,
@@ -255,7 +255,7 @@ function my_ajax_handler() {
   check_ajax_referer( 'title_example' );
   $title = wp_unslash( $_POST['title'] );
 
-  update_user_meta( get_current_user_id(), 'title_preference', sanitize_post_title( $title ) );
+  update_user_meta( get_current_user_id(), 'title_preference', sanitize_text_field( $title ) );
 
   $args      = array(
     'tag' => $title,
