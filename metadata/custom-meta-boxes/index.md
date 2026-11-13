@@ -115,7 +115,7 @@ In between each call, intervening markup (such as divs, titles, etc.) is added.
 
 To remove an existing meta box from an edit screen use the [`remove_meta_box()`](https://developer.wordpress.org/reference/functions/remove_meta_box/) function. The passed parameters must exactly match those used to add the meta box with [`add_meta_box()`](https://developer.wordpress.org/reference/functions/add_meta_box/).
 
-To remove default meta boxes check the source code for the parameters used. The default [`add_meta_box()`](https://developer.wordpress.org/reference/functions/add_meta_box/) calls are made from `wp-includes/edit-form-advanced.php`.
+To remove default meta boxes check the source code for the parameters used. The default [`add_meta_box()`](https://developer.wordpress.org/reference/functions/add_meta_box/) calls are made from [`register_and_do_post_meta_boxes()`](https://developer.wordpress.org/reference/functions/register_and_do_post_meta_boxes/) in `wp-admin/includes/meta-boxes.php`.
 
 ## Implementation Variants
 
