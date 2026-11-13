@@ -23,7 +23,7 @@ wp_enqueue_script(
   'ajax-script',
   plugins_url( '/js/myjquery.js', __FILE__ ),
   array( 'jquery' ),
-  '1.0.,0',
+  '1.0.0',
   array(
     'in_footer' => true,
   )
@@ -77,8 +77,8 @@ Following is an example of specifying a loading strategy for an additional scrip
 wp_register_script(
   'ajax-script-two',
   plugins_url( '/js/myscript.js', __FILE__ ),
-  array( ajax-script ),
-  '1.0.,0',
+  array( 'ajax-script' ),
+  '1.0.0',
   array(
     'strategy' => 'defer',
   )
