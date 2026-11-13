@@ -79,6 +79,8 @@ We recommend you NOT have the video as the final line in a FAQ section, as somet
 
 The readmes use a customized version of [Markdown](https://daringfireball.net/projects/markdown/). Most Markdown calls work as expected.
 
+Line breaks are the exception. Unlike standard Markdown, a single line break is kept as a line break. To start a new paragraph, leave a blank line. Don’t wrap long lines in your readme, or the breaks will show up on your plugin page.
+
 Markdown allows for easy linking in your readme.txt as well. Just write like this to link a word to a URL:
 
 \[WordPress\](http://wordpress.org)
