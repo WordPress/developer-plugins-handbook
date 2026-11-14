@@ -351,6 +351,10 @@ function wpdocs_load_textdomain() {
 }
 ```
 
+If you call `load_plugin_textdomain()`, since WordPress 6.7 it only registers where the translation files are. The file is loaded the first time one of the plugin's strings is translated.
+
+Don't translate strings before the `init` action, for example in the main plugin file, in a function hooked to `plugins_loaded`, or in a class constructor that runs when the plugin loads. If WordPress finds a translation for the current language, it then shows a notice that translation loading for the text domain "was triggered too early". Translating this early can also make WordPress set up the current user earlier than usual, before other plugins can hook into that process. Run code that translates strings on `init` or later. See [Internationalization improvements in 6.7](https://make.wordpress.org/core/2024/10/21/i18n-improvements-6-7/).
+
 ## Plugins on WordPress.org
 
 [info]Since WordPress 4.6 translations now take [translate.wordpress.org](https://translate.wordpress.org/) as priority and so plugins that are translated via translate.wordpress.org do not necessary require `load_plugin_textdomain()` anymore. If you don't want to add a `load_plugin_textdomain()` call to your plugin you have to set the `Requires at least:` field in your readme.txt to 4.6 or more.[/info]
@@ -371,7 +375,9 @@ add_filter( 'load_textdomain_mofile', 'my_plugin_load_my_own_textdomain', 10, 2 
 
 ## Handling JavaScript files
 
-Check the [Internationalizing javascript](https://developer.wordpress.org/apis/internationalization/#internationalizing-javascript) section of the [Common APIs Handbook](https://developer.wordpress.org/apis/) to see how to properly load your translation files. There is also the [Gutenburg plugin docs page](https://github.com/WordPress/gutenberg/blob/trunk/docs/how-to-guides/internationalization.md).
+Check the [Internationalizing javascript](https://developer.wordpress.org/apis/internationalization/#internationalizing-javascript) section of the [Common APIs Handbook](https://developer.wordpress.org/apis/) to see how to properly load your translation files. There is also the [Gutenberg plugin docs page](https://github.com/WordPress/gutenberg/blob/trunk/docs/how-to-guides/internationalization.md).
+
+In short, use `wp.i18n.__()` with your text domain, and after registering the script call [`wp_set_script_translations()`](https://developer.wordpress.org/reference/functions/wp_set_script_translations/) with the script handle and text domain. WordPress then loads that script's translations from the installed language packs. If you ship your own JSON translation files, pass their directory as the third argument.
 
 ## Language Packs
 
