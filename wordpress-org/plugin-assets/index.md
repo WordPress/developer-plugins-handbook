@@ -60,6 +60,10 @@ If you do not use an icon, an auto-generated one will be made for you. Some exam
 
 There are no plans to change these sizes.
 
+To localize a PNG, JPG, or GIF icon, add the locale before the file extension. For Spanish (Argentina), place `icon-128x128-es_AR.png` and `icon-256x256-es_AR.png` alongside your default icons.
+
+If you provide `icon.svg`, the Plugin Directory uses it for every locale, even when a localized icon is available.
+
 [Screenshots](#screenshots)
 ---------------------------
 
